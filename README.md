@@ -15,7 +15,7 @@ curl -fsSL https://raw.githubusercontent.com/alirezaaabbasii/pronet-fleet/main/g
 
 ### اگر GitHub از سرور ایران باز نمی‌شود
 
-فایل `pronet-fleet-0.2.4.zip` را از بخش Releases روی سرور خارج یا کامپیوتر خودت بگیر و با scp به سرور ایران ببر. بعد این را اجرا کن:
+فایل `dist/pronet-fleet-0.2.4.zip` را از همین ریپو روی سرور خارج یا کامپیوتر خودت بگیر و با scp به سرور ایران ببر. بعد این را اجرا کن:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/alirezaaabbasii/pronet-fleet/main/get.sh -o get.sh

@@ -15,7 +15,7 @@ set -euo pipefail
 VERSION="0.2.4"
 OWNER_REPO="alirezaaabbasii/pronet-fleet" 
 SHA256="9a4a335882081335ab141e4a45fefbd1dcabdcc066a51e4823ca012ba1b816ee"
-URL="${PRONET_URL:-https://github.com/${OWNER_REPO}/releases/download/v${VERSION}/pronet-fleet-${VERSION}.zip}"
+URL="${PRONET_URL:-https://raw.githubusercontent.com/${OWNER_REPO}/main/dist/pronet-fleet-${VERSION}.zip}"
 
 say()  { printf '\033[1;36m[pronet]\033[0m %s\n' "$*"; }
 fail() { printf '\033[1;31m[pronet] خطا:\033[0m %s\n' "$*" >&2; exit 1; }
