@@ -1,35 +1,42 @@
 # Pronet Fleet
 
-مدیریت جفت‌سازی، سنجش خودکار و نگهداری تونل بین سرور ایران و خارج.
+Iran <-> foreign tunnel manager: automatic carrier testing, best-route selection, warm standby with automatic failover.
 
-## نصب سریع
+## Install (2 steps)
 
-روی هر سرور (ایران، خارج، و سروری که مرکز روی آن است) اجرا کن:
-
+**1. Iran server (always start here)**
 ```bash
 curl -fsSL https://raw.githubusercontent.com/alirezaaabbasii/pronet-fleet/main/get.sh | sudo bash
 ```
+Choose `1` (Iran), then press Enter twice (detected public IP, client port 2053).
+The Iran server sets up the coordinator itself and prints ONE command for the foreign server.
 
-اسکریپت نسخهٔ ثابت‌شده را از Releases دانلود می‌کند، **هش SHA256 را قبل از نصب بررسی می‌کند**، پیش‌نیازها را نصب می‌کند و منو را باز می‌کند.
-اگر نسخهٔ قبلی نصب باشد، به‌جای نصب تازه ارتقا انجام می‌دهد و تونل‌های فعال را نگه می‌دارد.
-
-### اگر GitHub از سرور ایران باز نمی‌شود
-
-فایل `dist/pronet-fleet-0.2.4.zip` را از همین ریپو روی سرور خارج یا کامپیوتر خودت بگیر و با scp به سرور ایران ببر. بعد این را اجرا کن:
-
+**2. Foreign server** - copy the whole line shown on Iran and run it, e.g.
 ```bash
-curl -fsSL https://raw.githubusercontent.com/alirezaaabbasii/pronet-fleet/main/get.sh -o get.sh
-sudo PRONET_ZIP=/root/pronet-fleet-0.2.4.zip bash get.sh
+curl -fsSL https://raw.githubusercontent.com/alirezaaabbasii/pronet-fleet/main/get.sh | sudo bash -s -- join PNF1-...
 ```
 
-اگر raw.githubusercontent هم باز نمی‌شود، خود `get.sh` را هم با scp ببر.
+The Iran screen shows live progress and a final report (chosen carrier, standby, why, and what failed).
+Finally create your panel inbound on the foreign server (listen `0.0.0.0`, same port) and give clients `IRAN_IP:PORT`.
 
-## ترتیب راه‌اندازی
+## Useful commands
+```bash
+sudo pronet            # menu (new tunnel, live status, report)
+sudo pronet watch      # live status
+sudo pronet report     # last setup report
+sudo pronet logs ID    # logs of one tunnel
+```
 
-1. روی سرور ایران: `sudo pronet` و گزینهٔ **3) مرکز هماهنگی** را بزن. فایل `/etc/pronet-fleet/pronet-bootstrap.json` ساخته می‌شود.
-2. این فایل را با scp روی هر دو سرور کپی کن. این فایل محرمانه است و نباید در GitHub قرار بگیرد.
-3. روی ایران و خارج: `sudo pronet` و نقش هر سرور را انتخاب کن.
-4. روی ایران «ساخت اتصال جدید» را بزن تا کد چهاررقمی بگیری. روی خارج `sudo pronet join <کد>` را اجرا کن.
-5. پیشرفت را با `sudo pronet watch` ببین.
+## If GitHub is blocked on a server
+Copy `dist/pronet-fleet-0.2.6.zip` and `get.sh` with scp, then:
+```bash
+sudo PRONET_ZIP=/root/pronet-fleet-0.2.6.zip bash get.sh                 # Iran
+sudo PRONET_ZIP=/root/pronet-fleet-0.2.6.zip bash get.sh join PNF1-...   # foreign
+```
 
-راهنمای کامل در `OPERATOR.fa.md` داخل بسته است و تغییرات این نسخه در `CHANGES-0.2.4.fa.md`.
+---
+
+### راهنمای فارسی خلاصه
+۱. همیشه از سرور **ایران** شروع کن: دستور اول را بزن، گزینهٔ `1` و دو بار Enter.
+۲. خطی که ایران در آخر چاپ می‌کند را کامل کپی کن و روی سرور **خارج** بزن.
+۳. بعد از پیام `TUNNEL READY`، روی سرور خارج در پنل اینباند را روی `0.0.0.0` و همان پورت بساز و به کاربر آدرس `IP-ایران:پورت` بده.
