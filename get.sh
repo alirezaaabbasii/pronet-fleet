@@ -1,80 +1,91 @@
 #!/usr/bin/env bash
-# Pronet Fleet one-line installer.
-#   curl -fsSL https://raw.githubusercontent.com/alirezaaabbasii/pronet-fleet/main/get.sh | sudo bash
+# Pronet Fleet installer and launcher.
 #
-# Downloads the pinned release, verifies SHA256 BEFORE anything is installed,
-# installs (or upgrades) and opens the menu. It never touches existing tunnels,
-# firewall policy or panel configuration.
+#   Iran server:     curl -fsSL https://raw.githubusercontent.com/alirezaaabbasii/pronet-fleet/main/get.sh | sudo bash
+#   Foreign server:  the exact command printed by the Iran server, e.g.
+#                    curl -fsSL .../get.sh | sudo bash -s -- join PNF1-...
 #
-# Overrides (optional):
-#   PRONET_URL=https://mirror/pronet-fleet-0.2.4.zip   use a mirror if GitHub is slow/blocked
-#   PRONET_ZIP=/root/pronet-fleet-0.2.4.zip            use a file already copied to the server
-#   PRONET_NO_MENU=1                                   install only, do not open the menu
+# Downloads the pinned release, verifies its SHA256 BEFORE installing, installs
+# or upgrades it, then runs `pronet` with the given arguments (menu if none).
+# Existing tunnels, routes, firewall policy and panel configuration are untouched.
+#
+# Optional:
+#   PRONET_ZIP=/root/pronet-fleet-0.2.5.zip   use a file already copied to the server
+#   PRONET_URL=https://mirror/...zip          use a mirror if GitHub is slow/blocked
+#   PRONET_NO_MENU=1                          install only
 set -euo pipefail
 
-VERSION="0.2.4"
-OWNER_REPO="alirezaaabbasii/pronet-fleet" 
-SHA256="9a4a335882081335ab141e4a45fefbd1dcabdcc066a51e4823ca012ba1b816ee"
+VERSION="0.2.5"
+OWNER_REPO="alirezaaabbasii/pronet-fleet"
+SHA256="ac0893e76f95600cde2e48e739112cbafe490b19f9ae3cdca6418928d5c55f74"
 URL="${PRONET_URL:-https://raw.githubusercontent.com/${OWNER_REPO}/main/dist/pronet-fleet-${VERSION}.zip}"
 
 say()  { printf '\033[1;36m[pronet]\033[0m %s\n' "$*"; }
-fail() { printf '\033[1;31m[pronet] خطا:\033[0m %s\n' "$*" >&2; exit 1; }
+fail() { printf '\033[1;31m[pronet] error:\033[0m %s\n' "$*" >&2; exit 1; }
 
-[ "$(id -u)" -eq 0 ] || fail "با sudo اجرا کن:  curl -fsSL ... | sudo bash"
-[ "$(uname -s)" = "Linux" ] || fail "فقط Linux پشتیبانی می‌شود."
-case "$(uname -m)" in x86_64|aarch64|arm64) ;; *) fail "معماری $(uname -m) پشتیبانی نمی‌شود (فقط amd64/arm64)." ;; esac
-[ -d /run/systemd/system ] || fail "systemd لازم است."
+[ "$(id -u)" -eq 0 ] || fail "run as root:  curl -fsSL ... | sudo bash"
+[ "$(uname -s)" = "Linux" ] || fail "Linux is required."
+case "$(uname -m)" in x86_64|aarch64|arm64) ;; *) fail "unsupported CPU $(uname -m) (amd64/arm64 only)." ;; esac
+[ -d /run/systemd/system ] || fail "systemd is required."
 
-# System tools the agent needs. Installed only when missing.
+run_pronet() {
+  [ -n "${PRONET_NO_MENU:-}" ] && [ "$#" -eq 0 ] && return 0
+  if (exec </dev/tty) 2>/dev/null; then
+    # stdin is the piped script; give prompts the real terminal.
+    exec /usr/local/bin/pronet "$@" < /dev/tty
+  fi
+  exec /usr/local/bin/pronet "$@"
+}
+
+installed="$(/usr/local/bin/pronet --version 2>/dev/null || true)"
+if [ "$installed" = "$VERSION" ] && [ -z "${PRONET_ZIP:-}" ]; then
+  say "Pronet Fleet $VERSION is already installed."
+  run_pronet "$@"
+  exit 0
+fi
+
 need=""
 for pair in python3:python3 unzip:unzip ip:iproute2 ss:iproute2 iptables:iptables openssl:openssl ssh-keygen:openssh-client nft:nftables sha256sum:coreutils curl:curl; do
   cmd="${pair%%:*}"; pkg="${pair##*:}"
   command -v "$cmd" >/dev/null 2>&1 || case " $need " in *" $pkg "*) ;; *) need="$need $pkg" ;; esac
 done
 if [ -n "$need" ]; then
-  if command -v apt-get >/dev/null 2>&1; then
-    say "نصب پیش‌نیازها:$need"
-    DEBIAN_FRONTEND=noninteractive apt-get update -qq
-    # shellcheck disable=SC2086
-    DEBIAN_FRONTEND=noninteractive apt-get install -y -qq $need >/dev/null
-  else
-    fail "این ابزارها نصب نیستند:$need"
-  fi
+  command -v apt-get >/dev/null 2>&1 || fail "missing tools:$need"
+  say "Installing prerequisites:$need"
+  DEBIAN_FRONTEND=noninteractive apt-get update -qq
+  # shellcheck disable=SC2086
+  DEBIAN_FRONTEND=noninteractive apt-get install -y -qq $need >/dev/null
 fi
-python3 -c 'import sys; sys.exit(0 if sys.version_info >= (3, 10) else 1)' || fail "Python 3.10 یا جدیدتر لازم است."
+python3 -c 'import sys; sys.exit(0 if sys.version_info >= (3, 10) else 1)' || fail "Python 3.10+ is required."
 
 work="$(mktemp -d /tmp/pronet-get.XXXXXX)"
 trap 'rm -rf "$work"' EXIT
 zip="$work/pronet-fleet-${VERSION}.zip"
 
 if [ -n "${PRONET_ZIP:-}" ]; then
-  [ -f "$PRONET_ZIP" ] || fail "فایل $PRONET_ZIP پیدا نشد."
+  [ -f "$PRONET_ZIP" ] || fail "file not found: $PRONET_ZIP"
   cp "$PRONET_ZIP" "$zip"
 else
-  say "دانلود نسخهٔ $VERSION ..."
+  say "Downloading Pronet Fleet $VERSION ..."
   curl -fL --retry 5 --retry-delay 3 --connect-timeout 15 -o "$zip" "$URL" \
-    || fail "دانلود نشد. اگر GitHub از این سرور در دسترس نیست، فایل را با scp بیاور و با PRONET_ZIP=/مسیر/فایل اجرا کن."
+    || fail "download failed. If GitHub is blocked here, copy the zip with scp and run: PRONET_ZIP=/path/file.zip bash get.sh"
 fi
 
-say "بررسی SHA256 ..."
-echo "${SHA256}  ${zip}" | sha256sum -c --status || fail "هش فایل مطابقت ندارد؛ فایل خراب یا دست‌کاری‌شده است. چیزی نصب نشد."
+say "Verifying SHA256 ..."
+echo "${SHA256}  ${zip}" | sha256sum -c --status || fail "checksum mismatch: the file is damaged or modified. Nothing was installed."
 
 unzip -q "$zip" -d "$work"
 src="$work/pronet-fleet-${VERSION}"
-[ -f "$src/install.sh" ] || fail "ساختار بسته نامعتبر است."
-sh "$src/install.sh" --verify-only
+[ -f "$src/install.sh" ] || fail "unexpected package layout."
+sh "$src/install.sh" --verify-only >/dev/null
 
 if ls /etc/systemd/system/pronetf-*.service >/dev/null 2>&1; then
-  say "نسخهٔ قبلی پیدا شد؛ ارتقا با حفظ تونل‌های فعال ..."
-  sh "$src/install.sh" --activate-services
-  say "برای فعال شدن Gateway جدید، روی ایران در ساعت کم‌ترافیک اجرا کن:"
-  say "  sudo systemctl restart pronetf-<PAIR_ID>-gateway.service"
+  say "Upgrading the existing installation (running tunnels are kept) ..."
+  sh "$src/install.sh" --activate-services >/dev/null
+  say "Upgraded to $VERSION."
 else
-  sh "$src/install.sh"
+  sh "$src/install.sh" >/dev/null
+  say "Installed Pronet Fleet $VERSION."
 fi
 
-say "نصب تمام شد. منو:  sudo pronet"
-if [ -z "${PRONET_NO_MENU:-}" ] && [ -r /dev/tty ]; then
-  # stdin is the piped script; give the interactive menu the real terminal.
-  exec /usr/local/bin/pronet < /dev/tty
-fi
+run_pronet "$@"
