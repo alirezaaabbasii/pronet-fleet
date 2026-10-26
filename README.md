@@ -25,13 +25,14 @@ sudo pronet            # menu (new tunnel, live status, report)
 sudo pronet watch      # live status
 sudo pronet report     # last setup report
 sudo pronet logs ID    # logs of one tunnel
+sudo pronet dashboard  # web dashboard address and login (Iran)
 ```
 
 ## If GitHub is blocked on a server
-Copy `dist/pronet-fleet-0.2.9.zip` and `get.sh` with scp, then:
+Copy `dist/pronet-fleet-0.3.0.zip` and `get.sh` with scp, then:
 ```bash
-sudo PRONET_ZIP=/root/pronet-fleet-0.2.9.zip bash get.sh                 # Iran
-sudo PRONET_ZIP=/root/pronet-fleet-0.2.9.zip bash get.sh join PNF1-...   # foreign
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.0.zip bash get.sh                 # Iran
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.0.zip bash get.sh join PNF1-...   # foreign
 ```
 
 ---
@@ -39,4 +40,5 @@ sudo PRONET_ZIP=/root/pronet-fleet-0.2.9.zip bash get.sh join PNF1-...   # forei
 ### راهنمای فارسی خلاصه
 ۱. همیشه از سرور **ایران** شروع کن: دستور اول را بزن، گزینهٔ `1` و دو بار Enter.
 ۲. خطی که ایران در آخر چاپ می‌کند را کامل کپی کن و روی سرور **خارج** بزن.
+۴. صفحهٔ وب وضعیت: روی ایران `sudo pronet dashboard` را بزن تا آدرس و رمز را ببینی.
 ۳. بعد از پیام `TUNNEL READY`، روی سرور خارج در پنل اینباند را روی `0.0.0.0` و همان پورت بساز و به کاربر آدرس `IP-ایران:پورت` بده.
