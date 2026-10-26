@@ -29,10 +29,10 @@ sudo pronet dashboard  # web dashboard link (Iran)
 ```
 
 ## If GitHub is blocked on a server
-Copy `dist/pronet-fleet-0.3.2.zip` and `get.sh` with scp, then:
+Copy `dist/pronet-fleet-0.3.3.zip` and `get.sh` with scp, then:
 ```bash
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.2.zip bash get.sh                 # Iran
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.2.zip bash get.sh join PNF1-...   # foreign
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.3.zip bash get.sh                 # Iran
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.3.zip bash get.sh join PNF1-...   # foreign
 ```
 
 ---
