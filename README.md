@@ -28,10 +28,10 @@ sudo pronet logs ID    # logs of one tunnel
 ```
 
 ## If GitHub is blocked on a server
-Copy `dist/pronet-fleet-0.2.6.zip` and `get.sh` with scp, then:
+Copy `dist/pronet-fleet-0.2.7.zip` and `get.sh` with scp, then:
 ```bash
-sudo PRONET_ZIP=/root/pronet-fleet-0.2.6.zip bash get.sh                 # Iran
-sudo PRONET_ZIP=/root/pronet-fleet-0.2.6.zip bash get.sh join PNF1-...   # foreign
+sudo PRONET_ZIP=/root/pronet-fleet-0.2.7.zip bash get.sh                 # Iran
+sudo PRONET_ZIP=/root/pronet-fleet-0.2.7.zip bash get.sh join PNF1-...   # foreign
 ```
 
 ---
