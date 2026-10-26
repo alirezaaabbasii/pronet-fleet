@@ -10,14 +10,14 @@
 # Existing tunnels, routes, firewall policy and panel configuration are untouched.
 #
 # Optional:
-#   PRONET_ZIP=/root/pronet-fleet-0.3.3.zip   use a file already copied to the server
+#   PRONET_ZIP=/root/pronet-fleet-0.3.6.zip   use a file already copied to the server
 #   PRONET_URL=https://mirror/...zip          use a mirror if GitHub is slow/blocked
 #   PRONET_NO_MENU=1                          install only
 set -euo pipefail
 
-VERSION="0.3.3"
+VERSION="0.3.6"
 OWNER_REPO="alirezaaabbasii/pronet-fleet"
-SHA256="bd01182c7f044591cf020baaa09fdc68784f8f7a1d53285b60fc4e614d599da6"
+SHA256="29993fb7bf6933ea7b73faa633cd3d2baf48fa0227c220472423bb1f737b69a3"
 URL="${PRONET_URL:-https://raw.githubusercontent.com/${OWNER_REPO}/main/dist/pronet-fleet-${VERSION}.zip}"
 
 say()  { printf '\033[1;36m[pronet]\033[0m %s\n' "$*"; }
@@ -88,16 +88,8 @@ else
   say "Installed Pronet Fleet $VERSION."
 fi
 
-# Keep the current and one previous management version; remove older ones that
-# no unit or the command wrapper still references.
-keep_prev="$(ls -1 /opt/pronet-fleet 2>/dev/null | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | grep -vx "$VERSION" | tail -1 || true)"
-for dir in /opt/pronet-fleet/*/; do
-  v="$(basename "$dir")"
-  printf '%s' "$v" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$' || continue
-  [ "$v" = "$VERSION" ] && continue
-  [ "$v" = "$keep_prev" ] && continue
-  grep -qs "/opt/pronet-fleet/$v/" /etc/systemd/system/pronetf-*.service /usr/local/bin/pronet && continue
-  rm -rf -- "/opt/pronet-fleet/$v"
-done
+# Keep installed versions: running helpers and pinned engine plans can still
+# depend on their code or binaries even after unit references are migrated.
+# Removing an unreferenced-by-unit directory here can break a later reconnect.
 
 run_pronet "$@"

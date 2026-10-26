@@ -1,4 +1,8 @@
-# Pronet Fleet
+# Pronet Fleet 0.3.6
+
+Default recovery is now `stable`: keep the selected primary and warm standby, with confirmed failover and a persistent switch budget. Transport timeouts now close failed sessions instead of entering a CPU/RAM runaway loop; failed stream cleanup also releases socket buffers promptly. See `CHANGES-0.3.6.fa.md` and `STABILITY-VALIDATION.json` inside the release ZIP for validation and limits.
+
+Updating management preserves live sessions; existing data helpers load the memory fix on their next restart. Schedule that one-time restart using the release notes. Old installed versions are retained because live engine plans may still pin them.
 
 Iran <-> foreign tunnel manager: automatic carrier testing, best-route selection, warm standby with automatic failover.
 
@@ -29,10 +33,10 @@ sudo pronet dashboard  # web dashboard link (Iran)
 ```
 
 ## If GitHub is blocked on a server
-Copy `dist/pronet-fleet-0.3.3.zip` and `get.sh` with scp, then:
+Copy `dist/pronet-fleet-0.3.6.zip` and `get.sh` with scp, then:
 ```bash
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.3.zip bash get.sh                 # Iran
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.3.zip bash get.sh join PNF1-...   # foreign
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.6.zip bash get.sh                 # Iran
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.6.zip bash get.sh join PNF1-...   # foreign
 ```
 
 ---
