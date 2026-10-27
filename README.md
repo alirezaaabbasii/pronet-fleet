@@ -1,4 +1,6 @@
-# Pronet Fleet 0.3.7
+# Pronet Fleet 0.3.8
+
+0.3.8: faster carrier testing without changing what is measured (smart grouping, idle waits overlap while transfers stay one at a time), a live per-carrier progress view, and a cleaner final report and status screen (`sudo pronet report --details` for every carrier). See `CHANGES-0.3.8.fa.md` in the release ZIP.
 
 0.3.7: the join command for the foreign server now stays on screen until the foreign server joins (it was wiped by the live view). New `sudo pronet uninstall` removes Pronet completely from one server. See `CHANGES-0.3.7.fa.md` in the release ZIP.
 
@@ -35,10 +37,10 @@ sudo pronet dashboard  # web dashboard link (Iran)
 ```
 
 ## If GitHub is blocked on a server
-Copy `dist/pronet-fleet-0.3.7.zip` and `get.sh` with scp, then:
+Copy `dist/pronet-fleet-0.3.8.zip` and `get.sh` with scp, then:
 ```bash
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.7.zip bash get.sh                 # Iran
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.7.zip bash get.sh join PNF1-...   # foreign
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.8.zip bash get.sh                 # Iran
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.8.zip bash get.sh join PNF1-...   # foreign
 ```
 
 ---
