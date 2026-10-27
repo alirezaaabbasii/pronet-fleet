@@ -4,7 +4,7 @@
 
 **Iran ⇄ foreign tunnel manager: it tests every carrier on your real route, picks the best one, keeps warm standbys and fails over by itself.**
 
-![version](https://img.shields.io/badge/version-0.3.10-blue)
+![version](https://img.shields.io/badge/version-0.3.11-blue)
 ![platform](https://img.shields.io/badge/platform-Linux%20amd64%20%7C%20arm64-lightgrey)
 ![python](https://img.shields.io/badge/python-3.10%2B-green)
 ![carriers](https://img.shields.io/badge/carriers-20%2B-orange)
@@ -42,7 +42,8 @@ Your clients always use the same `IRAN_IP:PORT`. Carrier changes happen behind t
 | 🌙 **Quiet during long outages** | If one server is off for hours, everything backs off to about one attempt a minute, logs once, and waits. Nothing spins. |
 | 📨 **Telegram alerts** | Optional. Covers down/restored, failover, unstable carrier, standby replaced, re-test, and a server that stops reporting. Sent from the foreign server, because Telegram is filtered in Iran. English or Persian. |
 | 🖥️ **Clear terminal UI** | Live per-carrier progress bars, a "Now:" line showing the current step, and a final report that says what was chosen and why. |
-| 🌐 **Web dashboard** | A private status page served from the Iran server at an unguessable link. |
+| 🌐 **Web dashboard** | A private status page served from the Iran server at an unguessable link, with a **Return to main carrier** button when a tunnel is on a standby. |
+| 🔀 **Manual return** | After a failover Pronet stays on the standby. You choose when to return: `sudo pronet switch` or the dashboard button. Only new connections move. |
 | 🔌 **Multiple client ports** | One tunnel can carry several ports, e.g. `2053,2083,8443`. |
 | 🔒 **Safe by design** | Signed, SHA256-pinned releases. Each tunnel gets its own credentials and certificates. Firewall rules and services are tagged and owned, and nothing else on the server is touched. |
 | 🧹 **Clean uninstall** | `sudo pronet uninstall` removes only what Pronet created. |
@@ -103,6 +104,7 @@ curl -fsSL https://raw.githubusercontent.com/alirezaaabbasii/pronet-fleet/main/g
 | `sudo pronet pair [options]` | Iran | Create another tunnel (see options below) |
 | `sudo pronet logs ID` | both | Events and engine logs of one tunnel |
 | `sudo pronet dashboard [on\|off\|new-link]` | Iran | Web dashboard link |
+| `sudo pronet switch [ID] [CARRIER]` | Iran | Move new connections back to the main carrier (or to CARRIER); never automatic |
 | `sudo pronet notify [telegram\|test\|on\|off\|status]` | foreign | Telegram alerts |
 | `sudo pronet probe-interval [SECONDS]` | Iran | Seconds between health probes (default 60, 5–300) |
 | `sudo pronet failover-delay [SECONDS]` | Iran | Total primary outage before switching (default 120, 10–1800) |
@@ -153,6 +155,7 @@ Engines are unchanged upstream releases, pinned by SHA256 and run as separate sy
 | A standby keeps dropping | Marks it unstable and replaces it with the next carrier that passed setup (at most once per 30 min) |
 | Every path down for 5 min, both servers online | Re-tests carriers and installs the best ones; retries after 1 h, 2 h, 4 h, then every 6 h if nothing works |
 | One server off or unreachable for hours | Waits quietly (about one attempt a minute). When it returns, carriers get 3 minutes to reconnect on their own before any repair starts |
+| Primary healthy again after a failover | Stays on the standby (no automatic return). Return with `sudo pronet switch` or the dashboard button: only new connections move, and the switch doesn't count toward the budget |
 | More than 3 switches in 30 min | Pauses automatic switching for the rest of the window; probes continue |
 
 ## Telegram alerts (optional)
@@ -200,14 +203,14 @@ This removes Pronet's services, tagged firewall rules, nftables tables, state, c
 
 ## Offline install (GitHub blocked on a server)
 
-Copy `dist/pronet-fleet-0.3.10.zip` and `get.sh` to the server, then:
+Copy `dist/pronet-fleet-0.3.11.zip` and `get.sh` to the server, then:
 
 ```bash
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.10.zip bash get.sh                  # Iran
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.10.zip bash get.sh join PNF1-...    # foreign
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.11.zip bash get.sh                  # Iran
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.11.zip bash get.sh join PNF1-...    # foreign
 ```
 
-`get.sh` checks the ZIP's SHA256 before installing. You can also use a mirror with `PRONET_URL=https://…/pronet-fleet-0.3.10.zip`.
+`get.sh` checks the ZIP's SHA256 before installing. You can also use a mirror with `PRONET_URL=https://…/pronet-fleet-0.3.11.zip`.
 
 ## FAQ
 
@@ -236,6 +239,9 @@ Licenses, notices and the BackPack source are included in the release ZIP (`lice
 
 Release notes (Persian) are inside each release ZIP as `CHANGES-<version>.fa.md`.
 
+- **0.3.11**
+  - Manual return to the main carrier: `sudo pronet switch` and a dashboard button.
+  - Fix: a stale drain list could cut a healthy carrier on a later switch.
 - **0.3.10**
   - Long outages stay quiet: shared backoff to one attempt a minute, a single log line, restart backoff for engines, journald rate limits.
   - Lighter steady state: event-driven job waits, fewer controller passes, one `systemctl` call per heartbeat.
