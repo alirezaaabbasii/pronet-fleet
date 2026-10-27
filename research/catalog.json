@@ -1,0 +1,381 @@
+[
+  {
+    "repository": "AminMGMT/BackPack",
+    "url": "https://github.com/AminMGMT/BackPack",
+    "checked_utc": "2026-10-24T03:27:44.423285+00:00",
+    "archived": false,
+    "disabled": false,
+    "license": "AGPL-3.0",
+    "description": "BackPack is a high-performance tunnel engine for connecting Iran \u21c4 abroad (kharej) servers",
+    "default_branch": "main",
+    "latest_release": {
+      "tag_name": "v1.8.5",
+      "published_at": "2026-09-30T11:11:31Z",
+      "html_url": "https://github.com/AminMGMT/BackPack/releases/tag/v1.8.5",
+      "prerelease": false
+    },
+    "latest_commit": "2026-10-19T17:03:12Z",
+    "errors": {}
+  },
+  {
+    "repository": "Musixal/Backhaul",
+    "url": "https://github.com/Musixal/Backhaul",
+    "checked_utc": "2026-10-24T03:27:44.349201+00:00",
+    "archived": false,
+    "disabled": false,
+    "license": "AGPL-3.0",
+    "description": "Lightning-fast reverse tunneling solution for NAT traversal, optimized for handling massive concurrent connections with tcp, tcpmux, udp, udp over tcp, ws, wsmux, wss and wssmux support.",
+    "default_branch": "main",
+    "latest_release": {
+      "tag_name": "v0.7.2",
+      "published_at": "2025-09-04T18:39:55Z",
+      "html_url": "https://github.com/Musixal/Backhaul/releases/tag/v0.7.2",
+      "prerelease": false
+    },
+    "latest_commit": "2025-09-04T18:34:26Z",
+    "errors": {}
+  },
+  {
+    "repository": "radkesvat/WaterWall",
+    "url": "https://github.com/radkesvat/WaterWall",
+    "checked_utc": "2026-10-24T03:27:44.387613+00:00",
+    "archived": false,
+    "disabled": false,
+    "license": "MPL-2.0",
+    "description": "WaterWall is a networking-core that aims to be as flexible as possible",
+    "default_branch": "main",
+    "latest_release": {
+      "tag_name": "v1.5.0",
+      "published_at": "2026-10-23T22:23:31Z",
+      "html_url": "https://github.com/radkesvat/WaterWall/releases/tag/v1.5.0",
+      "prerelease": false
+    },
+    "latest_commit": "2026-10-23T21:28:59Z",
+    "errors": {}
+  },
+  {
+    "repository": "radkesvat/ReverseTlsTunnel",
+    "url": "https://github.com/radkesvat/ReverseTlsTunnel",
+    "checked_utc": "2026-10-24T03:27:44.261799+00:00",
+    "archived": true,
+    "disabled": false,
+    "license": "MIT",
+    "description": "Reverse Tcp Tunnel with custom sni handshake, mux support and more...",
+    "default_branch": "master",
+    "latest_release": {
+      "tag_name": "V7.1",
+      "published_at": "2023-12-22T20:10:25Z",
+      "html_url": "https://github.com/radkesvat/ReverseTlsTunnel/releases/tag/V7.1",
+      "prerelease": false
+    },
+    "latest_commit": "2024-05-24T20:38:02Z",
+    "errors": {}
+  },
+  {
+    "repository": "hanselime/paqet",
+    "url": "https://github.com/hanselime/paqet",
+    "checked_utc": "2026-10-24T03:27:44.380970+00:00",
+    "archived": false,
+    "disabled": false,
+    "license": "MIT",
+    "description": "Ferries Packets Across Forbidden Boundaries \ud83d\udc40",
+    "default_branch": "master",
+    "latest_release": {
+      "tag_name": "v1.0.0-alpha.21",
+      "published_at": "2026-08-22T12:23:49Z",
+      "html_url": "https://github.com/hanselime/paqet/releases/tag/v1.0.0-alpha.21",
+      "prerelease": false
+    },
+    "latest_commit": "2026-10-16T05:55:57Z",
+    "errors": {}
+  },
+  {
+    "repository": "rapiz1/rathole",
+    "url": "https://github.com/rapiz1/rathole",
+    "checked_utc": "2026-10-24T03:27:47.501129+00:00",
+    "archived": false,
+    "disabled": false,
+    "license": "Apache-2.0",
+    "description": "A lightweight and high-performance reverse proxy for NAT traversal, written in Rust. An alternative to frp and ngrok.",
+    "default_branch": "main",
+    "latest_release": {
+      "tag_name": "v0.5.0",
+      "published_at": "2023-10-01T10:14:10Z",
+      "html_url": "https://github.com/rathole-org/rathole/releases/tag/v0.5.0",
+      "prerelease": false
+    },
+    "latest_commit": "2026-08-23T15:38:43Z",
+    "errors": {}
+  },
+  {
+    "repository": "fatedier/frp",
+    "url": "https://github.com/fatedier/frp",
+    "checked_utc": "2026-10-24T03:27:46.064479+00:00",
+    "archived": false,
+    "disabled": false,
+    "license": "Apache-2.0",
+    "description": "A fast reverse proxy to help you expose a local server behind a NAT or firewall to the internet.",
+    "default_branch": "dev",
+    "latest_release": {
+      "tag_name": "v0.71.1",
+      "published_at": "2026-10-14T09:52:45Z",
+      "html_url": "https://github.com/fatedier/frp/releases/tag/v0.71.1",
+      "prerelease": false
+    },
+    "latest_commit": "2026-10-23T07:52:11Z",
+    "errors": {}
+  },
+  {
+    "repository": "go-gost/gost",
+    "url": "https://github.com/go-gost/gost",
+    "checked_utc": "2026-10-24T03:27:46.325837+00:00",
+    "archived": false,
+    "disabled": false,
+    "license": "MIT",
+    "description": "GO Simple Tunnel - a simple tunnel written in golang",
+    "default_branch": "master",
+    "latest_release": {
+      "tag_name": "v3.3.1",
+      "published_at": "2026-10-21T15:19:37Z",
+      "html_url": "https://github.com/go-gost/gost/releases/tag/v3.3.1",
+      "prerelease": false
+    },
+    "latest_commit": "2026-10-21T14:46:33Z",
+    "errors": {}
+  },
+  {
+    "repository": "jpillora/chisel",
+    "url": "https://github.com/jpillora/chisel",
+    "checked_utc": "2026-10-24T03:27:46.464320+00:00",
+    "archived": false,
+    "disabled": false,
+    "license": "MIT",
+    "description": "A fast TCP/UDP tunnel over HTTP",
+    "default_branch": "master",
+    "latest_release": {
+      "tag_name": "v1.12.0",
+      "published_at": "2026-08-29T13:30:36Z",
+      "html_url": "https://github.com/jpillora/chisel/releases/tag/v1.12.0",
+      "prerelease": false
+    },
+    "latest_commit": "2026-10-11T13:07:42Z",
+    "errors": {}
+  },
+  {
+    "repository": "xtaci/kcptun",
+    "url": "https://github.com/xtaci/kcptun",
+    "checked_utc": "2026-10-24T03:27:45.911213+00:00",
+    "archived": null,
+    "disabled": null,
+    "license": null,
+    "description": null,
+    "default_branch": null,
+    "latest_release": {
+      "tag_name": null,
+      "published_at": null,
+      "html_url": null,
+      "prerelease": null
+    },
+    "latest_commit": null,
+    "errors": {
+      "metadata": "HTTP Error 404: Not Found",
+      "release": "HTTP Error 404: Not Found",
+      "commits": "HTTP Error 404: Not Found"
+    }
+  },
+  {
+    "repository": "wangyu-/udp2raw",
+    "url": "https://github.com/wangyu-/udp2raw",
+    "checked_utc": "2026-10-24T03:27:47.599681+00:00",
+    "archived": false,
+    "disabled": false,
+    "license": "MIT",
+    "description": "A Tunnel which Turns UDP Traffic into Encrypted UDP/FakeTCP/ICMP Traffic by using Raw Socket,helps you Bypass UDP FireWalls(or Unstable UDP Environment)",
+    "default_branch": "unified",
+    "latest_release": {
+      "tag_name": "20230206.0",
+      "published_at": "2023-02-07T13:52:34Z",
+      "html_url": "https://github.com/wangyu-/udp2raw/releases/tag/20230206.0",
+      "prerelease": false
+    },
+    "latest_commit": "2025-10-12T07:14:28Z",
+    "errors": {}
+  },
+  {
+    "repository": "wangyu-/tinyfecVPN",
+    "url": "https://github.com/wangyu-/tinyfecVPN",
+    "checked_utc": "2026-10-24T03:27:47.739768+00:00",
+    "archived": false,
+    "disabled": false,
+    "license": "MIT",
+    "description": "A VPN Designed for Lossy Links, with Build-in Forward Error Correction(FEC) Support. Improves your Network Quality on a High-latency Lossy Link.",
+    "default_branch": "master",
+    "latest_release": {
+      "tag_name": "20230206.0",
+      "published_at": "2023-02-07T13:40:20Z",
+      "html_url": "https://github.com/wangyu-/tinyfecVPN/releases/tag/20230206.0",
+      "prerelease": false
+    },
+    "latest_commit": "2023-06-05T01:45:53Z",
+    "errors": {}
+  },
+  {
+    "repository": "erebe/wstunnel",
+    "url": "https://github.com/erebe/wstunnel",
+    "checked_utc": "2026-10-24T03:27:48.113199+00:00",
+    "archived": false,
+    "disabled": false,
+    "license": "BSD-3-Clause",
+    "description": "Tunnel all your traffic over Websocket or HTTP2 - Bypass firewalls/DPI - Static binary available ",
+    "default_branch": "main",
+    "latest_release": {
+      "tag_name": "v11.1.0",
+      "published_at": "2026-10-19T18:32:15Z",
+      "html_url": "https://github.com/erebe/wstunnel/releases/tag/v11.1.0",
+      "prerelease": false
+    },
+    "latest_commit": "2026-10-19T18:38:39Z",
+    "errors": {}
+  },
+  {
+    "repository": "XTLS/Xray-core",
+    "url": "https://github.com/XTLS/Xray-core",
+    "checked_utc": "2026-10-24T03:27:48.675046+00:00",
+    "archived": false,
+    "disabled": false,
+    "license": "MPL-2.0",
+    "description": "Xray, Penetrates Everything. Also the best v2ray-core. Where the magic happens. An open platform for various uses.",
+    "default_branch": "main",
+    "latest_release": {
+      "tag_name": "v26.10.21",
+      "published_at": "2026-10-21T12:07:11Z",
+      "html_url": "https://github.com/XTLS/Xray-core/releases/tag/v26.10.21",
+      "prerelease": false
+    },
+    "latest_commit": "2026-10-21T11:59:30Z",
+    "errors": {}
+  },
+  {
+    "repository": "SagerNet/sing-box",
+    "url": "https://github.com/SagerNet/sing-box",
+    "checked_utc": "2026-10-24T03:27:49.517066+00:00",
+    "archived": false,
+    "disabled": false,
+    "license": "NOASSERTION",
+    "description": "The universal proxy platform",
+    "default_branch": "testing",
+    "latest_release": {
+      "tag_name": "v1.14.4",
+      "published_at": "2026-10-24T01:04:25Z",
+      "html_url": "https://github.com/SagerNet/sing-box/releases/tag/v1.14.4",
+      "prerelease": false
+    },
+    "latest_commit": null,
+    "errors": {
+      "commits": "HTTP Error 403: rate limit exceeded"
+    }
+  },
+  {
+    "repository": "EndPositive/slipstream",
+    "url": "https://github.com/EndPositive/slipstream",
+    "checked_utc": "2026-10-24T03:27:49.198553+00:00",
+    "archived": false,
+    "disabled": false,
+    "license": "Apache-2.0",
+    "description": "High-performance multi-path covert channel over DNS",
+    "default_branch": "main",
+    "latest_release": {
+      "tag_name": "v0.1.1",
+      "published_at": "2026-04-12T09:38:47Z",
+      "html_url": "https://github.com/EndPositive/slipstream/releases/tag/v0.1.1",
+      "prerelease": false
+    },
+    "latest_commit": "2026-04-11T19:18:05Z",
+    "errors": {}
+  },
+  {
+    "repository": "net4people/bbs",
+    "url": "https://github.com/net4people/bbs",
+    "checked_utc": "2026-10-24T03:27:49.514964+00:00",
+    "archived": false,
+    "disabled": false,
+    "license": null,
+    "description": "Forum for discussing Internet censorship circumvention",
+    "default_branch": "master",
+    "latest_release": {
+      "tag_name": null,
+      "published_at": null,
+      "html_url": null,
+      "prerelease": null
+    },
+    "latest_commit": null,
+    "errors": {
+      "release": "HTTP Error 404: Not Found",
+      "commits": "HTTP Error 403: rate limit exceeded"
+    }
+  },
+  {
+    "repository": "yarrick/iodine",
+    "url": "https://github.com/yarrick/iodine",
+    "checked_utc": "2026-10-24T03:27:49.644697+00:00",
+    "archived": false,
+    "disabled": false,
+    "license": "ISC",
+    "description": "Official git repo for iodine dns tunnel",
+    "default_branch": "master",
+    "latest_release": {
+      "tag_name": null,
+      "published_at": null,
+      "html_url": null,
+      "prerelease": null
+    },
+    "latest_commit": null,
+    "errors": {
+      "release": "HTTP Error 404: Not Found",
+      "commits": "HTTP Error 403: rate limit exceeded"
+    }
+  },
+  {
+    "repository": "esrrhs/pingtunnel",
+    "url": "https://github.com/esrrhs/pingtunnel",
+    "checked_utc": "2026-10-24T03:27:49.989649+00:00",
+    "archived": false,
+    "disabled": false,
+    "license": "MIT",
+    "description": "Pingtunnel is a tool that send TCP/UDP traffic over ICMP",
+    "default_branch": "master",
+    "latest_release": {
+      "tag_name": null,
+      "published_at": null,
+      "html_url": null,
+      "prerelease": null
+    },
+    "latest_commit": null,
+    "errors": {
+      "release": "HTTP Error 403: rate limit exceeded",
+      "commits": "HTTP Error 403: rate limit exceeded"
+    }
+  },
+  {
+    "repository": "WireGuard/wireguard-tools",
+    "url": "https://github.com/WireGuard/wireguard-tools",
+    "checked_utc": "2026-10-24T03:27:50.319413+00:00",
+    "archived": null,
+    "disabled": null,
+    "license": null,
+    "description": null,
+    "default_branch": null,
+    "latest_release": {
+      "tag_name": null,
+      "published_at": null,
+      "html_url": null,
+      "prerelease": null
+    },
+    "latest_commit": null,
+    "errors": {
+      "metadata": "HTTP Error 403: rate limit exceeded",
+      "release": "HTTP Error 403: rate limit exceeded",
+      "commits": "HTTP Error 403: rate limit exceeded"
+    }
+  }
+]

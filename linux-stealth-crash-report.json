@@ -1,0 +1,168 @@
+{
+  "test_id": "b0b70ad5",
+  "isolated_namespaces": true,
+  "passed": true,
+  "base": "/var/tmp/pronet-fleet-test-zvbn4yus",
+  "setup": {
+    "active": "bp-stealth",
+    "endpoint": "198.18.0.1:2053",
+    "phase": "complete",
+    "results": [
+      {
+        "after_idle": true,
+        "download_mbps": 380.998,
+        "echo_ms": [
+          4.512,
+          5.001,
+          4.559,
+          4.416,
+          4.463
+        ],
+        "errors": [],
+        "half_close": true,
+        "integrity": true,
+        "passed": true,
+        "payload_bytes": 1048576,
+        "profile": "bp-stealth",
+        "seconds": 4.079,
+        "soak": {
+          "after_idle": true,
+          "download_mbps": 414.409,
+          "echo_ms": [
+            4.104,
+            4.288,
+            5.271,
+            4.706,
+            4.476,
+            4.792,
+            5.583,
+            4.35,
+            5.719,
+            4.568,
+            4.081,
+            5.425,
+            4.321,
+            4.782,
+            4.384
+          ],
+          "errors": [],
+          "half_close": true,
+          "integrity": true,
+          "observations": [
+            {
+              "after_idle": true,
+              "download_mbps": 414.409,
+              "echo_ms": [
+                4.104,
+                4.288,
+                5.271,
+                4.706,
+                4.476,
+                4.792,
+                5.583,
+                4.35,
+                5.719,
+                4.568,
+                4.081,
+                5.425,
+                4.321,
+                4.782,
+                4.384
+              ],
+              "errors": [],
+              "half_close": true,
+              "integrity": true,
+              "passed": true,
+              "payload_bytes": 4194304,
+              "profile": "bp-stealth",
+              "seconds": 13.246,
+              "stage": "soak",
+              "success_ratio": 1.0,
+              "upload_mbps": 445.353,
+              "utc": "2026-10-24T08:53:57Z"
+            }
+          ],
+          "passed": true,
+          "payload_bytes": 4194304,
+          "profile": "bp-stealth",
+          "qualification_runs": 1,
+          "seconds": 13.246,
+          "stage": "soak",
+          "success_ratio": 1.0,
+          "upload_mbps": 445.353,
+          "utc": "2026-10-24T08:53:57Z"
+        },
+        "stage": "screen",
+        "success_ratio": 1.0,
+        "upload_mbps": 357.894,
+        "utc": "2026-10-24T08:53:48Z"
+      }
+    ],
+    "selected": [
+      "bp-stealth"
+    ],
+    "warnings": [
+      "An authenticated WS/XHTTP client session through the public Iran address has not been tested automatically."
+    ]
+  },
+  "public_datapath": {
+    "passed": true,
+    "echo_ms": [
+      6.126,
+      5.13,
+      4.367
+    ],
+    "success_ratio": 1.0,
+    "upload_mbps": 185.407,
+    "download_mbps": 233.804,
+    "half_close": true,
+    "after_idle": true,
+    "integrity": true,
+    "utc": "2026-10-24T08:54:25Z",
+    "payload_bytes": 262144,
+    "errors": [],
+    "seconds": 1.146
+  },
+  "after_engine_crash": {
+    "passed": true,
+    "echo_ms": [
+      7.247,
+      4.403,
+      4.401
+    ],
+    "success_ratio": 1.0,
+    "upload_mbps": 241.973,
+    "download_mbps": 269.795,
+    "half_close": true,
+    "after_idle": true,
+    "integrity": true,
+    "utc": "2026-10-24T08:54:35Z",
+    "payload_bytes": 262144,
+    "errors": [],
+    "seconds": 1.143
+  },
+  "engine_recovery_seconds": 9.75,
+  "engine_recovery_attempts": 4,
+  "hub_independence": {
+    "passed": true,
+    "echo_ms": [
+      5.291,
+      4.333,
+      4.449
+    ],
+    "success_ratio": 1.0,
+    "upload_mbps": 224.092,
+    "download_mbps": 249.78,
+    "half_close": true,
+    "after_idle": true,
+    "integrity": true,
+    "utc": "2026-10-24T08:54:36Z",
+    "payload_bytes": 262144,
+    "errors": [],
+    "seconds": 1.144
+  },
+  "host_firewall_unchanged": true,
+  "host_routes_unchanged": true,
+  "host_forwarding_unchanged": true,
+  "cleanup_errors": []
+}

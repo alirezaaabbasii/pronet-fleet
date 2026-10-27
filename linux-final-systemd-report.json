@@ -1,0 +1,391 @@
+{
+  "test_id": "63d75126",
+  "isolated_namespaces": true,
+  "passed": true,
+  "base": "/var/tmp/pronet-fleet-test-lt_sjs2x",
+  "setup": {
+    "active": "frp-tls",
+    "endpoint": "198.18.0.1:2053",
+    "phase": "complete",
+    "results": [
+      {
+        "after_idle": true,
+        "download_mbps": 269.913,
+        "echo_ms": [
+          4.451,
+          4.653,
+          5.013,
+          5.227,
+          4.507
+        ],
+        "errors": [],
+        "half_close": true,
+        "integrity": true,
+        "passed": true,
+        "payload_bytes": 1048576,
+        "profile": "bp-stealth",
+        "seconds": 4.094,
+        "stage": "screen",
+        "success_ratio": 1.0,
+        "upload_mbps": 317.369,
+        "utc": "2026-10-24T08:46:04Z"
+      },
+      {
+        "after_idle": true,
+        "download_mbps": 249.688,
+        "echo_ms": [
+          1.082,
+          1.475,
+          1.597,
+          1.473,
+          1.519
+        ],
+        "errors": [],
+        "half_close": true,
+        "integrity": true,
+        "passed": true,
+        "payload_bytes": 1048576,
+        "profile": "bp-l3-pck",
+        "reverse_passed": true,
+        "seconds": 4.074,
+        "soak": {
+          "after_idle": true,
+          "download_mbps": 319.454,
+          "echo_ms": [
+            1.264,
+            1.941,
+            1.409,
+            1.498,
+            1.572,
+            1.598,
+            1.687,
+            1.506,
+            1.666,
+            1.501,
+            1.759,
+            1.454,
+            2.267,
+            2.457,
+            1.89
+          ],
+          "errors": [],
+          "half_close": true,
+          "integrity": true,
+          "observations": [
+            {
+              "after_idle": true,
+              "download_mbps": 319.454,
+              "echo_ms": [
+                1.264,
+                1.941,
+                1.409,
+                1.498,
+                1.572,
+                1.598,
+                1.687,
+                1.506,
+                1.666,
+                1.501,
+                1.759,
+                1.454,
+                2.267,
+                2.457,
+                1.89
+              ],
+              "errors": [],
+              "half_close": true,
+              "integrity": true,
+              "passed": true,
+              "payload_bytes": 4194304,
+              "profile": "bp-l3-pck",
+              "seconds": 13.235,
+              "stage": "soak",
+              "success_ratio": 1.0,
+              "upload_mbps": 373.52,
+              "utc": "2026-10-24T08:48:18Z"
+            }
+          ],
+          "passed": true,
+          "payload_bytes": 4194304,
+          "profile": "bp-l3-pck",
+          "qualification_runs": 1,
+          "seconds": 13.235,
+          "stage": "soak",
+          "success_ratio": 1.0,
+          "upload_mbps": 373.52,
+          "utc": "2026-10-24T08:48:18Z"
+        },
+        "stage": "screen",
+        "success_ratio": 1.0,
+        "upload_mbps": 324.017,
+        "utc": "2026-10-24T08:46:16Z"
+      },
+      {
+        "after_idle": true,
+        "download_mbps": 355.159,
+        "echo_ms": [
+          5.538,
+          4.197,
+          4.681,
+          4.064,
+          3.858
+        ],
+        "errors": [],
+        "half_close": true,
+        "integrity": true,
+        "passed": true,
+        "payload_bytes": 1048576,
+        "profile": "frp-tls",
+        "seconds": 4.086,
+        "soak": {
+          "after_idle": true,
+          "download_mbps": 438.924,
+          "echo_ms": [
+            4.018,
+            3.91,
+            4.389,
+            5.369,
+            4.349,
+            5.304,
+            4.453,
+            4.177,
+            4.212,
+            4.012,
+            4.985,
+            4.903,
+            4.335,
+            4.896,
+            4.786
+          ],
+          "errors": [],
+          "half_close": true,
+          "integrity": true,
+          "observations": [
+            {
+              "after_idle": true,
+              "download_mbps": 438.924,
+              "echo_ms": [
+                4.018,
+                3.91,
+                4.389,
+                5.369,
+                4.349,
+                5.304,
+                4.453,
+                4.177,
+                4.212,
+                4.012,
+                4.985,
+                4.903,
+                4.335,
+                4.896,
+                4.786
+              ],
+              "errors": [],
+              "half_close": true,
+              "integrity": true,
+              "passed": true,
+              "payload_bytes": 4194304,
+              "profile": "frp-tls",
+              "seconds": 13.246,
+              "stage": "soak",
+              "success_ratio": 1.0,
+              "upload_mbps": 412.211,
+              "utc": "2026-10-24T08:47:55Z"
+            }
+          ],
+          "passed": true,
+          "payload_bytes": 4194304,
+          "profile": "frp-tls",
+          "qualification_runs": 1,
+          "seconds": 13.246,
+          "stage": "soak",
+          "success_ratio": 1.0,
+          "upload_mbps": 412.211,
+          "utc": "2026-10-24T08:47:55Z"
+        },
+        "stage": "screen",
+        "success_ratio": 1.0,
+        "upload_mbps": 315.775,
+        "utc": "2026-10-24T08:46:38Z"
+      },
+      {
+        "after_idle": true,
+        "download_mbps": 143.364,
+        "echo_ms": [
+          4.759,
+          4.17,
+          4.779,
+          5.541,
+          4.367
+        ],
+        "errors": [],
+        "half_close": true,
+        "integrity": true,
+        "passed": true,
+        "payload_bytes": 1048576,
+        "profile": "chisel",
+        "seconds": 4.158,
+        "stage": "screen",
+        "success_ratio": 1.0,
+        "upload_mbps": 131.273,
+        "utc": "2026-10-24T08:46:54Z"
+      },
+      {
+        "after_idle": true,
+        "download_mbps": 79.098,
+        "echo_ms": [
+          44.662,
+          3.919,
+          45.185,
+          45.728,
+          44.777
+        ],
+        "errors": [],
+        "half_close": true,
+        "integrity": true,
+        "passed": true,
+        "payload_bytes": 1048576,
+        "profile": "rathole-noise",
+        "seconds": 4.442,
+        "stage": "screen",
+        "success_ratio": 1.0,
+        "upload_mbps": 83.362,
+        "utc": "2026-10-24T08:47:09Z"
+      },
+      {
+        "after_idle": true,
+        "download_mbps": 259.376,
+        "echo_ms": [
+          5.019,
+          6.09,
+          4.75,
+          5.559,
+          5.397
+        ],
+        "errors": [],
+        "half_close": true,
+        "integrity": true,
+        "passed": true,
+        "payload_bytes": 1048576,
+        "profile": "wstunnel-wss",
+        "seconds": 4.105,
+        "stage": "screen",
+        "success_ratio": 1.0,
+        "upload_mbps": 234.27,
+        "utc": "2026-10-24T08:47:25Z"
+      },
+      {
+        "after_idle": true,
+        "download_mbps": 229.589,
+        "echo_ms": [
+          6.152,
+          5.218,
+          4.826,
+          5.835,
+          5.329
+        ],
+        "errors": [],
+        "half_close": true,
+        "integrity": true,
+        "passed": true,
+        "payload_bytes": 1048576,
+        "profile": "wstunnel-h2",
+        "seconds": 4.121,
+        "stage": "screen",
+        "success_ratio": 1.0,
+        "upload_mbps": 196.413,
+        "utc": "2026-10-24T08:47:41Z"
+      }
+    ],
+    "selected": [
+      "frp-tls",
+      "bp-l3-pck"
+    ],
+    "warnings": [
+      "An authenticated WS/XHTTP client session through the public Iran address has not been tested automatically."
+    ]
+  },
+  "public_datapath": {
+    "passed": true,
+    "echo_ms": [
+      4.963,
+      6.333,
+      5.778
+    ],
+    "success_ratio": 1.0,
+    "upload_mbps": 226.304,
+    "download_mbps": 204.747,
+    "half_close": true,
+    "after_idle": true,
+    "integrity": true,
+    "utc": "2026-10-24T08:48:50Z",
+    "payload_bytes": 262144,
+    "errors": [],
+    "seconds": 1.148
+  },
+  "after_engine_crash": {
+    "passed": true,
+    "echo_ms": [
+      4.679,
+      5.507,
+      4.43
+    ],
+    "success_ratio": 1.0,
+    "upload_mbps": 147.339,
+    "download_mbps": 180.573,
+    "half_close": true,
+    "after_idle": true,
+    "integrity": true,
+    "utc": "2026-10-24T08:49:00Z",
+    "payload_bytes": 262144,
+    "errors": [],
+    "seconds": 1.152
+  },
+  "engine_recovery_seconds": 9.65,
+  "engine_recovery_attempts": 4,
+  "failover": {
+    "active": "bp-l3-pck",
+    "passed": true
+  },
+  "after_failover": {
+    "passed": true,
+    "echo_ms": [
+      2.849,
+      2.309,
+      2.49
+    ],
+    "success_ratio": 1.0,
+    "upload_mbps": 205.588,
+    "download_mbps": 162.707,
+    "half_close": true,
+    "after_idle": true,
+    "integrity": true,
+    "utc": "2026-10-24T08:49:25Z",
+    "payload_bytes": 262144,
+    "errors": [],
+    "seconds": 1.139
+  },
+  "hub_independence": {
+    "passed": true,
+    "echo_ms": [
+      3.245,
+      2.396,
+      2.399
+    ],
+    "success_ratio": 1.0,
+    "upload_mbps": 210.888,
+    "download_mbps": 150.124,
+    "half_close": true,
+    "after_idle": true,
+    "integrity": true,
+    "utc": "2026-10-24T08:49:27Z",
+    "payload_bytes": 262144,
+    "errors": [],
+    "seconds": 1.139
+  },
+  "host_firewall_unchanged": true,
+  "host_routes_unchanged": true,
+  "host_forwarding_unchanged": true,
+  "cleanup_errors": []
+}

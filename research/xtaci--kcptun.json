@@ -1,0 +1,30 @@
+{
+  "summary": {
+    "repository": "xtaci/kcptun",
+    "url": "https://github.com/xtaci/kcptun",
+    "checked_utc": "2026-10-24T03:27:45.911213+00:00",
+    "archived": null,
+    "disabled": null,
+    "license": null,
+    "description": null,
+    "default_branch": null,
+    "latest_release": {
+      "tag_name": null,
+      "published_at": null,
+      "html_url": null,
+      "prerelease": null
+    },
+    "latest_commit": null,
+    "errors": {
+      "metadata": "HTTP Error 404: Not Found",
+      "release": "HTTP Error 404: Not Found",
+      "commits": "HTTP Error 404: Not Found"
+    }
+  },
+  "metadata": {
+    "error": "HTTP Error 404: Not Found"
+  },
+  "release": {
+    "error": "HTTP Error 404: Not Found"
+  }
+}

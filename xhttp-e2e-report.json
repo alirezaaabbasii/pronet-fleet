@@ -1,0 +1,1 @@
+{"mode": "xhttp", "gateway": "79.143.87.142:2053", "passed": true, "tls_verification": "private-ca-and-server-name", "client": "Xray v26.10.21", "stage": "complete", "upload_integrity": true, "download_integrity": true, "concurrent_requests": 12, "idle_seconds": 45, "after_idle": true, "seconds": 50.57}

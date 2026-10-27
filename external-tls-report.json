@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "origin": "external macOS client",
+  "endpoint": "79.143.87.142:2053",
+  "tls": "TLSv1.3",
+  "certificate_verified": true,
+  "sni": "pronet-e2e.invalid",
+  "handshake_seconds": 0.28,
+  "wrong_sni_rejected": true
+}

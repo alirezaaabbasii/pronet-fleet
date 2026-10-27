@@ -1,0 +1,59 @@
+{
+  "version": "0.3.6",
+  "status": "deployed; bounded WAN observation completed without gateway OOM or restart",
+  "upstream_commit": "d52f6512b990539ecfe4a99ca3d503bd97b636b8",
+  "upstream_zip_sha256": "bd01182c7f044591cf020baaa09fdc68784f8f7a1d53285b60fc4e614d599da6",
+  "local_tests": {
+    "count": 137,
+    "result": "PASS",
+    "seconds": 42.164,
+    "platform": "Darwin",
+    "python": "3.12.10"
+  },
+  "vendor_files_unchanged": 10,
+  "linux_systemd_validation": "management 0.3.6 active on both nodes; Iran gateway and foreign framed helpers explicitly restarted; vendor engines kept running",
+  "iran_us_wan_validation": {
+    "scope": "Verified TLS 1.3 handshake through public Iran TCP/2053 to existing foreign inbound, with strict certificate verification; actual authenticated proxy session not tested automatically",
+    "samples": 40,
+    "duration_seconds": 585,
+    "tls_pass": 40,
+    "tls_fail": 0,
+    "gateway_pid_changes": 0,
+    "gateway_restarts": 0,
+    "gateway_memory_current_mib_range": [
+      19.1,
+      32.2
+    ],
+    "gateway_cpu_one_core_percent_average": 19.82,
+    "forwarded_rx_mib": 47.86,
+    "forwarded_tx_mib": 220.1,
+    "individual_stream_error_counter_delta": 222,
+    "individual_stream_error_note": "Counter includes exceptions/abnormal termination across all sessions; causes not classified. Passing TLS checks does not prove every client stream succeeded.",
+    "active_profile": "bp-stealth",
+    "standby_profile": "frp-tls",
+    "recovery_policy": "stable",
+    "long_term_stability": "not established by this short observation"
+  },
+  "server_changes_at_build": true,
+  "linux_unit_tests": {
+    "count": 137,
+    "result": "PASS",
+    "seconds": 54.339,
+    "isolated_state": true,
+    "memory_regressions": 2,
+    "timeout_origin_regressions": 5,
+    "python": "3.12.3"
+  },
+  "previous_candidate_0.3.5": "unit tests passed but live OOM recurred; not a successful live fix",
+  "publication": {
+    "repository": "https://github.com/alirezaaabbasii/pronet-fleet",
+    "state_at_build": "prepared for publication; repository commit records final publication"
+  },
+  "pronet_code_set_sha256": "12a31b5bd72d3650cb561de6aaafca47f951077f7031e5f497f7e8ac067aefb8",
+  "timeout_stress_local": {
+    "failed_stream_reads": 10000,
+    "seconds": 0.179,
+    "tracemalloc_peak_mib": 0.143,
+    "loop_returned": true
+  }
+}

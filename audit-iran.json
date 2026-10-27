@@ -1,0 +1,106 @@
+{
+  "utc": "2026-10-24T09:28:58Z",
+  "role": "iran",
+  "ip": "79.143.87.142",
+  "version": "0.2.3",
+  "pair_id": "cae4bdcd2b0891b683bf5f9e",
+  "active": "bp-l3-pck",
+  "profiles": [
+    {
+      "profile": "bp-l3-pck",
+      "control_port": 8443,
+      "subnet": "10.244.59.136/30",
+      "direction": "iran-dials",
+      "probe_ok": true,
+      "probe_ms": 218.28
+    },
+    {
+      "profile": "bp-l3-udp-reverse",
+      "control_port": 29511,
+      "subnet": "10.244.106.64/30",
+      "direction": "foreign-dials",
+      "probe_ok": true,
+      "probe_ms": 224.88
+    }
+  ],
+  "units": [
+    {
+      "unit": "pronetf-agent.service",
+      "MemoryCurrent": "20414464",
+      "TasksCurrent": "3",
+      "ActiveState": "active",
+      "UnitFileState": "enabled"
+    },
+    {
+      "unit": "pronetf-counters.service",
+      "MemoryCurrent": "[not set]",
+      "TasksCurrent": "[not set]",
+      "ActiveState": "active",
+      "UnitFileState": "enabled"
+    },
+    {
+      "unit": "pronetf-hub.service",
+      "MemoryCurrent": "19492864",
+      "TasksCurrent": "2",
+      "ActiveState": "active",
+      "UnitFileState": "enabled"
+    },
+    {
+      "unit": "pronetf-cae4bdcd2b0891b683bf5f9e-gateway.service",
+      "MemoryCurrent": "15826944",
+      "TasksCurrent": "1",
+      "ActiveState": "active",
+      "UnitFileState": "enabled"
+    },
+    {
+      "unit": "pronetf-cae4bdcd2b0891b683bf5f9e-iran-0-engine.service",
+      "MemoryCurrent": "6356992",
+      "TasksCurrent": "9",
+      "ActiveState": "active",
+      "UnitFileState": "enabled"
+    },
+    {
+      "unit": "pronetf-cae4bdcd2b0891b683bf5f9e-iran-0-echo.service",
+      "MemoryCurrent": "14340096",
+      "TasksCurrent": "3",
+      "ActiveState": "active",
+      "UnitFileState": "enabled"
+    },
+    {
+      "unit": "pronetf-cae4bdcd2b0891b683bf5f9e-iran-13-engine.service",
+      "MemoryCurrent": "6082560",
+      "TasksCurrent": "9",
+      "ActiveState": "active",
+      "UnitFileState": "enabled"
+    },
+    {
+      "unit": "pronetf-cae4bdcd2b0891b683bf5f9e-iran-13-echo.service",
+      "MemoryCurrent": "14340096",
+      "TasksCurrent": "3",
+      "ActiveState": "active",
+      "UnitFileState": "enabled"
+    }
+  ],
+  "default_routes": [
+    {
+      "dst": "default",
+      "gateway": "79.143.87.1",
+      "dev": "eth0",
+      "protocol": "static",
+      "flags": []
+    }
+  ],
+  "ssh_active": true,
+  "test_namespaces": [],
+  "gateway_open": true,
+  "selected_units_memory_bytes": 96854016,
+  "passed": true,
+  "standby_health": {
+    "bp-l3-udp-reverse": {
+      "utc": "2026-10-24T09:28:48Z",
+      "state": "OK",
+      "failures": 0,
+      "rtt_ms": 224.76
+    }
+  }
+}

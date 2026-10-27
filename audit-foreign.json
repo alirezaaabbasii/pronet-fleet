@@ -1,0 +1,91 @@
+{
+  "utc": "2026-10-24T09:29:35Z",
+  "role": "foreign",
+  "ip": "82.115.8.74",
+  "version": "0.2.3",
+  "pair_id": "cae4bdcd2b0891b683bf5f9e",
+  "active": "bp-l3-pck",
+  "profiles": [
+    {
+      "profile": "bp-l3-pck",
+      "control_port": 8443,
+      "subnet": "10.244.59.136/30",
+      "direction": "iran-dials",
+      "test_quality": "thorough",
+      "family": "raw-tcp",
+      "probe_ok": true,
+      "probe_ms": 217.58
+    },
+    {
+      "profile": "bp-l3-udp-reverse",
+      "control_port": 29511,
+      "subnet": "10.244.106.64/30",
+      "direction": "foreign-dials",
+      "test_quality": "thorough",
+      "family": "udp",
+      "probe_ok": true,
+      "probe_ms": 229.29
+    }
+  ],
+  "units": [
+    {
+      "unit": "pronetf-agent.service",
+      "MemoryCurrent": "21823488",
+      "TasksCurrent": "3",
+      "ActiveState": "active",
+      "UnitFileState": "enabled"
+    },
+    {
+      "unit": "pronetf-counters.service",
+      "MemoryCurrent": "[not set]",
+      "TasksCurrent": "[not set]",
+      "ActiveState": "active",
+      "UnitFileState": "enabled"
+    },
+    {
+      "unit": "pronetf-cae4bdcd2b0891b683bf5f9e-foreign-0-engine.service",
+      "MemoryCurrent": "6623232",
+      "TasksCurrent": "8",
+      "ActiveState": "active",
+      "UnitFileState": "enabled"
+    },
+    {
+      "unit": "pronetf-cae4bdcd2b0891b683bf5f9e-foreign-0-echo.service",
+      "MemoryCurrent": "15458304",
+      "TasksCurrent": "3",
+      "ActiveState": "active",
+      "UnitFileState": "enabled"
+    },
+    {
+      "unit": "pronetf-cae4bdcd2b0891b683bf5f9e-foreign-13-engine.service",
+      "MemoryCurrent": "4956160",
+      "TasksCurrent": "8",
+      "ActiveState": "active",
+      "UnitFileState": "enabled"
+    },
+    {
+      "unit": "pronetf-cae4bdcd2b0891b683bf5f9e-foreign-13-echo.service",
+      "MemoryCurrent": "14372864",
+      "TasksCurrent": "3",
+      "ActiveState": "active",
+      "UnitFileState": "enabled"
+    }
+  ],
+  "default_routes": [
+    {
+      "dst": "default",
+      "gateway": "82.115.8.254",
+      "dev": "eth0",
+      "protocol": "static",
+      "flags": []
+    }
+  ],
+  "ssh_active": true,
+  "test_namespaces": [],
+  "selected_units_memory_bytes": 63234048,
+  "passed": true,
+  "standby_health": {},
+  "nginx_active": true,
+  "docker_active": true,
+  "inbound_after_fixture_removal": "refused"
+}

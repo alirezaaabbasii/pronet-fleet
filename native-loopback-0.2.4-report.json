@@ -1,0 +1,227 @@
+[
+  {
+    "profile": "frp-tls",
+    "passed": true,
+    "health": {
+      "passed": true,
+      "echo_ms": [
+        3.656,
+        4.729,
+        4.115,
+        3.491
+      ],
+      "success_ratio": 1.0,
+      "upload_mbps": 305.908,
+      "download_mbps": 455.178,
+      "half_close": true,
+      "after_idle": true,
+      "integrity": true,
+      "utc": "2026-10-24T23:10:41Z",
+      "payload_bytes": 262144,
+      "errors": [],
+      "seconds": 1.336
+    },
+    "data_path": {
+      "passed": true,
+      "echo_ms": [
+        3.685,
+        4.074,
+        3.611
+      ],
+      "success_ratio": 1.0,
+      "upload_mbps": 318.462,
+      "download_mbps": 265.914,
+      "half_close": true,
+      "after_idle": true,
+      "integrity": true,
+      "utc": "2026-10-24T23:10:42Z",
+      "payload_bytes": 262144,
+      "errors": [],
+      "seconds": 0.835
+    },
+    "client_restart": true,
+    "wrong_server_identity_rejected": true,
+    "concurrent_echoes": 32,
+    "workers": 8
+  },
+  {
+    "profile": "frp-quic",
+    "passed": true,
+    "health": {
+      "passed": true,
+      "echo_ms": [
+        3.628,
+        4.696,
+        3.399,
+        3.817
+      ],
+      "success_ratio": 1.0,
+      "upload_mbps": 308.914,
+      "download_mbps": 333.128,
+      "half_close": true,
+      "after_idle": true,
+      "integrity": true,
+      "utc": "2026-10-24T23:10:46Z",
+      "payload_bytes": 262144,
+      "errors": [],
+      "seconds": 1.346
+    },
+    "data_path": {
+      "passed": true,
+      "echo_ms": [
+        6.14,
+        5.993,
+        3.861
+      ],
+      "success_ratio": 1.0,
+      "upload_mbps": 289.752,
+      "download_mbps": 259.352,
+      "half_close": true,
+      "after_idle": true,
+      "integrity": true,
+      "utc": "2026-10-24T23:10:48Z",
+      "payload_bytes": 262144,
+      "errors": [],
+      "seconds": 0.84
+    },
+    "client_restart": true,
+    "wrong_server_identity_rejected": true,
+    "concurrent_echoes": 32,
+    "workers": 8
+  },
+  {
+    "profile": "rathole-noise",
+    "passed": true,
+    "health": {
+      "passed": true,
+      "echo_ms": [
+        45.268,
+        44.575,
+        46.534,
+        43.668
+      ],
+      "success_ratio": 1.0,
+      "upload_mbps": 23.306,
+      "download_mbps": 24.067,
+      "half_close": true,
+      "after_idle": true,
+      "integrity": true,
+      "utc": "2026-10-24T23:10:52Z",
+      "payload_bytes": 262144,
+      "errors": [],
+      "seconds": 1.706
+    },
+    "data_path": {
+      "passed": true,
+      "echo_ms": [
+        51.501,
+        46.794,
+        6.024
+      ],
+      "success_ratio": 1.0,
+      "upload_mbps": 43.423,
+      "download_mbps": 45.975,
+      "half_close": true,
+      "after_idle": true,
+      "integrity": true,
+      "utc": "2026-10-24T23:10:54Z",
+      "payload_bytes": 262144,
+      "errors": [],
+      "seconds": 1.052
+    },
+    "client_restart": true,
+    "wrong_server_identity_rejected": true,
+    "concurrent_echoes": 32,
+    "workers": 8
+  },
+  {
+    "profile": "wstunnel-wss",
+    "passed": true,
+    "health": {
+      "passed": true,
+      "echo_ms": [
+        3.06,
+        4.088,
+        3.325,
+        3.244
+      ],
+      "success_ratio": 1.0,
+      "upload_mbps": 525.617,
+      "download_mbps": 560.93,
+      "half_close": true,
+      "after_idle": true,
+      "integrity": true,
+      "utc": "2026-10-24T23:10:59Z",
+      "payload_bytes": 262144,
+      "errors": [],
+      "seconds": 1.329
+    },
+    "data_path": {
+      "passed": true,
+      "echo_ms": [
+        4.272,
+        3.531,
+        3.262
+      ],
+      "success_ratio": 1.0,
+      "upload_mbps": 398.683,
+      "download_mbps": 513.343,
+      "half_close": true,
+      "after_idle": true,
+      "integrity": true,
+      "utc": "2026-10-24T23:11:00Z",
+      "payload_bytes": 262144,
+      "errors": [],
+      "seconds": 0.827
+    },
+    "client_restart": true,
+    "wrong_server_identity_rejected": true,
+    "concurrent_echoes": 32,
+    "workers": 8
+  },
+  {
+    "profile": "wstunnel-h2",
+    "passed": true,
+    "health": {
+      "passed": true,
+      "echo_ms": [
+        2.983,
+        3.185,
+        3.025,
+        2.957
+      ],
+      "success_ratio": 1.0,
+      "upload_mbps": 401.81,
+      "download_mbps": 432.305,
+      "half_close": true,
+      "after_idle": true,
+      "integrity": true,
+      "utc": "2026-10-24T23:11:06Z",
+      "payload_bytes": 262144,
+      "errors": [],
+      "seconds": 1.332
+    },
+    "data_path": {
+      "passed": true,
+      "echo_ms": [
+        3.76,
+        3.263,
+        3.225
+      ],
+      "success_ratio": 1.0,
+      "upload_mbps": 367.486,
+      "download_mbps": 364.223,
+      "half_close": true,
+      "after_idle": true,
+      "integrity": true,
+      "utc": "2026-10-24T23:11:07Z",
+      "payload_bytes": 262144,
+      "errors": [],
+      "seconds": 0.832
+    },
+    "client_restart": true,
+    "wrong_server_identity_rejected": true,
+    "concurrent_echoes": 32,
+    "workers": 8
+  }
+]

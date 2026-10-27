@@ -1,0 +1,117 @@
+{
+  "version": "0.2.3",
+  "date": "2026-10-24",
+  "status": "tested-release",
+  "scope": "two explicitly authorized Ubuntu 24.04 amd64 test VPSs",
+  "production_servers_modified": false,
+  "unit_tests": {
+    "passed": 57,
+    "report": "unit-test-report.txt"
+  },
+  "native_profiles": {
+    "macOS_arm64": {
+      "passed": 3,
+      "report": "native-test-report.json"
+    },
+    "Linux_amd64": {
+      "passed": 6,
+      "report": "native-linux-report.json"
+    },
+    "Linux_arm64": "NOT RUN"
+  },
+  "linux_systemd_integration": {
+    "initial_eight_profiles": "linux-systemd-report.json",
+    "final_seven_profiles": "linux-final-systemd-report.json",
+    "standalone_stealth_recovery": "linux-stealth-crash-report.json",
+    "initial_failure_preserved": "linux-crash-timing-initial-report.json",
+    "passed": true,
+    "full_host_reboot": "NOT RUN"
+  },
+  "real_wan": {
+    "iran": "79.143.87.142",
+    "foreign": "82.115.8.74",
+    "screened": 21,
+    "passed": 17,
+    "primary": "bp-l3-pck",
+    "warm_standby": "bp-l3-udp-reverse",
+    "qualification_runs_each": 3,
+    "echo_samples_each": 45,
+    "report": "wan-final-report.json",
+    "failed": [
+      "bp-l3-quic",
+      "bp-quic",
+      "frp-quic",
+      "bp-l3-quic-reverse"
+    ],
+    "failure_cause": "not established"
+  },
+  "application": {
+    "WS_TLS": "ws-e2e-report.json",
+    "XHTTP_TLS": "xhttp-e2e-report.json",
+    "both_passed": true,
+    "fixture": "official Xray-core 26.10.21; disposable VLESS credentials and private test CA",
+    "origin": "Iran test server through public Iran IP:2053 to foreign test inbound",
+    "external_mac": "TLS handshake and wrong-SNI rejection only; external-tls-report.json",
+    "actual_PasarGuard_account": "NOT TESTED"
+  },
+  "fault_injection": {
+    "passed": true,
+    "scenarios": [
+      "primary SIGKILL recovery",
+      "data with hub stopped",
+      "primary stop and warm-standby failover"
+    ],
+    "observed_wan_failover_seconds": 48.0,
+    "report": "wan-faults-report.json"
+  },
+  "monitoring": {
+    "passed": true,
+    "real_IP_counters_both_nodes": true,
+    "report": "monitor-report.json"
+  },
+  "final_audits": {
+    "iran": "audit-iran.json",
+    "foreign": "audit-foreign.json",
+    "both_passed": true,
+    "owned_units_enabled_and_active": true,
+    "both_carriers_probe_healthy": true,
+    "temporary_foreign_inbound_removed": true,
+    "foreign_inbound_2053": "free; real panel must bind TCP 0.0.0.0:2053",
+    "current_primary": "bp-l3-pck"
+  },
+  "vendor_assets": {
+    "engines": 5,
+    "Linux_architectures": [
+      "amd64",
+      "arm64"
+    ],
+    "all_archive_hashes_verified": true,
+    "execution_on_Linux_arm64": false
+  },
+  "not_run": [
+    "multi-day WAN soak",
+    "multiple Iranian consumer ISPs",
+    "full-host reboot",
+    "large concurrent-user capacity benchmark"
+  ],
+  "limits": [
+    "TCP client forwarding only",
+    "one inbound per pair",
+    "one foreign identity per live pair",
+    "many foreign nodes require different Iran IP:port endpoints",
+    "no universal filtering bypass guarantee",
+    "one-year certificates; no automated renewal",
+    "no signed release attestation"
+  ],
+  "previous_application_and_fault_suite_version": "0.2.2; carrier binaries and configs unchanged",
+  "standby_watchdog": {
+    "behavior": "real HMAC standby probe each ~15-second cycle; separate health display; no switch/restart of healthy primary due to failed standby",
+    "regression_tests_passed": 3,
+    "observation_report": "standby-watch-report.json",
+    "previous_single_probe_failure": "preserved in FINAL-REPORT.fa.md; exact network cause not established",
+    "observation_passed": true,
+    "observation_seconds": 375.53,
+    "healthy_samples": 26,
+    "dashboard_standby_visible": true
+  }
+}

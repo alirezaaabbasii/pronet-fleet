@@ -1,0 +1,30 @@
+{
+  "summary": {
+    "repository": "WireGuard/wireguard-tools",
+    "url": "https://github.com/WireGuard/wireguard-tools",
+    "checked_utc": "2026-10-24T03:27:50.319413+00:00",
+    "archived": null,
+    "disabled": null,
+    "license": null,
+    "description": null,
+    "default_branch": null,
+    "latest_release": {
+      "tag_name": null,
+      "published_at": null,
+      "html_url": null,
+      "prerelease": null
+    },
+    "latest_commit": null,
+    "errors": {
+      "metadata": "HTTP Error 403: rate limit exceeded",
+      "release": "HTTP Error 403: rate limit exceeded",
+      "commits": "HTTP Error 403: rate limit exceeded"
+    }
+  },
+  "metadata": {
+    "error": "HTTP Error 403: rate limit exceeded"
+  },
+  "release": {
+    "error": "HTTP Error 403: rate limit exceeded"
+  }
+}

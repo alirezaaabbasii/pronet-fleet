@@ -1,0 +1,272 @@
+[
+  {
+    "profile": "frp-tls",
+    "passed": true,
+    "health": {
+      "passed": true,
+      "echo_ms": [
+        3.871,
+        4.306,
+        17.445,
+        9.733
+      ],
+      "success_ratio": 1.0,
+      "upload_mbps": 52.325,
+      "download_mbps": 60.356,
+      "half_close": true,
+      "after_idle": true,
+      "integrity": true,
+      "utc": "2026-10-24T07:31:00Z",
+      "payload_bytes": 262144,
+      "errors": [],
+      "seconds": 1.446
+    },
+    "data_path": {
+      "passed": true,
+      "echo_ms": [
+        3.891,
+        3.426,
+        3.182
+      ],
+      "success_ratio": 1.0,
+      "upload_mbps": 251.03,
+      "download_mbps": 278.044,
+      "half_close": true,
+      "after_idle": true,
+      "integrity": true,
+      "utc": "2026-10-24T07:31:02Z",
+      "payload_bytes": 262144,
+      "errors": [],
+      "seconds": 0.835
+    },
+    "client_restart": true,
+    "wrong_server_identity_rejected": true,
+    "concurrent_echoes": 32,
+    "workers": 8
+  },
+  {
+    "profile": "frp-quic",
+    "passed": true,
+    "health": {
+      "passed": true,
+      "echo_ms": [
+        4.372,
+        5.767,
+        3.968,
+        3.622
+      ],
+      "success_ratio": 1.0,
+      "upload_mbps": 234.695,
+      "download_mbps": 259.561,
+      "half_close": true,
+      "after_idle": true,
+      "integrity": true,
+      "utc": "2026-10-24T07:31:05Z",
+      "payload_bytes": 262144,
+      "errors": [],
+      "seconds": 1.343
+    },
+    "data_path": {
+      "passed": true,
+      "echo_ms": [
+        4.658,
+        4.75,
+        3.826
+      ],
+      "success_ratio": 1.0,
+      "upload_mbps": 181.887,
+      "download_mbps": 222.245,
+      "half_close": true,
+      "after_idle": true,
+      "integrity": true,
+      "utc": "2026-10-24T07:31:07Z",
+      "payload_bytes": 262144,
+      "errors": [],
+      "seconds": 0.845
+    },
+    "client_restart": true,
+    "wrong_server_identity_rejected": true,
+    "concurrent_echoes": 32,
+    "workers": 8
+  },
+  {
+    "profile": "chisel",
+    "passed": true,
+    "health": {
+      "passed": true,
+      "echo_ms": [
+        2.916,
+        3.678,
+        4.125,
+        3.374
+      ],
+      "success_ratio": 1.0,
+      "upload_mbps": 131.041,
+      "download_mbps": 117.117,
+      "half_close": true,
+      "after_idle": true,
+      "integrity": true,
+      "utc": "2026-10-24T07:31:12Z",
+      "payload_bytes": 262144,
+      "errors": [],
+      "seconds": 1.357
+    },
+    "data_path": {
+      "passed": true,
+      "echo_ms": [
+        4.833,
+        3.582,
+        3.907
+      ],
+      "success_ratio": 1.0,
+      "upload_mbps": 123.338,
+      "download_mbps": 125.372,
+      "half_close": true,
+      "after_idle": true,
+      "integrity": true,
+      "utc": "2026-10-24T07:31:14Z",
+      "payload_bytes": 262144,
+      "errors": [],
+      "seconds": 0.856
+    },
+    "client_restart": true,
+    "wrong_server_identity_rejected": true,
+    "concurrent_echoes": 32,
+    "workers": 8
+  },
+  {
+    "profile": "rathole-noise",
+    "passed": true,
+    "health": {
+      "passed": true,
+      "echo_ms": [
+        44.667,
+        44.38,
+        44.184,
+        43.402
+      ],
+      "success_ratio": 1.0,
+      "upload_mbps": 23.846,
+      "download_mbps": 23.859,
+      "half_close": true,
+      "after_idle": true,
+      "integrity": true,
+      "utc": "2026-10-24T07:31:18Z",
+      "payload_bytes": 262144,
+      "errors": [],
+      "seconds": 1.703
+    },
+    "data_path": {
+      "passed": true,
+      "echo_ms": [
+        43.89,
+        44.021,
+        45.39
+      ],
+      "success_ratio": 1.0,
+      "upload_mbps": 23.035,
+      "download_mbps": 44.003,
+      "half_close": true,
+      "after_idle": true,
+      "integrity": true,
+      "utc": "2026-10-24T07:31:19Z",
+      "payload_bytes": 262144,
+      "errors": [],
+      "seconds": 1.122
+    },
+    "client_restart": true,
+    "wrong_server_identity_rejected": true,
+    "concurrent_echoes": 32,
+    "workers": 8
+  },
+  {
+    "profile": "wstunnel-wss",
+    "passed": true,
+    "health": {
+      "passed": true,
+      "echo_ms": [
+        3.87,
+        3.672,
+        4.016,
+        3.844
+      ],
+      "success_ratio": 1.0,
+      "upload_mbps": 154.689,
+      "download_mbps": 234.865,
+      "half_close": true,
+      "after_idle": true,
+      "integrity": true,
+      "utc": "2026-10-24T07:31:24Z",
+      "payload_bytes": 262144,
+      "errors": [],
+      "seconds": 1.348
+    },
+    "data_path": {
+      "passed": true,
+      "echo_ms": [
+        4.95,
+        5.963,
+        10.909
+      ],
+      "success_ratio": 1.0,
+      "upload_mbps": 60.985,
+      "download_mbps": 52.313,
+      "half_close": true,
+      "after_idle": true,
+      "integrity": true,
+      "utc": "2026-10-24T07:31:26Z",
+      "payload_bytes": 262144,
+      "errors": [],
+      "seconds": 0.933
+    },
+    "client_restart": true,
+    "wrong_server_identity_rejected": true,
+    "concurrent_echoes": 32,
+    "workers": 8
+  },
+  {
+    "profile": "wstunnel-h2",
+    "passed": true,
+    "health": {
+      "passed": true,
+      "echo_ms": [
+        4.999,
+        5.708,
+        4.757,
+        4.781
+      ],
+      "success_ratio": 1.0,
+      "upload_mbps": 140.91,
+      "download_mbps": 175.001,
+      "half_close": true,
+      "after_idle": true,
+      "integrity": true,
+      "utc": "2026-10-24T07:31:32Z",
+      "payload_bytes": 262144,
+      "errors": [],
+      "seconds": 1.361
+    },
+    "data_path": {
+      "passed": true,
+      "echo_ms": [
+        9.799,
+        3.976,
+        4.545
+      ],
+      "success_ratio": 1.0,
+      "upload_mbps": 146.889,
+      "download_mbps": 168.833,
+      "half_close": true,
+      "after_idle": true,
+      "integrity": true,
+      "utc": "2026-10-24T07:31:33Z",
+      "payload_bytes": 262144,
+      "errors": [],
+      "seconds": 0.856
+    },
+    "client_restart": true,
+    "wrong_server_identity_rejected": true,
+    "concurrent_echoes": 32,
+    "workers": 8
+  }
+]
