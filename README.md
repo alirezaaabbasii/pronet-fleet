@@ -1,4 +1,6 @@
-# Pronet Fleet 0.3.6
+# Pronet Fleet 0.3.7
+
+0.3.7: the join command for the foreign server now stays on screen until the foreign server joins (it was wiped by the live view). New `sudo pronet uninstall` removes Pronet completely from one server. See `CHANGES-0.3.7.fa.md` in the release ZIP.
 
 Default recovery is now `stable`: keep the selected primary and warm standby, with confirmed failover and a persistent switch budget. Transport timeouts now close failed sessions instead of entering a CPU/RAM runaway loop; failed stream cleanup also releases socket buffers promptly. See `CHANGES-0.3.6.fa.md` and `STABILITY-VALIDATION.json` inside the release ZIP for validation and limits.
 
@@ -33,10 +35,10 @@ sudo pronet dashboard  # web dashboard link (Iran)
 ```
 
 ## If GitHub is blocked on a server
-Copy `dist/pronet-fleet-0.3.6.zip` and `get.sh` with scp, then:
+Copy `dist/pronet-fleet-0.3.7.zip` and `get.sh` with scp, then:
 ```bash
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.6.zip bash get.sh                 # Iran
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.6.zip bash get.sh join PNF1-...   # foreign
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.7.zip bash get.sh                 # Iran
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.7.zip bash get.sh join PNF1-...   # foreign
 ```
 
 ---
