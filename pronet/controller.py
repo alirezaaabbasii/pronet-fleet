@@ -236,7 +236,8 @@ class Controller:
             total = len(plans)
             batches = screen_batches(plans)
             # A second warm standby costs ~30 MB per server; keep one on small servers.
-            small = any((row.get("ram_total_mb") or 0) < SECOND_STANDBY_MIN_MB for row in info.values())
+            small = any(isinstance(row.get("ram_total_mb"), int) and row["ram_total_mb"] < SECOND_STANDBY_MIN_MB
+                        for row in info.values())
             standbys = (1 if small else STANDBYS) if pair["request"]["standby"] else 0
             result["progress"] = {"tested": 0, "total": total, "passed": 0}
             result["live"] = {"phase": "screen", "order": [plan["profile"] for batch in batches for plan in batch],
