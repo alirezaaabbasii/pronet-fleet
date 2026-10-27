@@ -4,7 +4,7 @@
 
 **Iran ⇄ foreign tunnel manager: it tests every carrier on your real route, picks the best one, keeps warm standbys and fails over by itself.**
 
-![version](https://img.shields.io/badge/version-0.3.11-blue)
+![version](https://img.shields.io/badge/version-0.3.12-blue)
 ![platform](https://img.shields.io/badge/platform-Linux%20amd64%20%7C%20arm64-lightgrey)
 ![python](https://img.shields.io/badge/python-3.10%2B-green)
 ![carriers](https://img.shields.io/badge/carriers-20%2B-orange)
@@ -35,8 +35,8 @@ Your clients always use the same `IRAN_IP:PORT`. Carrier changes happen behind t
 | ⚡ **Fast setup** | Carriers are tested in smart groups. The next group starts while the current one is measured, and transfers never overlap so the numbers stay honest. |
 | 🏆 **Best-route selection** | A stability-weighted score: a fast but flaky carrier loses to a slightly slower, steady one. |
 | 🛟 **Primary + 2 warm standbys** | Standbys run and are probed all the time, so failover takes seconds. Only one standby is kept on servers with less than 1.4 GB RAM. |
-| 🔁 **Automatic failover** | The primary is down for 2 probes → users move to the healthiest standby. Dead sessions are closed so clients reconnect immediately. |
-| 📉 **Flap detection** | A carrier with 3+ separate outages in 30 minutes is marked *unstable*, even if each outage is short. It is never preferred and is replaced automatically. |
+| 🔁 **Automatic failover, only for real outages** | A health check fails only if 3 echo attempts all fail **and** no user data came through the carrier in the last 30 s, so a busy or slightly lossy tunnel is never treated as down. The primary has to fail 3 checks in a row (about 3 minutes) before users move to the standby with the best record over the last hour. Dead sessions are closed so clients reconnect immediately. |
+| 📉 **Flap detection** | A standby with 3+ separate outages in an hour is marked *unstable* and replaced automatically, which never touches users. A working primary is left only after 4+ outages in an hour, never within 2 hours of a switch, and never within 24 hours of your own manual choice. |
 | 🔧 **Self-repair** | An unstable standby is swapped for the next carrier that passed setup; the primary is never touched. If **every** path is down for 5 minutes while both servers are online, carriers are re-tested and the best are installed, with the same client address. |
 | 🧯 **Switch budget** | At most 3 automatic switches per 30 minutes, so a bad route can't make it thrash. |
 | 🌙 **Quiet during long outages** | If one server is off for hours, everything backs off to about one attempt a minute, logs once, and waits. Nothing spins. |
@@ -107,7 +107,7 @@ curl -fsSL https://raw.githubusercontent.com/alirezaaabbasii/pronet-fleet/main/g
 | `sudo pronet switch [ID] [CARRIER]` | Iran | Move new connections back to the main carrier (or to CARRIER); never automatic |
 | `sudo pronet notify [telegram\|test\|on\|off\|status]` | foreign | Telegram alerts |
 | `sudo pronet probe-interval [SECONDS]` | Iran | Seconds between health probes (default 60, 5–300) |
-| `sudo pronet failover-delay [SECONDS]` | Iran | Total primary outage before switching (default 120, 10–1800) |
+| `sudo pronet failover-delay [SECONDS]` | Iran | Total primary outage before switching (default 180, 10–1800) |
 | `sudo pronet recovery-policy [stable\|explore]` | Iran | `stable` (default) or opt-in exploration of new carriers |
 | `sudo pronet repair ID` / `restart ID` | both | Re-apply / restart one tunnel's services |
 | `sudo pronet remove ID` | Iran | Stop and remove one tunnel on both servers |
@@ -150,8 +150,8 @@ Engines are unchanged upstream releases, pinned by SHA256 and run as separate sy
 
 | Situation | What Pronet does |
 |---|---|
-| Primary misses 2 probes in a row | Moves users to the best healthy standby (stable ones first) and closes sessions stuck on the dead path |
-| Primary keeps dropping briefly (3+ outages / 30 min) | Moves **new** connections to a fully stable standby; established ones are left alone |
+| Primary fails 3 checks in a row (each check = 3 attempts, no user data flowing) | Moves users to the standby with the best record over the last hour and closes sessions stuck on the dead path |
+| Primary keeps dropping briefly (4+ outages / hour) | Moves **new** connections to a fully stable standby, but only if no switch happened in the last 2 h (24 h after a manual switch); established ones are left alone |
 | A standby keeps dropping | Marks it unstable and replaces it with the next carrier that passed setup (at most once per 30 min) |
 | Every path down for 5 min, both servers online | Re-tests carriers and installs the best ones; retries after 1 h, 2 h, 4 h, then every 6 h if nothing works |
 | One server off or unreachable for hours | Waits quietly (about one attempt a minute). When it returns, carriers get 3 minutes to reconnect on their own before any repair starts |
@@ -203,14 +203,14 @@ This removes Pronet's services, tagged firewall rules, nftables tables, state, c
 
 ## Offline install (GitHub blocked on a server)
 
-Copy `dist/pronet-fleet-0.3.11.zip` and `get.sh` to the server, then:
+Copy `dist/pronet-fleet-0.3.12.zip` and `get.sh` to the server, then:
 
 ```bash
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.11.zip bash get.sh                  # Iran
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.11.zip bash get.sh join PNF1-...    # foreign
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.12.zip bash get.sh                  # Iran
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.12.zip bash get.sh join PNF1-...    # foreign
 ```
 
-`get.sh` checks the ZIP's SHA256 before installing. You can also use a mirror with `PRONET_URL=https://…/pronet-fleet-0.3.11.zip`.
+`get.sh` checks the ZIP's SHA256 before installing. You can also use a mirror with `PRONET_URL=https://…/pronet-fleet-0.3.12.zip`.
 
 ## FAQ
 
@@ -239,6 +239,10 @@ Licenses, notices and the BackPack source are included in the release ZIP (`lice
 
 Release notes (Persian) are inside each release ZIP as `CHANGES-<version>.fa.md`.
 
+- **0.3.12**
+  - Far fewer switches: 3-attempt checks, user traffic counts as proof of life, failover after 3 failed checks.
+  - Stricter flap rules, a 2 h calm period after a switch, and a 24 h hold on manual choices.
+  - Last-hour uptime per carrier.
 - **0.3.11**
   - Manual return to the main carrier: `sudo pronet switch` and a dashboard button.
   - Fix: a stale drain list could cut a healthy carrier on a later switch.
