@@ -1,4 +1,6 @@
-# Pronet Fleet 0.3.8
+# Pronet Fleet 0.3.9
+
+0.3.9: unstable carriers are detected (repeated short outages) and avoided; primary plus two warm standbys from different protocol families; an unstable standby is replaced automatically while the primary keeps serving; if every path is down for 5 minutes while both servers are online, carriers are re-tested and the best are installed (same client address). Test groups overlap their setup with the previous group's measurements. Runtime stays light: one small probe per carrier per minute. See `CHANGES-0.3.9.fa.md` in the release ZIP.
 
 0.3.8: faster carrier testing without changing what is measured (smart grouping, idle waits overlap while transfers stay one at a time), a live per-carrier progress view, and a cleaner final report and status screen (`sudo pronet report --details` for every carrier). See `CHANGES-0.3.8.fa.md` in the release ZIP.
 
@@ -37,10 +39,10 @@ sudo pronet dashboard  # web dashboard link (Iran)
 ```
 
 ## If GitHub is blocked on a server
-Copy `dist/pronet-fleet-0.3.8.zip` and `get.sh` with scp, then:
+Copy `dist/pronet-fleet-0.3.9.zip` and `get.sh` with scp, then:
 ```bash
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.8.zip bash get.sh                 # Iran
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.8.zip bash get.sh join PNF1-...   # foreign
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.9.zip bash get.sh                 # Iran
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.9.zip bash get.sh join PNF1-...   # foreign
 ```
 
 ---
