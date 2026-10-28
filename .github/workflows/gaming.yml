@@ -1,0 +1,46 @@
+name: Gaming UDP and menu validation
+on:
+  pull_request:
+    paths:
+      - 'updates/0.3.18/pronet/**'
+      - 'updates/0.3.18/tests/**'
+      - 'tools/assemble-gaming-ci.py'
+      - '.github/workflows/gaming.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: gaming-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  linux-gaming:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {profile: gre, gaming: true}
+          - {profile: bp-l3-udp, gaming: true}
+          - {profile: 'gre,bp-l3-udp', gaming: true}
+          - {profile: 'gre,bp-l3-udp,bp-l3-udp-reverse,bp-l3-quic,bp-l3-quic-reverse,bp-l3-udp-fec,bp-l3-pck,bp-l3-pck-reverse,bp-l3-pck-fec,bp-l3-sni', gaming: true}
+          - {profile: frp-tls, gaming: false}
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Install WireGuard for real encrypted client/server test
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq wireguard-tools
+      - name: Assemble immutable base and pinned engines
+        run: python3 tools/assemble-gaming-ci.py "$RUNNER_TEMP/pronet-ci"
+      - name: Unit regressions
+        if: matrix.profile == 'frp-tls'
+        run: |
+          cd "$RUNNER_TEMP/pronet-ci/pronet-fleet-0.3.12"
+          python3 -m unittest discover -s tests
+      - name: Full setup, real WireGuard, netem, crash recovery, failover and owned cleanup
+        run: |
+          cd "$RUNNER_TEMP/pronet-ci/pronet-fleet-0.3.12"
+          sudo -E python3 tests/linux_integration.py --profiles "${{ matrix.profile }}" ${{ matrix.gaming && '--gaming' || '' }} --timeout 1080

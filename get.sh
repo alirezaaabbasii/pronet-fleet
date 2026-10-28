@@ -10,17 +10,17 @@
 # Existing tunnels, routes, firewall policy and panel configuration are untouched.
 #
 # Optional:
-#   PRONET_ZIP=/root/pronet-fleet-0.3.17.zip   use a file already copied to the server
+#   PRONET_ZIP=/root/pronet-fleet-0.3.18.zip   use a file already copied to the server
 #   PRONET_URL=https://mirror/...zip          use a mirror if GitHub is slow/blocked
 #   PRONET_NO_MENU=1                          install only
 set -euo pipefail
 
-VERSION="0.3.17"
+VERSION="0.3.18"
 OWNER_REPO="alirezaaabbasii/pronet-fleet"
-SHA256="19301ae01f9cb2685e45a5d31cd8ae154707b58bce626b66237ca87a575099eb"
+SHA256="2089e9e10bd23cecc1643cb1b6e17b848c92af32a1a5d1a35ebd012b79d2d880"
 BASE_VERSION="0.3.12"
 BASE_SHA256="3f1c4483c41c1f288281dabb789289888e043a9132e1d99f814929e55ba2fb37"
-UPDATE_SHA256="f0ac456c4e165652fe24eae060e3c70e682a3b141369ec9840d24f50719b9f44"
+UPDATE_SHA256="1a9d75b6a5412c96eb8efb69b1f280528a9c855824f2f705d07ee14e6bffbff2"
 BASE_URL="https://raw.githubusercontent.com/${OWNER_REPO}/main/dist/pronet-fleet-${BASE_VERSION}.zip"
 UPDATE_URL="https://raw.githubusercontent.com/${OWNER_REPO}/main/dist/pronet-fleet-${VERSION}-update.zip"
 
