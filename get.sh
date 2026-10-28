@@ -10,15 +10,19 @@
 # Existing tunnels, routes, firewall policy and panel configuration are untouched.
 #
 # Optional:
-#   PRONET_ZIP=/root/pronet-fleet-0.3.12.zip   use a file already copied to the server
+#   PRONET_ZIP=/root/pronet-fleet-0.3.13.zip   use a file already copied to the server
 #   PRONET_URL=https://mirror/...zip          use a mirror if GitHub is slow/blocked
 #   PRONET_NO_MENU=1                          install only
 set -euo pipefail
 
-VERSION="0.3.12"
+VERSION="0.3.13"
 OWNER_REPO="alirezaaabbasii/pronet-fleet"
-SHA256="3f1c4483c41c1f288281dabb789289888e043a9132e1d99f814929e55ba2fb37"
-URL="${PRONET_URL:-https://raw.githubusercontent.com/${OWNER_REPO}/main/dist/pronet-fleet-${VERSION}.zip}"
+SHA256="59b7db50829b2d97505e57bc2673276d7fab4c2f2a5049b3df97b94822cf04bd"
+BASE_VERSION="0.3.12"
+BASE_SHA256="3f1c4483c41c1f288281dabb789289888e043a9132e1d99f814929e55ba2fb37"
+UPDATE_SHA256="2fe7079d5af1be8bd33ec33b6cee90c577941ffcca72d0d1b65a30d463295827"
+BASE_URL="https://raw.githubusercontent.com/${OWNER_REPO}/main/dist/pronet-fleet-${BASE_VERSION}.zip"
+UPDATE_URL="https://raw.githubusercontent.com/${OWNER_REPO}/main/dist/pronet-fleet-${VERSION}-update.zip"
 
 say()  { printf '\033[1;36m[pronet]\033[0m %s\n' "$*"; }
 fail() { printf '\033[1;31m[pronet] error:\033[0m %s\n' "$*" >&2; exit 1; }
@@ -62,20 +66,39 @@ work="$(mktemp -d /tmp/pronet-get.XXXXXX)"
 trap 'rm -rf "$work"' EXIT
 zip="$work/pronet-fleet-${VERSION}.zip"
 
-if [ -n "${PRONET_ZIP:-}" ]; then
-  [ -f "$PRONET_ZIP" ] || fail "file not found: $PRONET_ZIP"
-  cp "$PRONET_ZIP" "$zip"
+src="$work/pronet-fleet-${VERSION}"
+fetch() {
+  curl -fL --retry 5 --retry-delay 3 --connect-timeout 15 -o "$2" "$1" \
+    || fail "download failed. Copy the complete release ZIP and use PRONET_ZIP=/path/file.zip bash get.sh"
+}
+verify_zip() {
+  echo "$1  $2" | sha256sum -c --status || fail "checksum mismatch: nothing was installed."
+}
+if [ -n "${PRONET_ZIP:-}" ] || [ -n "${PRONET_URL:-}" ]; then
+  if [ -n "${PRONET_ZIP:-}" ]; then
+    [ -f "$PRONET_ZIP" ] || fail "file not found: $PRONET_ZIP"
+    cp "$PRONET_ZIP" "$zip"
+  else
+    say "Downloading complete Pronet Fleet $VERSION ..."
+    fetch "$PRONET_URL" "$zip"
+  fi
+  verify_zip "$SHA256" "$zip"
+  unzip -q "$zip" -d "$work"
 else
-  say "Downloading Pronet Fleet $VERSION ..."
-  curl -fL --retry 5 --retry-delay 3 --connect-timeout 15 -o "$zip" "$URL" \
-    || fail "download failed. If GitHub is blocked here, copy the zip with scp and run: PRONET_ZIP=/path/file.zip bash get.sh"
+  # Reuse the immutable engine bundle instead of adding 70 MB of identical
+  # binaries to Git history for every source-only update. Both ZIPs are pinned.
+  say "Downloading verified engine bundle and Pronet Fleet $VERSION update ..."
+  base_zip="$work/base.zip"
+  update_zip="$work/update.zip"
+  fetch "$BASE_URL" "$base_zip"
+  verify_zip "$BASE_SHA256" "$base_zip"
+  fetch "$UPDATE_URL" "$update_zip"
+  verify_zip "$UPDATE_SHA256" "$update_zip"
+  unzip -q "$base_zip" -d "$work"
+  mv "$work/pronet-fleet-${BASE_VERSION}" "$src"
+  unzip -oq "$update_zip" -d "$work"
 fi
 
-say "Verifying SHA256 ..."
-echo "${SHA256}  ${zip}" | sha256sum -c --status || fail "checksum mismatch: the file is damaged or modified. Nothing was installed."
-
-unzip -q "$zip" -d "$work"
-src="$work/pronet-fleet-${VERSION}"
 [ -f "$src/install.sh" ] || fail "unexpected package layout."
 sh "$src/install.sh" --verify-only >/dev/null
 
