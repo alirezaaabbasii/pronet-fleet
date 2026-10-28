@@ -1,0 +1,35 @@
+name: Native GRE validation
+on:
+  pull_request:
+    paths:
+      - 'updates/0.3.14/pronet/**'
+      - 'updates/0.3.14/tests/**'
+      - 'tools/assemble-native-gre-ci.py'
+      - '.github/workflows/native-gre.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  linux-gre:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Assemble verified source and vendor bundle
+        run: python3 tools/assemble-native-gre-ci.py "$RUNNER_TEMP/pronet-ci"
+      - name: Unit and control-plane regression tests
+        run: |
+          cd "$RUNNER_TEMP/pronet-ci/pronet-fleet-0.3.12"
+          python3 -m unittest discover -s tests
+      - name: Native GRE datapath and protocol-47 isolation
+        run: |
+          cd "$RUNNER_TEMP/pronet-ci/pronet-fleet-0.3.12"
+          sudo -E python3 tests/native_gre_smoke.py
+      - name: Complete two-agent systemd setup, gateway, engine crash and cleanup
+        run: |
+          cd "$RUNNER_TEMP/pronet-ci/pronet-fleet-0.3.12"
+          sudo -E python3 tests/linux_integration.py --profiles gre --timeout 180 --output "$RUNNER_TEMP/native-gre-systemd.json"
