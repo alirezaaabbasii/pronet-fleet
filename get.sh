@@ -10,17 +10,17 @@
 # Existing tunnels, routes, firewall policy and panel configuration are untouched.
 #
 # Optional:
-#   PRONET_ZIP=/root/pronet-fleet-0.3.14.zip   use a file already copied to the server
+#   PRONET_ZIP=/root/pronet-fleet-0.3.15.zip   use a file already copied to the server
 #   PRONET_URL=https://mirror/...zip          use a mirror if GitHub is slow/blocked
 #   PRONET_NO_MENU=1                          install only
 set -euo pipefail
 
-VERSION="0.3.14"
+VERSION="0.3.15"
 OWNER_REPO="alirezaaabbasii/pronet-fleet"
-SHA256="c5135cf1e6be4cdcd722a0aadbd86ec6e7c462c851e5ea6ab309ba773537902f"
+SHA256="abac2e98f851ca2563de84451b471ae29e9bbd901de01d1450d61ee7ef6f4748"
 BASE_VERSION="0.3.12"
 BASE_SHA256="3f1c4483c41c1f288281dabb789289888e043a9132e1d99f814929e55ba2fb37"
-UPDATE_SHA256="39ae0ba6db755471f8d76229fae03a4d124452fc8c69da41d6200a7087db5f3b"
+UPDATE_SHA256="4b4152c1d210dbe8923955eaa16846f47499e66af1af17cf68235af822857510"
 BASE_URL="https://raw.githubusercontent.com/${OWNER_REPO}/main/dist/pronet-fleet-${BASE_VERSION}.zip"
 UPDATE_URL="https://raw.githubusercontent.com/${OWNER_REPO}/main/dist/pronet-fleet-${VERSION}-update.zip"
 
@@ -49,7 +49,7 @@ if [ "$installed" = "$VERSION" ] && [ -z "${PRONET_ZIP:-}" ]; then
 fi
 
 need=""
-for pair in python3:python3 unzip:unzip ip:iproute2 ss:iproute2 iptables:iptables openssl:openssl ssh-keygen:openssh-client nft:nftables sha256sum:coreutils curl:curl; do
+for pair in python3:python3 unzip:unzip ip:iproute2 ss:iproute2 iptables:iptables openssl:openssl ssh-keygen:openssh-client nft:nftables sha256sum:coreutils curl:curl wg:wireguard-tools; do
   cmd="${pair%%:*}"; pkg="${pair##*:}"
   command -v "$cmd" >/dev/null 2>&1 || case " $need " in *" $pkg "*) ;; *) need="$need $pkg" ;; esac
 done
@@ -97,6 +97,22 @@ else
   unzip -q "$base_zip" -d "$work"
   mv "$work/pronet-fleet-${BASE_VERSION}" "$src"
   unzip -oq "$update_zip" -d "$work"
+  # Additional independent engines: source/version/digest come from the
+  # already verified update. Fetch both architectures to preserve the complete
+  # offline bundle manifest; nothing executes before verification.
+  python3 - "$src" > "$work/extra-assets.tsv" <<'PY'
+import json,pathlib,sys
+bundle=pathlib.Path(sys.argv[1])
+locked=json.loads((bundle/'assets.lock.json').read_text())
+for engine in ('paqet','backhaul','parsa-spoof'):
+    for asset in locked[engine]['assets'].values():
+        print(asset['url'],asset['name'],asset['sha256'],sep='\t')
+PY
+  while IFS="$(printf '\t')" read -r asset_url asset_name asset_sha; do
+    say "Downloading verified engine: $asset_name"
+    fetch "$asset_url" "$src/vendor/$asset_name"
+    verify_zip "$asset_sha" "$src/vendor/$asset_name"
+  done < "$work/extra-assets.tsv"
 fi
 
 [ -f "$src/install.sh" ] || fail "unexpected package layout."
