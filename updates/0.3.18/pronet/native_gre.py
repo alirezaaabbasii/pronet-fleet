@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import ipaddress
 import json
+import shutil
 import threading
 
 from .common import ROOT, PronetError, command, lock, read_json, write_json
@@ -118,6 +119,10 @@ def up(plan):
                 command(['ip', 'link', 'set', 'dev', expected['name'], 'alias', expected['owner']])
             write_json(ownership_path(expected), {'expected': expected, 'phase': 'active', 'ifindex': row.get('ifindex')})
             command(['ip', '-4', 'address', 'replace', expected['address'], 'dev', expected['name']])
+            if plan.get('gaming'):
+                command(['ip','link','set','dev',expected['name'],'txqueuelen','64'])
+                if shutil.which('tc'):
+                    command(['tc','qdisc','replace','dev',expected['name'],'root','fq_codel'],check=False)
             command(['ip', 'link', 'set', 'dev', expected['name'], 'mtu', str(MTU), 'up'])
             assert_owned(lookup(expected['name']) or {}, expected)
         except BaseException:

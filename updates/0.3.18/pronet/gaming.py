@@ -18,6 +18,7 @@ import select
 import socket
 import statistics
 import struct
+import sys
 import time
 
 from .common import PronetError, read_json, write_json, utc
@@ -236,6 +237,7 @@ class DatagramRelay(asyncio.DatagramProtocol):
         with contextlib.suppress(OSError):row.sock.send(message)
     def make_session(self,key,target,sid,port,source):
         sock=socket.socket(socket.AF_INET,socket.SOCK_DGRAM);sock.setblocking(False)
+        if sys.platform=='linux': sock.setsockopt(socket.SOL_IP,10,0)  # IP_MTU_DISCOVER=DONT, this socket only
         try:sock.connect(tuple(target))
         except OSError:sock.close();raise
         row=Session(sock,sid,port,source);self.sessions[key]=row
@@ -276,6 +278,7 @@ async def listen(address,relay,freebind=False):
     sock=socket.socket(socket.AF_INET,socket.SOCK_DGRAM);sock.setblocking(False)
     try:
         if freebind:sock.setsockopt(socket.SOL_IP,15,1)
+        if sys.platform=='linux':sock.setsockopt(socket.SOL_IP,10,0)  # allow bounded WG datagrams to fragment
         sock.bind(tuple(address))
         await asyncio.get_running_loop().create_datagram_endpoint(lambda:relay,sock=sock)
     except BaseException:sock.close();raise

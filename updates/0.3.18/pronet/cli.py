@@ -444,7 +444,7 @@ def new_tunnel(inbound_port=None, name=None, quality="balanced", sni="", profile
     from .gaming import GAMING_PROFILES
     request = {"gaming":gaming, "name": name, "public_ip": config["public_ip"], "bind_ip": config["bind_ip"],
                "inbound_port": ports[0], "profiles": profiles or list(GAMING_PROFILES if gaming else EMERGENCY_PROFILES if emergency else DEFAULT_PROFILES),
-               "standby": 1 if standby else 0, "direction": direction, "sni": sni, "quality": quality, "spoof": spoof or config.get("spoof_sources", {}), "emergency": emergency, "test_only": test_only, "full_test": full_test}
+               "standby": 1 if standby else 0, "direction": direction, "sni": sni, "quality": "thorough" if gaming else quality, "spoof": spoof or config.get("spoof_sources", {}), "emergency": emergency, "test_only": test_only, "full_test": full_test}
     if len(ports) > 1:
         request["inbound_ports"] = ports
     created = node_client().call("/v1/pair", request)
@@ -901,8 +901,8 @@ def managed_run(directory, kind):
             if plan.get('gaming'):
                 from .gaming import DatagramRelay,listen
                 own,peer=tunnel_ips(plan) if plan['role']=='iran' else tuple(reversed(tunnel_ips(plan)))
-                from .runtime import inventory
-                rows=inventory().get('udp_listeners',[]) if plan['role']=='foreign' else []
+                from .runtime import udp_listeners
+                rows=udp_listeners() if plan['role']=='foreign' else []
                 targets={str(port):plan['bind_ip'] if any(r['port']==port and r['address']==plan['bind_ip'] for r in rows) else '127.0.0.1' for port in inbound_ports(plan)}
                 udp=await listen((own,plan['data_port']),DatagramRelay(plan['token'],foreign=True,target=targets,
                     ports=inbound_ports(plan) if plan['role']=='foreign' else (),peer=peer),freebind=True)
@@ -1264,42 +1264,40 @@ def wizard():
         elif choice == "3":
             advanced_menu()
         else:
-            raise PronetError("Choose 1, 2 or 3.")
+            raise PronetError("Choose 1, 2, 3 or 4.")
         return
     config = node_config()
     if config["role"] == "iran":
         say('  CREATE A TUNNEL')
-        menu_options([('1','New standard tunnel - TCP services'),('10','Gaming tunnel - WireGuard / UDP')])
+        menu_options([('1','New standard tunnel - TCP services'),('2','Gaming tunnel - WireGuard / UDP')])
         say('')
         say('  STATUS AND MANAGEMENT')
-        menu_options([('2','Live status'),('3','Last setup report'),('4','Web dashboard link'),
-                      ('5','Automatic recovery policy'),('6','Return a tunnel to its main carrier')])
+        menu_options([('3','Live status'),('4','Last setup report'),('5','Web dashboard link'),
+                      ('6','Automatic recovery policy'),('7','Return a tunnel to its main carrier')])
         say('')
         say('  TESTING AND DIAGNOSTICS')
-        menu_options([('7','Emergency tunnels - manual only'),('8','Carrier memory - compact statistics'),
-                      ('9','Advanced retry - after failed ordinary testing'),('0','Exit')])
+        menu_options([('8','Emergency tunnels - manual only'),('9','Carrier memory - compact statistics'),
+                      ('10','Advanced retry - after failed ordinary testing'),('0','Exit')])
         say('')
-        choice = ask("Select", "1")
-        if choice == "10": setup_iran(gaming=True)
-        elif choice == '8': memory_command('status')
-        elif choice == '9': advanced_test()
-        elif choice == "7":
-            emergency_menu()
-        elif choice == "6":
-            switch_carrier(ask("Tunnel ID (Enter if there is only one)", "") or None)
-        elif choice == "2":
-            monitor(watch=True)
-        elif choice == "3":
-            show_report()
-        elif choice == "4":
-            show_dashboard()
-        elif choice == "5":
+        choice = ask('Select','1')
+        if choice == '1': setup_iran()
+        elif choice == '2': setup_iran(gaming=True)
+        elif choice == '3': monitor(watch=True)
+        elif choice == '4': show_report()
+        elif choice == '5': show_dashboard()
+        elif choice == '6':
             set_recovery_policy()
-            policy = ask("Recovery policy (stable / explore)", "stable")
-            set_recovery_policy(policy)
+            menu_options([('1','Stable - keep known paths'),('2','Explore - allow automatic tests during sustained outages'),('0','Back')])
+            option=ask('Recovery policy','0')
+            if option in ('1','2'):set_recovery_policy('stable' if option=='1' else 'explore')
+            elif option!='0':raise PronetError('Choose 0, 1 or 2')
+        elif choice == '7': switch_carrier(ask('Tunnel ID (Enter if there is only one)','') or None)
+        elif choice == '8': emergency_menu()
+        elif choice == '9': memory_command('status')
+        elif choice == '10': advanced_test()
         elif choice == '0': return
-        elif choice == '1': setup_iran()
         else: raise PronetError('Choose one of the listed menu numbers')
+
     else:
         menu_options([('1','Join a tunnel - paste the command from Iran'),('2','Live status'),('3','Telegram alerts'),('0','Exit')])
         choice = ask("Select", "1")
@@ -1417,9 +1415,10 @@ def uninstall(confirmed=False):
 
 
 def advanced_menu():
-    say("  a) Coordinator only on this server")
-    say("  b) Register with a bootstrap file (Iran or foreign)")
+    say('Advanced setup')
+    menu_options([('a','Coordinator only on this server'),('b','Register with a bootstrap file (Iran or foreign)'),('0','Back')])
     choice = ask("Select", "a").lower()
+    if choice == "0": return
     if choice == "a":
         url = ask("Coordinator HTTPS address", "https://%s:9443" % (guess_public_ip([]) or "SERVER_IP"))
         init_hub(argparse.Namespace(url=url, bind="0.0.0.0", cert=None, key=None, ca=None))
@@ -1527,7 +1526,8 @@ def main():
         elif args.action == "setup-iran": setup_iran(args, interactive=False)
         elif args.action == "join": join(args.token, args.public_ip, args.name)
         elif args.action == "pair":
-            profiles = list(NORMAL_PROFILES) if args.profiles == "all" else args.profiles.split(",") if args.profiles else None
+            from .gaming import GAMING_PROFILES
+            profiles = list(GAMING_PROFILES if args.gaming else NORMAL_PROFILES) if args.profiles == "all" else args.profiles.split(",") if args.profiles else None
             new_tunnel(args.port, args.name, args.quality, args.sni, profiles, not args.no_standby, not args.no_wait, args.direction,
                        {"iran": args.spoof_iran, "foreign": args.spoof_foreign} if args.spoof_iran or args.spoof_foreign else None, full_test=args.full_test, gaming=args.gaming)
         elif args.action == "report": show_report(args.pair_id, args.details)

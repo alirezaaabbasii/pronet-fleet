@@ -97,7 +97,7 @@ def _p95(samples):
 
 ACTIVE_STAGES = ("preparing", "starting", "connecting", "measuring", "reverse")
 PHASE_LABELS = {"latency": "latency test", "upload": "upload test", "download": "download test",
-                "loaded": "gaming UDP under controlled load", "idle": "idle check", "done": "finishing", "connected": "connected"}
+                "loaded": "gaming UDP under controlled load", "loaded": "gaming UDP under controlled load", "idle": "idle check", "done": "finishing", "connected": "connected"}
 SETUP_STAGES = {"PAIRED": (1, "Checking both servers"), "PREFLIGHT": (1, "Checking both servers"),
                 "STAGED": (4, "Installing the selected carriers"), "VERIFYING": (4, "Verifying and opening the tunnel"),
                 "ROLLING_BACK": (None, "Rolling back"), "STOPPING": (None, "Stopping")}

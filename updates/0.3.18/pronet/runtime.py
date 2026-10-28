@@ -590,11 +590,23 @@ def managed_firewall(directory, kind, action):
             command([executable, "-w", "5", "-D", chain] + rule, check=False)
 
 
+def udp_listeners():
+    rows=[]
+    for line in command(['ss','-H','-lntup']).stdout.splitlines():
+        fields=line.split()
+        if len(fields)<5 or fields[0]!='udp':continue
+        try:
+            host,number=fields[4].rsplit(':',1)
+            rows.append({'address':host.strip('[]'),'port':int(number)})
+        except ValueError:continue
+    return rows
+
+
 def inbound_report(plan):
     """Panel inbound state on the foreign node. "inbound" stays the single
     summary older views use: open only when EVERY client port listens."""
     if plan.get('gaming'):
-        rows=inventory().get('udp_listeners',[])
+        rows=udp_listeners()
         states={str(number):'open' if any(r['port']==number and r['address'] in ('0.0.0.0','*','127.0.0.1',plan['bind_ip']) for r in rows) else 'unconfirmed' for number in inbound_ports(plan)}
         return {'inbound':'open' if all(v=='open' for v in states.values()) else 'unconfirmed','inbound_ports':states,'protocol':'udp','wireguard_handshake':'not-tested'}
     states = {str(number): tcp_state(("127.0.0.1", number)) for number in inbound_ports(plan)}
@@ -1179,13 +1191,14 @@ class Runtime:
     def watchdog(self):
         if self.identity["role"] != "iran":
             return
+        mixed_cadence=self.watch_interval()<probe_seconds()
         for directory in self.root.iterdir():
             if not directory.is_dir() or not (directory / "active.json").exists() or (directory / "stopped.json").exists():
                 continue
             try:
                 with lock(directory / "watchdog.lock", blocking=False):
                     config=read_json(directory/'gateway.json',{})
-                    if self.watch_interval()<probe_seconds():
+                    if mixed_cadence:
                         interval=5 if config.get('gaming') else probe_seconds()
                         checked=getattr(self,'_watch_times',{})
                         if time.monotonic()-checked.get(str(directory),-1e9)<interval: continue
@@ -1219,7 +1232,7 @@ class Runtime:
             return False
         seen = (read_json(directory / "traffic.json", {}) or {}).get("backend_rx_at") or {}
         stamp = seen.get("%s:%s" % tuple(engines.data_address(plan))) if isinstance(seen, dict) else None
-        return type(stamp) in (int, float) and 0 <= time.time() - stamp <= TRAFFIC_ALIVE
+        return type(stamp) in (int, float) and 0 <= time.time() - stamp <= (10 if plan.get("gaming") else TRAFFIC_ALIVE)
 
     def switch_to(self, directory, selected, plan, candidate, other, close_old, reason, manual=False):
         previous = selected["active"]

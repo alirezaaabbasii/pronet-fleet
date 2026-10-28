@@ -40,6 +40,9 @@ class QualityTests(unittest.TestCase):
     def test_nan_metrics_are_never_qualified(self):
         row=measured();row['gaming_stages']['loaded']['p95_ms']=float('nan')
         self.assertIsNone(gaming.score(row))
+    def test_nan_metrics_are_never_qualified(self):
+        row=measured();row['gaming_stages']['loaded']['p95_ms']=float('nan')
+        self.assertIsNone(gaming.score(row))
     def test_wire_format_authentication_direction_and_replay(self):
         key=os.urandom(32);sid=os.urandom(8);p=gaming.pack(key,3,2053,sid,5,b'payload')
         self.assertEqual(gaming.unpack(key,p),(3,2053,sid,5,b'payload'))
@@ -53,6 +56,21 @@ class QualityTests(unittest.TestCase):
         lines=[args[0] for args,_ in say.call_args_list]
         self.assertEqual(len(lines),3)
         self.assertTrue(all(sum(mark in line for mark in ('1)','2)','0)'))==1 for line in lines))
+
+    def test_main_menu_gaming_dispatch_and_no_inline_choices(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            config=pathlib.Path(tmp);write_json(config/'node.json',{'role':'iran','public_ip':'192.0.2.1'})
+            with mock.patch.object(cli,'CONFIG',config),mock.patch.object(cli,'ask',return_value='2'),mock.patch.object(cli,'setup_iran') as setup,mock.patch.object(cli,'say') as say:
+                cli.wizard();setup.assert_called_once_with(gaming=True)
+                choices=[args[0] for args,_ in say.call_args_list if ') ' in args[0]]
+                self.assertEqual(len(choices),11)
+                self.assertTrue(all(line.count(') ')==1 for line in choices))
+    def test_udp_listener_report_does_not_walk_firewall_or_routes(self):
+        from pronet import runtime
+        output='udp UNCONN 0 0 0.0.0.0:2053 0.0.0.0:*\ntcp LISTEN 0 32 0.0.0.0:22 0.0.0.0:*\n'
+        with mock.patch.object(runtime,'command',return_value=mock.Mock(stdout=output)) as command:
+            self.assertEqual(runtime.udp_listeners(),[{'address':'0.0.0.0','port':2053}])
+            command.assert_called_once_with(['ss','-H','-lntup'])
 
 
 class RelayTests(unittest.IsolatedAsyncioTestCase):

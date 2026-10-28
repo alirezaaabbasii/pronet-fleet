@@ -4,7 +4,7 @@
 
 **Iran ⇄ foreign tunnel manager: it tests every carrier on your real route, picks the best one, keeps warm standbys and fails over by itself.**
 
-![version](https://img.shields.io/badge/version-0.3.16-blue)
+![version](https://img.shields.io/badge/version-0.3.18-blue)
 ![platform](https://img.shields.io/badge/platform-Linux%20amd64%20%7C%20arm64-lightgrey)
 ![python](https://img.shields.io/badge/python-3.10%2B-green)
 ![carriers](https://img.shields.io/badge/carriers-20%2B-orange)
@@ -208,14 +208,14 @@ This removes Pronet's services, tagged firewall rules, nftables tables, state, c
 
 ## Offline install (GitHub blocked on a server)
 
-The online installer verifies the 0.3.12 base ZIP and the small 0.3.16 update ZIP before assembling the new version. For offline installation, use the complete `pronet-fleet-0.3.17.zip` with `get.sh`, then:
+The online installer verifies the 0.3.12 base ZIP and the small 0.3.18 update ZIP before assembling the new version. For offline installation, use the complete `pronet-fleet-0.3.18.zip` with `get.sh`, then:
 
 ```bash
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.17.zip bash get.sh                  # Iran
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.17.zip bash get.sh join PNF1-...    # foreign
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.18.zip bash get.sh                  # Iran
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.18.zip bash get.sh join PNF1-...    # foreign
 ```
 
-`get.sh` checks the ZIP's SHA256 before installing. You can also use a mirror with `PRONET_URL=https://…/pronet-fleet-0.3.17.zip`.
+`get.sh` checks the ZIP's SHA256 before installing. You can also use a mirror with `PRONET_URL=https://…/pronet-fleet-0.3.18.zip`.
 
 ## FAQ
 
@@ -384,3 +384,22 @@ It bypasses all learning and includes all supported normal/experimental carriers
 retired profiles, and emergency Spoof when sender source addresses are supplied.
 Without them, only Spoof is explicitly omitted. Nothing can bypass missing kernel
 or hardware prerequisites. This is all implemented adapters, not the research list.
+
+
+## Gaming tunnel (WireGuard / UDP) — 0.3.18
+
+On Iran choose **2) Gaming tunnel** from the registered main menu, **4) Gaming tunnel** on a fresh install, or run `sudo pronet gaming`. The existing public-IP, authorized client ports and foreign join flow is retained. Enter the WireGuard **UDP** listening port(s) on the foreign server; those same UDP ports open on Iran. Change clients' WireGuard Endpoint to the Iran IP and selected port. Existing WireGuard keys/peer configuration are not edited.
+
+Gaming is a separate data path: bounded, authenticated, replay-checked UDP relays preserve datagram boundaries and isolate client sessions, instead of wrapping game datagrams in the standard TCP gateway. WireGuard supplies payload encryption. Each relay caps sessions at 1,024, expires idle mappings after 120 seconds and bounds packet processing. Changing carriers recreates mappings; authenticated WireGuard traffic can update the peer endpoint, but a game can still disconnect during failover.
+
+Eligible carriers: native GRE, BackPack L3 UDP and reverse UDP, L3 QUIC and reverse QUIC, UDP/FEC, PCK and reverse PCK, PCK/FEC and SNI. Each must actually carry UDP; family names alone do not qualify. TCP-only stream adapters, experimental ICMP and Spoof emergency mode are excluded from gaming. An explicit advanced gaming retry bypasses memory over this gaming-compatible list; it never silently becomes a TCP-only tunnel.
+
+Qualification sends sequenced authenticated packets with 64/512/1,200-byte payloads at roughly 50 probes/sec. Each screening direction measures six seconds idle and six seconds under paced bidirectional UDP echo load (~1 Mbit/sec payload each way). This is controlled load, **not saturation or an available-bandwidth estimate**. Up to five finalists are considered; winners must pass three longer 12+12-second stability runs. Latency measurements are serialized per link to avoid contaminating another candidate. Idle recovery and both directions are checked.
+
+Conservative default gates per phase: >=100 delivered samples, <=1% loss, RTT p95 <=250 ms, p99 <=350 ms, p95 absolute consecutive RTT difference <=25 ms and reply gaps <=300 ms. Loaded p95 must not exceed idle p95 by more than 50 ms. Ranking penalizes loss, tail RTT and jitter; download speed is not rewarded. Reports show UDP metrics and explicit failure reasons. These defaults can reject a difficult route; a fast download cannot override a failed gaming gate.
+
+Owned L3 interfaces use MTU 1280 and a short queue (64 packets) with fq_codel where supported. No global sysctl, BBR setting, default route or existing WireGuard interface is changed. **Suggested starting WireGuard MTU: 1160 on clients and the foreign WG interface** to leave room for relay/carrier encapsulation; validate on the real route before increasing. This value is a recommendation, not an automatic edit of your WG configuration. The large-packet test verifies the tunnel; real game-server RTT and client last-mile latency remain outside two-server qualification.
+
+Gaming health checks are small authenticated UDP echoes at a nominal five-second interval; failover requires three failed checks and a responding, proven warm path. Check duration and traffic confirmation can extend detection beyond 15 seconds. There is no switch for one ping spike. Normal tunnels retain their existing monitoring interval. Gaming learning has a separate route and fleet scope from TCP qualification; the same bounded local memory is reused with no background full scans or telemetry.
+
+Menus now list one choice per line, group actions, show version/local server identity and installed state without a network request, and provide explicit exit/back choices.

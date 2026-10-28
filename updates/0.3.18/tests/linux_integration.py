@@ -76,6 +76,10 @@ def child_action(args):
         from pronet.gaming import DatagramRelay,listen
         async def serve():
             relay=await listen(('10.99.88.2',2054),DatagramRelay(fixture['application_key'],foreign=True))
+            class Echo(asyncio.DatagramProtocol):
+                def connection_made(self,t):self.transport=t
+                def datagram_received(self,data,addr):self.transport.sendto(data,addr)
+            await asyncio.get_running_loop().create_datagram_endpoint(Echo,local_addr=('10.99.88.2',2055))
             try:await asyncio.Event().wait()
             finally:relay.close()
         asyncio.run(serve())
@@ -84,12 +88,24 @@ def child_action(args):
         with ProbeServer(("0.0.0.0", 2053), fixture["application_key"]) as server:
             server.serve_forever()
     elif args.child == "verify" and args.gaming:
-        from pronet.gaming import benchmark
+        from pronet.gaming import benchmark,probe
+        deadline=time.monotonic()+15
+        while True:
+            try:probe(('10.99.88.2',2054),fixture['application_key'],1);break
+            except (OSError,PronetError):
+                if time.monotonic()>deadline:raise
+                time.sleep(.2)
         result=benchmark(('10.99.88.2',2054),fixture['application_key'])
         handshake=run(['wg','show','pnwgtest','latest-handshakes']).stdout.strip().split()
         if not result['passed'] or not handshake or int(handshake[-1])==0:
             raise PronetError('Real WireGuard gaming datapath failed: '+json.dumps(result))
-        print(json.dumps(dict(result,wireguard_handshake=True)))
+        import socket
+        with socket.socket(socket.AF_INET,socket.SOCK_DGRAM) as sock:
+            sock.settimeout(3);sock.connect(('10.99.88.2',2055))
+            for size in (64,512,1200,1400):
+                payload=os.urandom(size);sock.send(payload)
+                if sock.recv(65535)!=payload:raise PronetError('WireGuard datagram integrity/boundary failure')
+        print(json.dumps(dict(result,wireguard_handshake=True,datagram_sizes=[64,512,1200,1400])))
     elif args.child == "verify":
         from pronet.wire import benchmark
         result = benchmark(("198.18.0.1", 2053), fixture["application_key"], rounds=3, size=262144, idle=.5)
@@ -236,6 +252,9 @@ def main(args):
                 if set(advanced_request['profiles']) != set(PROFILES): raise PronetError('Advanced test did not request all supported carriers')
                 report['advanced_requested_all_supported']=True
             report["public_datapath"] = json.loads(child("hub" if args.gaming else "foreign", "verify").stdout)
+            if args.gaming:
+                for role in ('hub','foreign'):run(in_ns(role,['ip','link','set','dev','pnwgtest','mtu','1420']))
+                report['wireguard_standard_mtu']=json.loads(child('hub','verify').stdout)
             selected = detail["selected"]
             from pronet.runtime import unit_name
             active_unit = unit_name(pair_id, selected[0], "engine", "iran")
@@ -273,6 +292,7 @@ def main(args):
             report["passed"] = True
     except BaseException as error:
         report["error"] = str(error)[:5000]
+        if isinstance(error,subprocess.CalledProcessError):report['child_error']=str(error.stderr)[-8000:]
         # Owned test-unit logs only, before cleanup removes the definitions.
         report['diagnostics']={}
         for role in ('iran','foreign'):
@@ -281,6 +301,8 @@ def main(args):
             for path in (base/role/'state/pairs').glob('*/*/plan.json'):
                 plan=json.loads(path.read_text())
                 units += [unit_name(plan['pair_id'],plan['profile'],kind,role) for kind in ('engine','echo')]
+            for path in (base/role/'state/pairs').glob('*/gateway.json'):
+                units.append('pronetf-'+path.parent.name+'-gateway.service')
             if units:
                 try:
                     output=run(['journalctl','--no-pager','-n','100']+[part for unit in units for part in ('-u',unit)]).stdout

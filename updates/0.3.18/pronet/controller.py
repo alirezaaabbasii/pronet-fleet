@@ -270,7 +270,7 @@ class Controller:
             result['learning'] = self.learned_plan(pair,[p['profile'] for p in plans],
                                                   force=bool(pair['request'].get('advanced') or pair['request'].get('full_test') or pair['request'].get('emergency')))
             plans = [p for name in result['learning']['profiles'] for p in plans if p['profile']==name]
-            if pair['request'].get('advanced') and not pair['request'].get('spoof'):
+            if pair['request'].get('advanced') and not pair['request'].get('gaming') and not pair['request'].get('spoof'):
                 result['advanced_skipped']={'parsa-spoof':'spoof sender addresses not configured'}
             if not plans:
                 result['advanced_available']=not pair['request'].get('advanced') and not pair['request'].get('emergency')
