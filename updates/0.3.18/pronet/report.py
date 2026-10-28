@@ -395,7 +395,12 @@ def final_report(pair, nodes=None, style=None, details=False, dashboard=None):
     if rtt and rtt > 250:
         out += ["", "  " + style.warn("Route ~%d ms round trip: a foreign server closer to Iran will be faster." % rtt)]
     if inbound != "open":
-        out += ["", style.section("TO DO"),
+        if request.get('gaming'):
+            out += ['',style.section('TO DO'),
+                    '    Start the foreign WireGuard UDP listener on port(s) %s.' % port,
+                    '    Set clients Endpoint to %s:%s; keep their WireGuard keys.' % (request.get('public_ip'),port)]
+        else:
+            out += ["", style.section("TO DO"),
                 "    1. In your panel create the inbound on the foreign node: listen 0.0.0.0, port %s." % port,
                 "    2. Give clients address %s, port %s (keep UUID/path/SNI of that inbound)." % (request.get("public_ip"), port)]
     out += ["", style.section("MONITOR")]

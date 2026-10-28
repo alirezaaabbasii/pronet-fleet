@@ -521,10 +521,13 @@ def join(text, public_ip=None, name=None):
     say("The Iran server now measures every carrier and installs the best one (usually 5-10 minutes).")
     say("Progress and the final report are shown on the Iran server (sudo pronet watch).")
     port_numbers = port_list((data or {}).get("p") or node_config().get("allowed_inbound_ports", [2053])[0])
+    from .runtime import udp_listeners
+    udp_ports=set()
+    with contextlib.suppress(PronetError, OSError):udp_ports={r['port'] for r in udp_listeners()}
     for port_number in port_numbers:
-        if not _listening(port_number):
+        if not _listening(port_number) and port_number not in udp_ports:
             say("")
-            say("Reminder: nothing listens on port %d here yet. Create your panel inbound on 0.0.0.0:%d." % (port_number, port_number))
+            say("Reminder: no TCP/UDP listener found on port %d. Standard mode needs a panel TCP inbound; Gaming needs WireGuard UDP on port %d." % (port_number, port_number))
 
 
 def _listening(number):
@@ -645,7 +648,7 @@ def display(data, style=None):
             continue
         out += ["", style.section("CONNECTION")]
         out.append(style.field("Clients", row["endpoint"]))
-        out.append(style.field("Panel", "inbound port %s: %s" % (row["port"], style.ok(row["inbound"]) if row["inbound_ok"]
+        out.append(style.field("WireGuard UDP" if row.get("gaming") else "Panel", "inbound port %s: %s" % (row["port"], style.ok(row["inbound"]) if row["inbound_ok"]
                                                                  else style.paint(row["inbound"], "31"))))
         rtt = "   %d ms" % row["rtt"] if isinstance(row["rtt"], (int, float)) else ""
         out += ["", style.section("CARRIERS")]

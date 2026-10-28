@@ -211,7 +211,7 @@ class DatagramRelay(asyncio.DatagramProtocol):
     def __init__(self,token,foreign=False,ports=(),backend=None,client_port=None,target='127.0.0.1',peer=None):
         self.key=bytes.fromhex(token);self.foreign=foreign;self.ports=set(ports)
         self.backend=tuple(backend) if backend else None;self.client_port=client_port;self.target=target;self.peer=peer
-        self.sessions=collections.OrderedDict();self.transport=None;self.closed=False;self.rx_at=0
+        self.sessions=collections.OrderedDict();self.transport=None;self.closed=False;self.rx_at=0;self.rx_bytes=0;self.tx_bytes=0;self.connections_total=0
         self.window=0;self.count=0
     def connection_made(self,transport):
         self.transport=transport;self.loop=asyncio.get_running_loop();self.timer=self.loop.call_later(10,self.expire)
@@ -247,6 +247,7 @@ class DatagramRelay(asyncio.DatagramProtocol):
                 except OSError:return
             row=self.sessions[key]
             message=pack(self.key,3,row.port,row.session,row.sequence,data);row.sequence+=1
+            self.rx_bytes+=len(data)
         row.at=now;self.sessions.move_to_end(key)
         with contextlib.suppress(OSError):row.sock.send(message)
     def make_session(self,key,target,sid,port,source):
@@ -255,6 +256,7 @@ class DatagramRelay(asyncio.DatagramProtocol):
         try:sock.connect(tuple(target))
         except OSError:sock.close();raise
         row=Session(sock,sid,port,source);self.sessions[key]=row
+        self.connections_total+=1
         self.loop.add_reader(sock.fileno(),self.reply,key)
     def reply(self,key):
         row=self.sessions.get(key)
@@ -268,7 +270,7 @@ class DatagramRelay(asyncio.DatagramProtocol):
                 try:kind,port,sid,seq,message=unpack(self.key,data)
                 except ValueError:continue
                 if (kind,port,sid)!=(4,row.port,row.session) or not row.replay.accept(seq):continue
-                self.rx_at=time.time()
+                self.rx_at=time.time();self.tx_bytes+=len(message)
             row.at=time.monotonic()
             self.transport.sendto(message,row.source)
     def expire(self):
@@ -300,7 +302,11 @@ async def listen(address,relay,freebind=False):
 
 
 class Gateway:
-    def __init__(self,config,stats):self.config=pathlib.Path(config);self.stats=pathlib.Path(stats);self.relays=[];self.task=None;self.closed=False
+    def __init__(self,config,stats):
+        self.config=pathlib.Path(config);self.stats=pathlib.Path(stats);self.relays=[];self.task=None;self.closed=False
+        previous=read_json(self.stats,{})
+        self.base={key:previous.get(key,0) for key in ('rx_bytes','tx_bytes','connections_total')}
+        self.previous=(time.monotonic(),self.base['rx_bytes'],self.base['tx_bytes'])
     async def start(self):
         self.settings=read_json(self.config);await self.open(self.settings)
         self.task=asyncio.create_task(self.maintain())
@@ -325,12 +331,22 @@ class Gateway:
                     relay.backend=tuple(config['active_backend']);relay.rx_at=0
                 self.settings=config
             count+=1
-            if count%5==0:
-                seen=max((r.rx_at for r in self.relays),default=0)
-                write_json(self.stats,{'backend_rx_at':{'%s:%s'%tuple(self.settings['active_backend']):seen},
-                                      'udp_sessions':sum(len(r.sessions) for r in self.relays)})
+            if count%5==0:self.snapshot()
+    def snapshot(self):
+        now=time.monotonic();elapsed=max(.001,now-self.previous[0])
+        rx=self.base['rx_bytes']+sum(r.rx_bytes for r in self.relays)
+        tx=self.base['tx_bytes']+sum(r.tx_bytes for r in self.relays)
+        rx_rate=max(0,(rx-self.previous[1])/elapsed);tx_rate=max(0,(tx-self.previous[2])/elapsed)
+        self.previous=(now,rx,tx)
+        seen=max((r.rx_at for r in self.relays),default=0)
+        write_json(self.stats,{'backend_rx_at':{'%s:%s'%tuple(self.settings['active_backend']):seen},
+            'rx_bytes':rx,'tx_bytes':tx,'rx_Bps':round(rx_rate,1),'tx_Bps':round(tx_rate,1),
+            'connections_active':sum(len(r.sessions) for r in self.relays),
+            'connections_total':self.base['connections_total']+sum(r.connections_total for r in self.relays),
+            'activity':'ACTIVE' if rx_rate+tx_rate else 'IDLE','protocol':'udp','utc':utc()},durable=False)
     async def close(self):
         self.closed=True
+        if hasattr(self,'settings'):self.snapshot()
         if self.task:
             self.task.cancel()
             with contextlib.suppress(asyncio.CancelledError):await self.task

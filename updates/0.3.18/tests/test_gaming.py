@@ -173,6 +173,10 @@ class RelayTests(unittest.IsolatedAsyncioTestCase):
                 await loop.sock_sendall(client,b'after')
                 self.assertEqual(await asyncio.wait_for(loop.sock_recv(client,100),1),b'after')
                 self.assertEqual(len(other.sessions),1)
+                gateway.snapshot()
+                from pronet.common import read_json
+                self.assertEqual(read_json(gateway.stats)["rx_bytes"],11)
+                self.assertEqual(read_json(gateway.stats)["tx_bytes"],11)
             finally:await gateway.close()
 
     async def test_session_cap_and_expiry_are_bounded(self):
