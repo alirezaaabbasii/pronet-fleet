@@ -1,0 +1,37 @@
+name: Independent carrier validation
+on:
+  pull_request:
+    paths:
+      - 'updates/0.3.15/**'
+      - 'tools/assemble-carriers-ci.py'
+      - '.github/workflows/carriers.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  linux-carriers:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: [paqet, backhaul-tcp, backhaul-tcpmux, parsa-spoof]
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Install WireGuard prerequisite
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq wireguard-tools
+      - name: Assemble immutable source and verified engines
+        run: python3 tools/assemble-carriers-ci.py "$RUNNER_TEMP/pronet-ci"
+      - name: Unit regressions
+        if: matrix.profile == 'backhaul-tcp'
+        run: |
+          cd "$RUNNER_TEMP/pronet-ci/pronet-fleet-0.3.12"
+          python3 -m unittest discover -s tests
+      - name: Two-agent setup, data integrity, half-close, crash recovery and cleanup
+        run: |
+          cd "$RUNNER_TEMP/pronet-ci/pronet-fleet-0.3.12"
+          sudo -E python3 tests/linux_integration.py --profiles ${{ matrix.profile }} --timeout 240 --output "$RUNNER_TEMP/${{ matrix.profile }}.json"
