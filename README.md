@@ -208,14 +208,14 @@ This removes Pronet's services, tagged firewall rules, nftables tables, state, c
 
 ## Offline install (GitHub blocked on a server)
 
-The online installer verifies the 0.3.12 base ZIP and the small 0.3.16 update ZIP before assembling the new version. For offline installation, use the complete `pronet-fleet-0.3.16.zip` with `get.sh`, then:
+The online installer verifies the 0.3.12 base ZIP and the small 0.3.16 update ZIP before assembling the new version. For offline installation, use the complete `pronet-fleet-0.3.17.zip` with `get.sh`, then:
 
 ```bash
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.16.zip bash get.sh                  # Iran
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.16.zip bash get.sh join PNF1-...    # foreign
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.17.zip bash get.sh                  # Iran
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.17.zip bash get.sh join PNF1-...    # foreign
 ```
 
-`get.sh` checks the ZIP's SHA256 before installing. You can also use a mirror with `PRONET_URL=https://…/pronet-fleet-0.3.16.zip`.
+`get.sh` checks the ZIP's SHA256 before installing. You can also use a mirror with `PRONET_URL=https://…/pronet-fleet-0.3.17.zip`.
 
 ## FAQ
 
@@ -340,3 +340,47 @@ sudo pronet emergency --activate --spoof-iran IP1 --spoof-foreign IP2
 
 Manual emergency setup may keep monitoring the established tunnel's health;
 it never automatically starts another emergency qualification scan.
+
+
+## Compact local learning and explicit advanced tests (0.3.17)
+
+The coordinator stores only aggregate qualification counts, recent success and
+smoothed speed/latency in `carrier-memory.sqlite3`. No client traffic, credentials,
+packet captures or full test histories are stored there. The separate SQLite file
+has a 2 MiB page cap, at most 2048 aggregate records and 256 run deduplication keys.
+It has no resident worker, background probes, external service or telemetry.
+The scope is all routes attached to this coordinator; independent installations
+do not automatically exchange statistics.
+
+Ordinary tests prioritize previously successful carriers. Retirement is based on
+statistical evidence, not five repeated failures: fleet suppression requires at
+least 40 eligible independent observations, at least 8 routes and 7 observed days,
+with the 95% Wilson upper success bound below 10%. Route-specific suppression needs
+24 observations across 7 observed days and an upper bound below 20%. A route/profile
+contributes at most once per 6-hour window. Startup/install errors, silent nodes,
+and entirely failed routes without a successful reference do not count as negative
+evidence. Engine-version changes invalidate the corresponding learned evidence.
+These are qualification statistics, not bandwidth/client-usage counters.
+
+Suppressed profiles are omitted from ordinary setup and automatic recovery/retest;
+their binaries and adapters stay installed. No periodic re-probe starts automatically.
+A recent success on a route overrides a negative fleet prior for that route. An
+explicit advanced success requalifies its route. A full normal test may also bypass
+learning without including emergency carriers:
+
+```sh
+sudo pronet memory
+sudo pronet memory clear
+sudo pronet pair --full-test
+```
+
+If no ordinary carrier qualifies (including when memory suppresses every remaining
+candidate), the terminal offers `1) Run advanced test` after confirmed cleanup.
+**Only entering 1** requests the broader test; detached/noninteractive runs print
+`sudo pronet advanced PAIR_ID` and do not start it. The advanced request creates a
+fresh pairing to the already paired foreign node, with ownership/availability
+checks, and requires no second join command. It never stops an active pairing.
+It bypasses all learning and includes all supported normal/experimental carriers,
+retired profiles, and emergency Spoof when sender source addresses are supplied.
+Without them, only Spoof is explicitly omitted. Nothing can bypass missing kernel
+or hardware prerequisites. This is all implemented adapters, not the research list.
