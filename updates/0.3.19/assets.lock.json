@@ -1,0 +1,148 @@
+{
+  "backpack": {
+    "version": "v1.8.5",
+    "source": "https://github.com/AminMGMT/BackPack",
+    "assets": {
+      "amd64": {
+        "name": "backpack_linux_amd64.tar.gz",
+        "url": "https://github.com/AminMGMT/BackPack/releases/download/v1.8.5/backpack_linux_amd64.tar.gz",
+        "sha256": "e80c4da9bdcece9e7a82305e572fdfde9a395a68a985fdd835c1af8ff248b395"
+      },
+      "arm64": {
+        "name": "backpack_linux_arm64.tar.gz",
+        "url": "https://github.com/AminMGMT/BackPack/releases/download/v1.8.5/backpack_linux_arm64.tar.gz",
+        "sha256": "9d9eaa951f8bd3f7b786be94916517c4ec900af0eeaac893b89d03d9867643f4"
+      }
+    }
+  },
+  "frp": {
+    "version": "v0.71.1",
+    "source": "https://github.com/fatedier/frp",
+    "assets": {
+      "amd64": {
+        "name": "frp_0.71.1_linux_amd64.tar.gz",
+        "url": "https://github.com/fatedier/frp/releases/download/v0.71.1/frp_0.71.1_linux_amd64.tar.gz",
+        "sha256": "1d9875210972a5d1a62b2dc4c48df45ab0af05d3ca1b5e494a014428259df803"
+      },
+      "arm64": {
+        "name": "frp_0.71.1_linux_arm64.tar.gz",
+        "url": "https://github.com/fatedier/frp/releases/download/v0.71.1/frp_0.71.1_linux_arm64.tar.gz",
+        "sha256": "8edf590b0c396fa42f9c147121a76af83cfc2002b08f5aef0ea1008c43482019"
+      },
+      "darwin-arm64": {
+        "name": "frp_0.71.1_darwin_arm64.tar.gz",
+        "url": "https://github.com/fatedier/frp/releases/download/v0.71.1/frp_0.71.1_darwin_arm64.tar.gz",
+        "sha256": "d15d0324b99e14619c9aa46e37f6db588c06a09be4bc6f7948890b6b61077842"
+      }
+    }
+  },
+  "chisel": {
+    "version": "v1.12.0",
+    "source": "https://github.com/jpillora/chisel",
+    "assets": {
+      "amd64": {
+        "name": "chisel_1.12.0_linux_amd64.gz",
+        "url": "https://github.com/jpillora/chisel/releases/download/v1.12.0/chisel_1.12.0_linux_amd64.gz",
+        "sha256": "f3f180f1d93aa72cce4e6386f98cc06569a0146fbd65eb4423cf83e6434bcfe6"
+      },
+      "arm64": {
+        "name": "chisel_1.12.0_linux_arm64.gz",
+        "url": "https://github.com/jpillora/chisel/releases/download/v1.12.0/chisel_1.12.0_linux_arm64.gz",
+        "sha256": "2ec6152cd2c74fe0146d4d79e4e7aa174521368c56e433d55e023a92ea404ec3"
+      },
+      "darwin-arm64": {
+        "name": "chisel_1.12.0_darwin_arm64.gz",
+        "url": "https://github.com/jpillora/chisel/releases/download/v1.12.0/chisel_1.12.0_darwin_arm64.gz",
+        "sha256": "707a4b932eea214765146504a0df246cefc415b4297af65a80dd67cf69ba85a9"
+      }
+    }
+  },
+  "wstunnel": {
+    "version": "v11.1.0",
+    "source": "https://github.com/erebe/wstunnel",
+    "assets": {
+      "amd64": {
+        "name": "wstunnel_11.1.0_linux_amd64.tar.gz",
+        "url": "https://github.com/erebe/wstunnel/releases/download/v11.1.0/wstunnel_11.1.0_linux_amd64.tar.gz",
+        "sha256": "512edf4e7bb64fc133522220123514868fae75b5bae4124b53e396787276aa23",
+        "verification": "github-api-digest"
+      },
+      "arm64": {
+        "name": "wstunnel_11.1.0_linux_arm64.tar.gz",
+        "url": "https://github.com/erebe/wstunnel/releases/download/v11.1.0/wstunnel_11.1.0_linux_arm64.tar.gz",
+        "sha256": "148895f957a68be39e2b65d28c5f2065b9c58c4a0cfd48c560b2b3267f398464",
+        "verification": "github-api-digest"
+      }
+    }
+  },
+  "rathole": {
+    "version": "v0.5.0",
+    "source": "https://github.com/rathole-org/rathole",
+    "assets": {
+      "amd64": {
+        "name": "rathole-x86_64-unknown-linux-gnu.zip",
+        "url": "https://github.com/rathole-org/rathole/releases/download/v0.5.0/rathole-x86_64-unknown-linux-gnu.zip",
+        "sha256": "3e7d0d0f365120cd3cd351d147d1a12ee960c8068b464d4dd533a3821873b80e",
+        "verification": "official-https-download-local-sha256"
+      },
+      "arm64": {
+        "name": "rathole-aarch64-unknown-linux-musl.zip",
+        "url": "https://github.com/rathole-org/rathole/releases/download/v0.5.0/rathole-aarch64-unknown-linux-musl.zip",
+        "sha256": "fa4a6fc63d86f8f1faa7c103a845e4715ce79a048455c0eec897b27237576564",
+        "verification": "official-https-download-local-sha256"
+      }
+    }
+  },
+  "paqet": {
+    "version": "v1.0.0-alpha.21",
+    "source": "https://github.com/hanselime/paqet",
+    "assets": {
+      "amd64": {
+        "name": "paqet-linux-amd64-v1.0.0-alpha.21.tar.gz",
+        "url": "https://github.com/hanselime/paqet/releases/download/v1.0.0-alpha.21/paqet-linux-amd64-v1.0.0-alpha.21.tar.gz",
+        "sha256": "4f2f69e0493746726598485ef18df43372470a1514f8021594137e522f0f4fc7",
+        "binary": "paqet_linux_amd64"
+      },
+      "arm64": {
+        "name": "paqet-linux-arm64-v1.0.0-alpha.21.tar.gz",
+        "url": "https://github.com/hanselime/paqet/releases/download/v1.0.0-alpha.21/paqet-linux-arm64-v1.0.0-alpha.21.tar.gz",
+        "sha256": "be5c7b35a0a93832063e1dc7fddeb76d4597fb9de76abdfdf7b8574b775e3885",
+        "binary": "paqet_linux_arm64"
+      }
+    }
+  },
+  "backhaul": {
+    "version": "v0.7.2",
+    "source": "https://github.com/Musixal/Backhaul",
+    "assets": {
+      "amd64": {
+        "name": "backhaul_linux_amd64.tar.gz",
+        "url": "https://github.com/Musixal/Backhaul/releases/download/v0.7.2/backhaul_linux_amd64.tar.gz",
+        "sha256": "57bf95c2eabeddb1152d2e94ac42f4310883ce0fb909ee2a57bd53503b2dabbc"
+      },
+      "arm64": {
+        "name": "backhaul_linux_arm64.tar.gz",
+        "url": "https://github.com/Musixal/Backhaul/releases/download/v0.7.2/backhaul_linux_arm64.tar.gz",
+        "sha256": "9a424c97ff16fc3f682e8314c418790d2b5bf3136e008edbb6cd402ea00999f6"
+      }
+    }
+  },
+  "parsa-spoof": {
+    "version": "v3.1.0-beta.0",
+    "source": "https://github.com/ParsaKSH/spoof-tunnel",
+    "assets": {
+      "amd64": {
+        "name": "spoof-linux-amd64",
+        "url": "https://github.com/ParsaKSH/spoof-tunnel/releases/download/v3.1.0-beta.0/spoof-linux-amd64",
+        "sha256": "4ba5597568607e864fb6d5ba4f13bac91a50456da5696d99463d6375ce2a3697",
+        "format": "raw"
+      },
+      "arm64": {
+        "name": "spoof-linux-arm64",
+        "url": "https://github.com/ParsaKSH/spoof-tunnel/releases/download/v3.1.0-beta.0/spoof-linux-arm64",
+        "sha256": "ab7e0a58aa37c63a36127feb99ef73cd498523c99d22146feb1a93dd97c9d97b",
+        "format": "raw"
+      }
+    }
+  }
+}
