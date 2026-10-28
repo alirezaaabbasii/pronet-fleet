@@ -184,12 +184,12 @@ def benchmark(address, token, long_test=False, progress=None):
 
 
 def combine_stages(rows):
-    # Preserve one real, worst-scored phase from the repeated qualification.
+    # Preserve one real, worst-scored run from the repeated qualification.
     # Counts and percentiles stay measurements from that same run.
     def cost(stage):
         return stage['loss_percent']*100+stage['p95_ms']+.5*stage['p99_ms']+3*stage['jitter_p95_ms']
-    return {phase:max((row['gaming_stages'][phase] for row in rows),key=cost)
-            for phase in ('idle','loaded')}
+    worst=max(rows,key=lambda row:sum(cost(row['gaming_stages'][phase]) for phase in ('idle','loaded')))
+    return worst['gaming_stages']
 
 
 def score(row):

@@ -9,6 +9,9 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+concurrency:
+  group: gaming-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   linux-gaming:
     runs-on: ubuntu-24.04

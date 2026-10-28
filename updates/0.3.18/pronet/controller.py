@@ -358,7 +358,7 @@ class Controller:
                         if soaked.get('gaming'):
                             from .gaming import combine_stages
                             soaked['gaming_stages']=combine_stages(rows)
-                            soaked['gaming_stages_aggregation']='worst-scored phase across qualification runs' 
+                            soaked['gaming_stages_aggregation']='worst-scored qualification run' 
                     soaked["observations"] = rows
                     for row in candidates:
                         if row["profile"] == name: row["soak"] = soaked
