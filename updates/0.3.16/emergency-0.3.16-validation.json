@@ -1,0 +1,220 @@
+{
+  "commit": "bcceaeeba4f0b1ff450bedbc4e5ec33139edb4f5",
+  "run_id": 40622099482,
+  "unit_tests": 251,
+  "runtime_arch": "linux-amd64",
+  "reports": [
+    {
+      "job": "linux-carriers (backhaul-tcpmux, false)",
+      "job_id": 122598313179,
+      "test_only": false,
+      "passed": true,
+      "owned_resources_removed": true,
+      "host_firewall_unchanged": true,
+      "host_routes_unchanged": true,
+      "host_forwarding_unchanged": true,
+      "phase": "complete",
+      "selected": [
+        "backhaul-tcpmux"
+      ],
+      "public_datapath": {
+        "passed": true,
+        "echo_ms": [
+          3.757,
+          2.588,
+          2.491
+        ],
+        "success_ratio": 1,
+        "upload_mbps": 525.875,
+        "download_mbps": 454.249,
+        "half_close": true,
+        "after_idle": true,
+        "integrity": true,
+        "utc": "2026-10-28T02:39:07Z",
+        "payload_bytes": 262144,
+        "errors": [],
+        "seconds": 1.124
+      },
+      "after_engine_crash": {
+        "passed": true,
+        "echo_ms": [
+          3.938,
+          2.783,
+          2.78
+        ],
+        "success_ratio": 1,
+        "upload_mbps": 558.084,
+        "download_mbps": 429.474,
+        "half_close": true,
+        "after_idle": true,
+        "integrity": true,
+        "utc": "2026-10-28T02:39:17Z",
+        "payload_bytes": 262144,
+        "errors": [],
+        "seconds": 1.125
+      }
+    },
+    {
+      "job": "linux-carriers (parsa-spoof, true)",
+      "job_id": 122598313473,
+      "test_only": true,
+      "passed": true,
+      "owned_resources_removed": true,
+      "host_firewall_unchanged": true,
+      "host_routes_unchanged": true,
+      "host_forwarding_unchanged": true,
+      "phase": "emergency-tested",
+      "selected": []
+    },
+    {
+      "job": "linux-carriers (paqet, false)",
+      "job_id": 122598313571,
+      "test_only": false,
+      "passed": true,
+      "owned_resources_removed": true,
+      "host_firewall_unchanged": true,
+      "host_routes_unchanged": true,
+      "host_forwarding_unchanged": true,
+      "phase": "complete",
+      "selected": [
+        "paqet"
+      ],
+      "public_datapath": {
+        "passed": true,
+        "echo_ms": [
+          82.062,
+          81.705,
+          81.953
+        ],
+        "success_ratio": 1,
+        "upload_mbps": 25.738,
+        "download_mbps": 25.033,
+        "half_close": true,
+        "after_idle": true,
+        "integrity": true,
+        "utc": "2026-10-28T02:39:05Z",
+        "payload_bytes": 262144,
+        "errors": [],
+        "seconds": 1.614
+      },
+      "after_engine_crash": {
+        "passed": true,
+        "echo_ms": [
+          81.1,
+          82.653,
+          82.316
+        ],
+        "success_ratio": 1,
+        "upload_mbps": 17.242,
+        "download_mbps": 25.143,
+        "half_close": true,
+        "after_idle": true,
+        "integrity": true,
+        "utc": "2026-10-28T02:39:15Z",
+        "payload_bytes": 262144,
+        "errors": [],
+        "seconds": 1.654
+      }
+    },
+    {
+      "job": "linux-carriers (parsa-spoof, false)",
+      "job_id": 122598313572,
+      "test_only": false,
+      "passed": true,
+      "owned_resources_removed": true,
+      "host_firewall_unchanged": true,
+      "host_routes_unchanged": true,
+      "host_forwarding_unchanged": true,
+      "phase": "complete",
+      "selected": [
+        "parsa-spoof"
+      ],
+      "public_datapath": {
+        "passed": true,
+        "echo_ms": [
+          2.082,
+          1.03,
+          1.142
+        ],
+        "success_ratio": 1,
+        "upload_mbps": 370.206,
+        "download_mbps": 259.578,
+        "half_close": true,
+        "after_idle": true,
+        "integrity": true,
+        "utc": "2026-10-28T02:39:18Z",
+        "payload_bytes": 262144,
+        "errors": [],
+        "seconds": 1.121
+      },
+      "after_engine_crash": {
+        "passed": true,
+        "echo_ms": [
+          2.039,
+          1.077,
+          1.02
+        ],
+        "success_ratio": 1,
+        "upload_mbps": 367.778,
+        "download_mbps": 332.43,
+        "half_close": true,
+        "after_idle": true,
+        "integrity": true,
+        "utc": "2026-10-28T02:39:26Z",
+        "payload_bytes": 262144,
+        "errors": [],
+        "seconds": 1.119
+      }
+    },
+    {
+      "job": "linux-carriers (backhaul-tcp, false)",
+      "job_id": 122598313447,
+      "test_only": false,
+      "passed": true,
+      "owned_resources_removed": true,
+      "host_firewall_unchanged": true,
+      "host_routes_unchanged": true,
+      "host_forwarding_unchanged": true,
+      "phase": "complete",
+      "selected": [
+        "backhaul-tcp"
+      ],
+      "public_datapath": {
+        "passed": true,
+        "echo_ms": [
+          3.148,
+          3.712,
+          2.605
+        ],
+        "success_ratio": 1,
+        "upload_mbps": 499.614,
+        "download_mbps": 545.192,
+        "half_close": true,
+        "after_idle": true,
+        "integrity": true,
+        "utc": "2026-10-28T02:40:23Z",
+        "payload_bytes": 262144,
+        "errors": [],
+        "seconds": 1.124
+      },
+      "after_engine_crash": {
+        "passed": true,
+        "echo_ms": [
+          3.827,
+          3.685,
+          3.934
+        ],
+        "success_ratio": 1,
+        "upload_mbps": 511.763,
+        "download_mbps": 497.456,
+        "half_close": true,
+        "after_idle": true,
+        "integrity": true,
+        "utc": "2026-10-28T02:40:32Z",
+        "payload_bytes": 262144,
+        "errors": [],
+        "seconds": 1.126
+      }
+    }
+  ]
+}

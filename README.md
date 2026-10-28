@@ -4,7 +4,7 @@
 
 **Iran ⇄ foreign tunnel manager: it tests every carrier on your real route, picks the best one, keeps warm standbys and fails over by itself.**
 
-![version](https://img.shields.io/badge/version-0.3.15-blue)
+![version](https://img.shields.io/badge/version-0.3.16-blue)
 ![platform](https://img.shields.io/badge/platform-Linux%20amd64%20%7C%20arm64-lightgrey)
 ![python](https://img.shields.io/badge/python-3.10%2B-green)
 ![carriers](https://img.shields.io/badge/carriers-20%2B-orange)
@@ -208,14 +208,14 @@ This removes Pronet's services, tagged firewall rules, nftables tables, state, c
 
 ## Offline install (GitHub blocked on a server)
 
-The online installer verifies the 0.3.12 base ZIP and the small 0.3.15 update ZIP before assembling the new version. For offline installation, use the complete `pronet-fleet-0.3.15.zip` with `get.sh`, then:
+The online installer verifies the 0.3.12 base ZIP and the small 0.3.16 update ZIP before assembling the new version. For offline installation, use the complete `pronet-fleet-0.3.16.zip` with `get.sh`, then:
 
 ```bash
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.15.zip bash get.sh                  # Iran
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.15.zip bash get.sh join PNF1-...    # foreign
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.16.zip bash get.sh                  # Iran
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.16.zip bash get.sh join PNF1-...    # foreign
 ```
 
-`get.sh` checks the ZIP's SHA256 before installing. You can also use a mirror with `PRONET_URL=https://…/pronet-fleet-0.3.15.zip`.
+`get.sh` checks the ZIP's SHA256 before installing. You can also use a mirror with `PRONET_URL=https://…/pronet-fleet-0.3.16.zip`.
 
 ## FAQ
 
@@ -244,7 +244,7 @@ Licenses, notices and the BackPack source are included in the release ZIP (`lice
 
 Release notes (Persian) are inside each release ZIP as `CHANGES-<version>.fa.md`.
 
-- **0.3.15**
+- **0.3.16**
   - Independent native Linux GRE in the default carrier tests, with bidirectional integrity, half-close, idle and throughput qualification.
   - Owned interface cleanup, peer-restricted protocol-47 firewall rules and independent GRE family ranking.
 - **0.3.13**
@@ -280,7 +280,7 @@ Release notes (Persian) are inside each release ZIP as `CHANGES-<version>.fa.md`
   - Fix for the gateway CPU/RAM runaway.
 
 
-## Independent carriers added in 0.3.15
+## Independent carriers added in 0.3.16
 
 Paqet (`paqet`, pinned v1.0.0-alpha.21) is an independent engine, not a BackPack mode.
 Backhaul v0.7.2 provides `backhaul-tcp` and `backhaul-tcpmux`. Both use Pronet's
@@ -298,7 +298,7 @@ sender will put in its outgoing packets:
 
 ```sh
 sudo pronet spoof-sources IRAN_SENDER_SOURCE_IP FOREIGN_SENDER_SOURCE_IP
-sudo pronet
+sudo pronet emergency
 ```
 
 This applies to new tunnels. Alternatively use `pronet pair --spoof-iran IP
@@ -313,3 +313,30 @@ in automatic tests.
 
 All six new Linux amd64/arm64 assets are checksum-pinned and bundled for offline
 installation. Upstream source and licences are in `assets.lock.json` and `licenses/`.
+
+
+## Emergency tunnels (manual only, 0.3.16)
+
+Spoof is excluded from ordinary setup, `pair --profiles all`, automatic recovery,
+standby replacement and automatic retesting, including old 0.3.15 histories.
+Paqet and Backhaul remain normal carriers. Open `sudo pronet` -> **7) Emergency
+tunnels**, or run `sudo pronet emergency`. Emergency and normal carriers cannot
+be mixed in one pairing.
+
+The emergency section offers **Test only, then clean up** and **Test and activate**.
+The test-only option runs reachability, integrity, speed, idle and half-close
+qualification on both nodes, cleans up, and saves an emergency report without
+committing a carrier or opening a client gateway. Tests use a separate pairing
+with free endpoints/nodes; no existing active tunnel is stopped or replaced.
+The ordinary foreign join command still completes that separate pairing.
+
+Noninteractive entry points (both sender source addresses are required unless
+saved using `spoof-sources`):
+
+```sh
+sudo pronet emergency --test-only --spoof-iran IP1 --spoof-foreign IP2
+sudo pronet emergency --activate --spoof-iran IP1 --spoof-foreign IP2
+```
+
+Manual emergency setup may keep monitoring the established tunnel's health;
+it never automatically starts another emergency qualification scan.
