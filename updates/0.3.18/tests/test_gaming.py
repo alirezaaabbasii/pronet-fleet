@@ -62,7 +62,7 @@ class QualityTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             config=pathlib.Path(tmp);write_json(config/'node.json',{'role':'iran','public_ip':'192.0.2.1'})
             with mock.patch.object(cli,'CONFIG',config),mock.patch.object(cli,'ask',return_value='2'),mock.patch.object(cli,'setup_iran') as setup,mock.patch.object(cli,'say') as say:
-                cli.wizard();setup.assert_called_once_with(gaming=True)
+                cli._wizard_once();setup.assert_called_once_with(gaming=True)
                 choices=[args[0] for args,_ in say.call_args_list if ') ' in args[0]]
                 self.assertEqual(len(choices),11)
                 self.assertTrue(all(line.count(') ')==1 for line in choices))

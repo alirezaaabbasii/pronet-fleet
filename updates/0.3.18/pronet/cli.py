@@ -1244,6 +1244,19 @@ def menu_header():
 
 
 def wizard():
+    # Submenu Back returns here without recursion. Noninteractive invocations
+    # retain one-pass behavior and cannot manufacture repeated setup requests.
+    if not sys.stdin.isatty():
+        return _wizard_once()
+    while True:
+        try:
+            if _wizard_once() is False: return
+        except PronetError as error:
+            say('  ' + clean(error))
+            ask('Press Enter to return to the menu','')
+
+
+def _wizard_once():
     menu_header()
     if not (CONFIG / "node.json").exists():
         say("Where is THIS server?")
@@ -1253,7 +1266,7 @@ def wizard():
         say("  4) Gaming tunnel (Iran; WireGuard UDP)")
         say("  0) Exit")
         choice = ask("Select", "1")
-        if choice == "0": return
+        if choice == "0": return False
         if choice == "1":
             setup_iran()
         elif choice == "2":
@@ -1297,7 +1310,7 @@ def wizard():
         elif choice == '8': emergency_menu()
         elif choice == '9': memory_command('status')
         elif choice == '10': advanced_test()
-        elif choice == '0': return
+        elif choice == '0': return False
         else: raise PronetError('Choose one of the listed menu numbers')
 
     else:
@@ -1310,7 +1323,7 @@ def wizard():
             from .notify import load_config
             if not load_config() or ask("Set up again? (y/N)", "n").lower().startswith("y"):
                 notify_command("telegram")
-        elif choice == '0': return
+        elif choice == '0': return False
         elif choice == '1':
             text = input("Paste the command from your Iran server: ").strip()
             if not text:
