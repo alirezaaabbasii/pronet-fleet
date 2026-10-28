@@ -4,7 +4,7 @@
 
 **Iran ⇄ foreign tunnel manager: it tests every carrier on your real route, picks the best one, keeps warm standbys and fails over by itself.**
 
-![version](https://img.shields.io/badge/version-0.3.13-blue)
+![version](https://img.shields.io/badge/version-0.3.14-blue)
 ![platform](https://img.shields.io/badge/platform-Linux%20amd64%20%7C%20arm64-lightgrey)
 ![python](https://img.shields.io/badge/python-3.10%2B-green)
 ![carriers](https://img.shields.io/badge/carriers-20%2B-orange)
@@ -132,6 +132,7 @@ curl -fsSL https://raw.githubusercontent.com/alirezaaabbasii/pronet-fleet/main/g
 
 | Name | Engine | Transport |
 |---|---|---|
+| `gre` | Linux kernel GRE | Native GRE over IPv4 (IP protocol 47), independent of BackPack |
 | `bp-l3-pck`, `bp-l3-pck-reverse`, `bp-l3-pck-fec` | BackPack L3 | raw TCP (PCK); reverse = foreign dials; FEC variant |
 | `bp-l3-udp`, `bp-l3-udp-reverse`, `bp-l3-udp-fec` | BackPack L3 | UDP |
 | `bp-l3-quic`, `bp-l3-quic-reverse` | BackPack L3 | QUIC |
@@ -143,6 +144,10 @@ curl -fsSL https://raw.githubusercontent.com/alirezaaabbasii/pronet-fleet/main/g
 | `chisel` | Chisel | SSH over HTTP |
 | `rathole-noise` | Rathole | Noise-encrypted TCP |
 | `wstunnel-wss`, `wstunnel-h2` | wstunnel | WebSocket over TLS / HTTP/2 |
+
+**GRE is included in the default tests.** It uses protocol 47, not TCP/UDP port 47. It requires kernel GRE support and a route that permits GRE; it does not require `/dev/net/tun`. GRE itself does not encrypt or authenticate traffic. Its key separates managed tunnels, and the panel protocol must provide the application security you need.
+
+The active adapter list above is the supported set; research/catalog entries are not additional working adapters.
 
 Engines are unchanged upstream releases, pinned by SHA256 and run as separate systemd services with memory and task limits.
 
@@ -203,14 +208,14 @@ This removes Pronet's services, tagged firewall rules, nftables tables, state, c
 
 ## Offline install (GitHub blocked on a server)
 
-The online installer verifies the 0.3.12 base ZIP and the small 0.3.13 update ZIP before assembling the new version. For offline installation, use the complete `pronet-fleet-0.3.13.zip` with `get.sh`, then:
+The online installer verifies the 0.3.12 base ZIP and the small 0.3.14 update ZIP before assembling the new version. For offline installation, use the complete `pronet-fleet-0.3.14.zip` with `get.sh`, then:
 
 ```bash
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.13.zip bash get.sh                  # Iran
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.13.zip bash get.sh join PNF1-...    # foreign
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.14.zip bash get.sh                  # Iran
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.14.zip bash get.sh join PNF1-...    # foreign
 ```
 
-`get.sh` checks the ZIP's SHA256 before installing. You can also use a mirror with `PRONET_URL=https://…/pronet-fleet-0.3.13.zip`.
+`get.sh` checks the ZIP's SHA256 before installing. You can also use a mirror with `PRONET_URL=https://…/pronet-fleet-0.3.14.zip`.
 
 ## FAQ
 
@@ -239,6 +244,9 @@ Licenses, notices and the BackPack source are included in the release ZIP (`lice
 
 Release notes (Persian) are inside each release ZIP as `CHANGES-<version>.fa.md`.
 
+- **0.3.14**
+  - Independent native Linux GRE in the default carrier tests, with bidirectional integrity, half-close, idle and throughput qualification.
+  - Owned interface cleanup, peer-restricted protocol-47 firewall rules and independent GRE family ranking.
 - **0.3.13**
   - Serialize group startup against measurements on both servers; batch retirement avoids repeated stop waits and manager reloads.
   - Confirm service shutdown with process IDs, continue partial cleanup, and expose failed setup/cleanup accurately.

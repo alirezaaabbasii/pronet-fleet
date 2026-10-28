@@ -4,7 +4,7 @@
 
 **مدیریت تونل ایران ⇄ خارج: همهٔ حامل‌ها را روی مسیر واقعی شما تست می‌کند، بهترین را انتخاب می‌کند، پشتیبان آماده نگه می‌دارد و خودش سوییچ می‌کند.**
 
-![version](https://img.shields.io/badge/version-0.3.13-blue)
+![version](https://img.shields.io/badge/version-0.3.14-blue)
 ![platform](https://img.shields.io/badge/platform-Linux%20amd64%20%7C%20arm64-lightgrey)
 ![python](https://img.shields.io/badge/python-3.10%2B-green)
 
@@ -204,13 +204,13 @@ sudo pronet uninstall
 
 ## نصب بدون دسترسی به گیت‌هاب
 
-نصب‌کنندهٔ آنلاین، ZIP پایهٔ 0.3.12 و ZIP کوچک به‌روزرسانی 0.3.13 را جداگانه با SHA256 بررسی و نسخهٔ جدید را می‌سازد. برای نصب آفلاین، ZIP کامل `pronet-fleet-0.3.13.zip` و `get.sh` را با scp روی سرور بریزید:
+نصب‌کنندهٔ آنلاین، ZIP پایهٔ 0.3.12 و ZIP کوچک به‌روزرسانی 0.3.14 را جداگانه با SHA256 بررسی و نسخهٔ جدید را می‌سازد. برای نصب آفلاین، ZIP کامل `pronet-fleet-0.3.14.zip` و `get.sh` را با scp روی سرور بریزید:
 
 </div>
 
 ```bash
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.13.zip bash get.sh                  # ایران
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.13.zip bash get.sh join PNF1-...    # خارج
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.14.zip bash get.sh                  # ایران
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.14.zip bash get.sh join PNF1-...    # خارج
 ```
 
 <div dir="rtl">
@@ -239,3 +239,12 @@ Pronet Fleet این انجین‌های اصلی را بدون تغییر و ب�
 مجوزها و سورس BackPack داخل فایل ZIP هر نسخه هستند. استفاده از این انجین‌ها به معنی تأیید سازندگانشان نیست.
 
 </div>
+
+
+## GRE مستقیم در نسخهٔ 0.3.14
+
+حامل مستقل `gre` در تست‌های پیش‌فرض قرار دارد. این حامل از GRE کرنل لینوکس روی IP protocol 47 استفاده می‌کند و به BackPack یا `/dev/net/tun` وابسته نیست. پروتکل ۴۷، پورت TCP/UDP شمارهٔ ۴۷ نیست.
+
+GRE مانند حامل‌های دیگر از نظر رفت‌وبرگشت، سلامت داده، half-close، سرعت و دوام بعد از بیکاری تست می‌شود. GRE خودش رمزنگاری یا احراز هویت ندارد؛ کلید GRE فقط تونل‌ها را از هم جدا می‌کند.
+
+فهرست حامل‌های فعال، پوشش واقعی نسخه است؛ وجود نام یک ابزار در research/catalog به معنی پشتیبانی اجرایی از آن نیست.
