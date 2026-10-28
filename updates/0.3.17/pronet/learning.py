@@ -64,7 +64,8 @@ def retired(row, global_scope=False):
 def observation(row):
     if row.get('stage') in ('prepare','start'):
         return None
-    if row.get('passed') and all(row.get(k) for k in ('half_close','integrity','after_idle')) and row.get('success_ratio') == 1:
+    from .model import ranking
+    if ranking([row]):
         # A failing soak must not be learned as a successful stable path.
         if isinstance(row.get('soak'), dict) and not row['soak'].get('passed'):
             return False
@@ -148,6 +149,8 @@ class CarrierMemory:
         with self.connect() as db:
             db.execute('BEGIN IMMEDIATE')
             if db.execute('SELECT 1 FROM runs WHERE id=?',(pair['id'],)).fetchone(): return
+            versions=sorted({fingerprint(name) for name,spec in PROFILES.items() if not spec.get('emergency')})
+            db.execute('DELETE FROM stats WHERE version NOT IN ('+','.join('?' for _ in versions)+')',versions)
             db.execute('DELETE FROM stats WHERE route!=? AND last<? AND (n<24 OR success>n*.25)',('*',now-STALE))
             db.execute('DELETE FROM stats WHERE rowid IN (SELECT rowid FROM stats WHERE route!=? ORDER BY last ASC LIMIT max(0,(SELECT count(*) FROM stats)-?))',('*',MAX_ROWS-2*len(PROFILES)))
             for row,ok in values:
@@ -186,6 +189,7 @@ class CarrierMemory:
         with self.connect() as db:
             rows=[dict(r) for r in db.execute('SELECT profile,version,n,success,last,last_success,rate,latency,days,routes FROM stats WHERE route=?',('*',))]
             count=db.execute('SELECT count(*) FROM stats').fetchone()[0]
+        rows=[row for row in rows if row['profile'] in PROFILES and row['version']==fingerprint(row['profile'])]
         for row in rows:
             row['retired']=retired(row,True)
             row['routes_observed_at_least']=int(row.pop('routes')).bit_count()

@@ -154,7 +154,7 @@ def main(args):
         start("foreign", [sys.executable, __file__, "--child", "backend", "--base", base, "--role", "foreign"], "backend")
         if args.advanced_flow:
             for role, peer in (('iran','198.18.0.2'),('foreign','198.18.0.1')):
-                run(in_ns(role,['iptables','-I','INPUT','1','-s',peer,'-p','udp','-j','DROP']))
+                run(in_ns(role,['iptables','-t','raw','-I','PREROUTING','1','-s',peer,'-p','udp','-j','DROP']))
         child("iran", "pair"); child("foreign", "join")
         created = json.loads((base / "created.json").read_text())
         pair_id = created["pair_id"]
@@ -175,7 +175,7 @@ def main(args):
                     if db.execute('SELECT count(*) FROM pairs').fetchone()[0]!=1:
                         raise PronetError('Advanced work started without explicit approval')
                 for role,peer in (('iran','198.18.0.2'),('foreign','198.18.0.1')):
-                    run(in_ns(role,['iptables','-D','INPUT','-s',peer,'-p','udp','-j','DROP']))
+                    run(in_ns(role,['iptables','-t','raw','-D','PREROUTING','-s',peer,'-p','udp','-j','DROP']))
                 child('iran','advanced')
                 pair_id=json.loads((base/'advanced.json').read_text())['pair_id']
                 report['advanced_explicit']=True
@@ -240,6 +240,21 @@ def main(args):
             report["passed"] = True
     except BaseException as error:
         report["error"] = str(error)[:5000]
+        # Owned test-unit logs only, before cleanup removes the definitions.
+        report['diagnostics']={}
+        for role in ('iran','foreign'):
+            units=[]
+            from pronet.runtime import unit_name
+            for path in (base/role/'state/pairs').glob('*/*/plan.json'):
+                plan=json.loads(path.read_text())
+                units += [unit_name(plan['pair_id'],plan['profile'],kind,role) for kind in ('engine','echo')]
+            if units:
+                try:
+                    output=run(['journalctl','--no-pager','-n','100']+[part for unit in units for part in ('-u',unit)]).stdout
+                    output=re.sub(r'[a-fA-F0-9]{64}', '[redacted]', output)
+                    output=re.sub(r'[A-Za-z0-9+/]{43}=', '[redacted]', output)
+                    report['diagnostics'][role]=output[-16000:]
+                except Exception: pass
     finally:
         for process in reversed(processes):
             if process.poll() is None:

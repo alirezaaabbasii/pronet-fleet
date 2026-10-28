@@ -104,6 +104,12 @@ class MemoryTests(unittest.TestCase):
         self.assertFalse(data['background_probes'])
         self.assertEqual(self.memory.path.stat().st_mode & 0o777,0o600)
 
+    def test_engine_upgrades_do_not_accumulate_obsolete_global_statistics(self):
+        for i in range(20):
+            with mock.patch.object(learning,'fingerprint',return_value='engine-'+str(i)):
+                self.memory.record(pair(i+1),[good(),bad()])
+                self.assertLessEqual(self.memory.summary()['records'],4)
+
     def test_known_good_carriers_start_first_without_dropping_transport_families(self):
         plans=[{'profile':'frp-tls'},{'profile':'bp-quic'},{'profile':'paqet'}]
         controller=Controller(mock.Mock())
