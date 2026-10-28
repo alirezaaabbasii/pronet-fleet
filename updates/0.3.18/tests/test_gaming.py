@@ -148,6 +148,31 @@ class RelayTests(unittest.IsolatedAsyncioTestCase):
             self.assertTrue(any('packet loss' in text for text in gaming.quality({'idle':row,'loaded':row})))
         finally:transport.close()
 
+    async def test_gateway_switch_preserves_public_socket_and_uses_new_key(self):
+        other_key=secret()
+        other=await gaming.listen(('127.0.0.1',0),gaming.DatagramRelay(other_key,foreign=True,ports=[self.port],peer='127.0.0.1'))
+        self.relays.append(other)
+        with tempfile.TemporaryDirectory() as tmp:
+            sock=socket.socket(socket.AF_INET,socket.SOCK_DGRAM);sock.bind(('127.0.0.1',0));port=sock.getsockname()[1];sock.close()
+            config=dict(bind_ip='127.0.0.1',ports=[port],active_backend=list(self.foreign.transport.get_extra_info('sockname')),frame_key=self.key)
+            path=pathlib.Path(tmp)/'gateway.json';write_json(path,config)
+            gateway=gaming.Gateway(path,pathlib.Path(tmp)/'stats.json');await gateway.start()
+            client=self.client();client.connect(('127.0.0.1',port));loop=asyncio.get_running_loop()
+            try:
+                transport=gateway.relays[0].transport
+                # Use an authorized destination port while preserving the test's public socket.
+                gateway.relays[0].client_port=self.port
+                await loop.sock_sendall(client,b'before')
+                self.assertEqual(await asyncio.wait_for(loop.sock_recv(client,100),1),b'before')
+                config.update(active_backend=list(other.transport.get_extra_info('sockname')),frame_key=other_key);write_json(path,config)
+                await asyncio.sleep(1.1)
+                self.assertIs(gateway.relays[0].transport,transport)
+                self.assertFalse(gateway.task.done())
+                await loop.sock_sendall(client,b'after')
+                self.assertEqual(await asyncio.wait_for(loop.sock_recv(client,100),1),b'after')
+                self.assertEqual(len(other.sessions),1)
+            finally:await gateway.close()
+
     async def test_session_cap_and_expiry_are_bounded(self):
         with mock.patch.object(gaming,'MAX_SESSIONS',1):
             loop=asyncio.get_running_loop();a,b=self.client(),self.client()

@@ -180,7 +180,7 @@ def benchmark(address, token, long_test=False, progress=None):
             'half_close':False,'after_idle':after_idle,'integrity':not any(s['integrity_errors'] for s in stages.values()),
             'gaming_stages':stages,'errors':errors,'reason':'; '.join(errors),'utc':utc(),
             'payload_bytes':1200,'load_scope':'paced UDP echo ~1 Mbit/s each direction; not saturation or a capacity estimate',
-            'recommended_wireguard_mtu':1160}
+            'recommended_wireguard_mtu_ipv4':1160,'minimum_wireguard_mtu_ipv6':1280}
 
 
 def score(row):
@@ -221,8 +221,12 @@ class DatagramRelay(asyncio.DatagramProtocol):
             if kind!=3 or port not in self.ports:return
             key=(addr,sid,port)
             if key not in self.sessions:
-                if len(self.sessions)>=MAX_SESSIONS:return
-                self.make_session(key,((self.target.get(str(port),'127.0.0.1') if isinstance(self.target,dict) else self.target),port),sid,port,addr)
+                if len(self.sessions)>=MAX_SESSIONS:
+                    oldest=next(iter(self.sessions))
+                    if now-self.sessions[oldest].at<10:return
+                    self.drop(oldest)
+                try:self.make_session(key,((self.target.get(str(port),'127.0.0.1') if isinstance(self.target,dict) else self.target),port),sid,port,addr)
+                except OSError:return
             row=self.sessions[key]
             if not row.replay.accept(sequence):return
             message=payload
@@ -230,7 +234,8 @@ class DatagramRelay(asyncio.DatagramProtocol):
             key=addr
             if key not in self.sessions:
                 if len(self.sessions)>=MAX_SESSIONS:return
-                self.make_session(key,self.backend,os.urandom(8),self.client_port,addr)
+                try:self.make_session(key,self.backend,os.urandom(8),self.client_port,addr)
+                except OSError:return
             row=self.sessions[key]
             message=pack(self.key,3,row.port,row.session,row.sequence,data);row.sequence+=1
         row.at=now;self.sessions.move_to_end(key)
@@ -303,8 +308,13 @@ class Gateway:
         while not self.closed:
             await asyncio.sleep(1);config=read_json(self.config)
             if any(config.get(k)!=self.settings.get(k) for k in ('active_backend','frame_key')):
-                for relay in self.relays:relay.close()
-                self.relays=[];await self.open(config);self.settings=config
+                # Keep public sockets bound. Closing then rebinding in one loop
+                # tick races the transport's deferred close (EADDRINUSE).
+                for relay in self.relays:
+                    for key in list(relay.sessions):relay.drop(key)
+                    relay.key=bytes.fromhex(config['frame_key'])
+                    relay.backend=tuple(config['active_backend']);relay.rx_at=0
+                self.settings=config
             count+=1
             if count%5==0:
                 seen=max((r.rx_at for r in self.relays),default=0)

@@ -352,7 +352,7 @@ def final_report(pair, nodes=None, style=None, details=False, dashboard=None):
     out += ["", style.section("CONNECT"), style.field("Clients", endpoint)]
     if request.get("gaming"):
         out.append(style.field("WireGuard", "foreign UDP port(s) %s: %s; client handshake not verified" % (port,inbound)))
-        out.append(style.field("Protocol", "UDP; recommended WireGuard MTU 1160 on both ends"))
+        out.append(style.field("Protocol", "UDP; WG MTU: IPv4-only 1160, IPv6 at least 1280"))
     elif inbound == "open":
         out.append(style.field("Panel", "inbound on the foreign server, port %s: %s" % (port, style.ok("listening"))))
     else:

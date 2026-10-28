@@ -405,7 +405,7 @@ class Controller:
             if not pair["request"].get("gaming") and active["iran"].get("tls") not in ("verified", "not-configured"):
                 result["warnings"].append("TLS could not be verified with the configured SNI; inspect the foreign inbound and certificate.")
             if pair['request'].get('gaming'):
-                result['warnings'].append('Gaming UDP active. Suggested WireGuard MTU: 1160 on clients and the foreign interface; measure your path before increasing. WireGuard handshake and game-server latency were not tested automatically. A failover can interrupt a game session.')
+                result['warnings'].append('Gaming UDP active. Suggested WireGuard MTU: 1160 for IPv4-only clients/foreign interface; IPv6 needs at least 1280. Larger datagrams have a per-socket fragmentation fallback; measure the real path. WireGuard handshake and game-server latency were not tested automatically. A failover can interrupt a game session.')
             else:
                 result["warnings"].append("An authenticated WS/XHTTP client session through the public Iran address has not been tested automatically.")
             result["timing"]["finished"] = time.time()

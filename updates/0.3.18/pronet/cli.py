@@ -397,7 +397,7 @@ def setup_iran(args=None, interactive=True, gaming=False):
         else:
             local = getattr(args, "bind_ip", None) or route_source() or ""
             bind = ask("This server is behind NAT. Local IPv4 to bind", local) if interactive else local
-    default_port = ",".join(str(x) for x in port_list(getattr(args, "port", None) or [2053]))
+    default_port = ",".join(str(x) for x in port_list(getattr(args, "port", None) or ([51820] if gaming else [2053])))
     if interactive:
         say("Client port(s) on Iran. One port, or several separated by commas, e.g. 2053,2083,8443")
         say("(each foreign WireGuard UDP inbound must use the same port)" if gaming else "(each foreign panel inbound must use the same port)")
@@ -1251,7 +1251,9 @@ def wizard():
         say("  2) Foreign   (needs the command printed by your Iran server)")
         say("  3) Advanced  (coordinator only / existing bootstrap file)")
         say("  4) Gaming tunnel (Iran; WireGuard UDP)")
+        say("  0) Exit")
         choice = ask("Select", "1")
+        if choice == "0": return
         if choice == "1":
             setup_iran()
         elif choice == "2":
@@ -1264,7 +1266,7 @@ def wizard():
         elif choice == "3":
             advanced_menu()
         else:
-            raise PronetError("Choose 1, 2, 3 or 4.")
+            raise PronetError("Choose 0, 1, 2, 3 or 4.")
         return
     config = node_config()
     if config["role"] == "iran":
@@ -1416,13 +1418,13 @@ def uninstall(confirmed=False):
 
 def advanced_menu():
     say('Advanced setup')
-    menu_options([('a','Coordinator only on this server'),('b','Register with a bootstrap file (Iran or foreign)'),('0','Back')])
-    choice = ask("Select", "a").lower()
+    menu_options([('1','Coordinator only on this server'),('2','Register with a bootstrap file (Iran or foreign)'),('0','Back')])
+    choice = ask('Select','0')
     if choice == "0": return
-    if choice == "a":
+    if choice == "1":
         url = ask("Coordinator HTTPS address", "https://%s:9443" % (guess_public_ip([]) or "SERVER_IP"))
         init_hub(argparse.Namespace(url=url, bind="0.0.0.0", cert=None, key=None, ca=None))
-    elif choice == "b":
+    elif choice == "2":
         menu_options([('1','Iran'),('2','Foreign')])
         role = {'1':'iran','2':'foreign'}.get(ask('Server role','1'))
         if not role:
@@ -1439,7 +1441,7 @@ def advanced_menu():
         else:
             join(ask("4-digit code from Iran"))
     else:
-        raise PronetError("Choose a or b.")
+        raise PronetError("Choose 0, 1 or 2.")
 
 
 def main():
