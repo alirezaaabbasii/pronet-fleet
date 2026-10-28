@@ -4,7 +4,7 @@
 
 **Iran ⇄ foreign tunnel manager: it tests every carrier on your real route, picks the best one, keeps warm standbys and fails over by itself.**
 
-![version](https://img.shields.io/badge/version-0.3.12-blue)
+![version](https://img.shields.io/badge/version-0.3.13-blue)
 ![platform](https://img.shields.io/badge/platform-Linux%20amd64%20%7C%20arm64-lightgrey)
 ![python](https://img.shields.io/badge/python-3.10%2B-green)
 ![carriers](https://img.shields.io/badge/carriers-20%2B-orange)
@@ -32,7 +32,7 @@ Your clients always use the same `IRAN_IP:PORT`. Carrier changes happen behind t
 | | |
 |---|---|
 | 🔍 **Real-route carrier testing** | Every carrier is measured end-to-end between your two servers before anything is chosen. |
-| ⚡ **Fast setup** | Carriers are tested in smart groups. The next group starts while the current one is measured, and transfers never overlap so the numbers stay honest. |
+| ⚡ **Fast setup** | Carriers are tested in smart groups. Host changes on both servers stay outside measurements. Probes and idle waits overlap within a group; retired services stop together with one manager reload. |
 | 🏆 **Best-route selection** | A stability-weighted score: a fast but flaky carrier loses to a slightly slower, steady one. |
 | 🛟 **Primary + 2 warm standbys** | Standbys run and are probed all the time, so failover takes seconds. Only one standby is kept on servers with less than 1.4 GB RAM. |
 | 🔁 **Automatic failover, only for real outages** | A health check fails only if 3 echo attempts all fail **and** no user data came through the carrier in the last 30 s, so a busy or slightly lossy tunnel is never treated as down. The primary has to fail 3 checks in a row (about 3 minutes) before users move to the standby with the best record over the last hour. Dead sessions are closed so clients reconnect immediately. |
@@ -45,7 +45,7 @@ Your clients always use the same `IRAN_IP:PORT`. Carrier changes happen behind t
 | 🌐 **Web dashboard** | A private status page served from the Iran server at an unguessable link, with a **Return to main carrier** button when a tunnel is on a standby. |
 | 🔀 **Manual return** | After a failover Pronet stays on the standby. You choose when to return: `sudo pronet switch` or the dashboard button. Only new connections move. |
 | 🔌 **Multiple client ports** | One tunnel can carry several ports, e.g. `2053,2083,8443`. |
-| 🔒 **Safe by design** | Signed, SHA256-pinned releases. Each tunnel gets its own credentials and certificates. Firewall rules and services are tagged and owned, and nothing else on the server is touched. |
+| 🔒 **Safe by design** | SHA256-pinned release archives. Each tunnel gets its own credentials and certificates. Firewall rules and services are tagged and owned, and nothing else on the server is touched. |
 | 🧹 **Clean uninstall** | `sudo pronet uninstall` removes only what Pronet created. |
 
 ## How it works
@@ -203,14 +203,14 @@ This removes Pronet's services, tagged firewall rules, nftables tables, state, c
 
 ## Offline install (GitHub blocked on a server)
 
-Copy `dist/pronet-fleet-0.3.12.zip` and `get.sh` to the server, then:
+The online installer verifies the 0.3.12 base ZIP and the small 0.3.13 update ZIP before assembling the new version. For offline installation, use the complete `pronet-fleet-0.3.13.zip` with `get.sh`, then:
 
 ```bash
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.12.zip bash get.sh                  # Iran
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.12.zip bash get.sh join PNF1-...    # foreign
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.13.zip bash get.sh                  # Iran
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.13.zip bash get.sh join PNF1-...    # foreign
 ```
 
-`get.sh` checks the ZIP's SHA256 before installing. You can also use a mirror with `PRONET_URL=https://…/pronet-fleet-0.3.12.zip`.
+`get.sh` checks the ZIP's SHA256 before installing. You can also use a mirror with `PRONET_URL=https://…/pronet-fleet-0.3.13.zip`.
 
 ## FAQ
 
@@ -239,6 +239,10 @@ Licenses, notices and the BackPack source are included in the release ZIP (`lice
 
 Release notes (Persian) are inside each release ZIP as `CHANGES-<version>.fa.md`.
 
+- **0.3.13**
+  - Serialize group startup against measurements on both servers; batch retirement avoids repeated stop waits and manager reloads.
+  - Confirm service shutdown with process IDs, continue partial cleanup, and expose failed setup/cleanup accurately.
+  - 217 tests pass on macOS/Python 3.12; real Linux/systemd route validation is still required.
 - **0.3.12**
   - Far fewer switches: 3-attempt checks, user traffic counts as proof of life, failover after 3 failed checks.
   - Stricter flap rules, a 2 h calm period after a switch, and a 24 h hold on manual choices.
