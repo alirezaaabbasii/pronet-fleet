@@ -1083,6 +1083,9 @@ class Runtime:
             raise PronetError("Public gateway could not bind; inspect pair logs")
         address = (plan.get("gateway_bind_ip", plan["bind_ip"]), plan["inbound_port"])
         if plan.get('gaming'):
+            listeners=udp_listeners()
+            if any(not any(row['port']==number and row['address']==bind_ip for row in listeners) for number in ports):
+                raise PronetError('Gaming UDP gateway did not bind every authorized client port')
             result={'gateway':'active','local_endpoint':'udp-listening','protocol':'udp','external_client_test':'not-performed'}
             write_json(self.root/pair_id/'active.json',result)
             return result
