@@ -177,7 +177,7 @@ def render(plan, directory, binaries):
                       "local_ip": local + "/30", "peer_ip": peer, "encap": "gre", "mtu": 1280,
                       "auto_mtu": True, "mss_clamp": -1, "txqueuelen": 256, "qdisc": "fq_codel"}
             if plan.get('gaming'):
-                values.update(mtu=1280,txqueuelen=64,qdisc='fq_codel')
+                values.update(mtu=1280,auto_mtu=False,txqueuelen=64,qdisc='fq_codel')
             if spec.get("fec"):
                 values.update(fec_data=10, fec_parity=3)
             text = toml_table("l3", values)

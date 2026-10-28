@@ -72,6 +72,23 @@ class QualityTests(unittest.TestCase):
             self.assertEqual(runtime.udp_listeners(),[{'address':'0.0.0.0','port':2053}])
             command.assert_called_once_with(['ss','-H','-lntup'])
 
+    def test_normal_and_gaming_memory_are_isolated(self):
+        from pronet.learning import CarrierMemory
+        from test_learning import pair,good,bad
+        with tempfile.TemporaryDirectory() as tmp:
+            now=[100*86400.];memory=CarrierMemory(pathlib.Path(tmp)/'stats.db',lambda:now[0])
+            for day in range(7):
+                now[0]=(100+day)*86400.
+                for route in range(24):memory.record(pair(day*24+route+1,route),[good(),bad('gre')])
+            ordinary=pair(999,30)
+            self.assertTrue(memory.plan(ordinary,['gre'])['skipped'])
+            game=copy.deepcopy(ordinary);game['request']['gaming']=True
+            self.assertFalse(memory.plan(game,['gre'])['skipped'])
+            game['id']='f'*24;memory.record(game,[measured('gre')])
+            rows=memory.summary()['profiles']
+            self.assertTrue(any(r['profile']=='gre' and r['mode']=='gaming' and r['success']==1 for r in rows))
+            self.assertTrue(memory.plan(ordinary,['gre'])['skipped'])
+
 
 class RelayTests(unittest.IsolatedAsyncioTestCase):
     async def asyncSetUp(self):
@@ -114,6 +131,23 @@ class RelayTests(unittest.IsolatedAsyncioTestCase):
         self.assertTrue(result['passed'],result['errors'])
         self.assertGreaterEqual(result['gaming_stages']['idle']['sent'],250)
         self.assertEqual(result['gaming_stages']['loaded']['loss_percent'],0)
+    async def test_real_packet_loss_and_delay_are_rejected(self):
+        key=bytes.fromhex(self.key)
+        class Impaired(asyncio.DatagramProtocol):
+            def connection_made(self,t):self.transport=t
+            def datagram_received(self,data,addr):
+                kind,port,sid,seq,payload=gaming.unpack(key,data)
+                if seq%10==0:return
+                response=gaming.pack(key,2,0,sid,seq,payload)
+                delay=.08 if seq%4==0 else .001
+                asyncio.get_running_loop().call_later(delay,self.transport.sendto,response,addr)
+        transport,_=await asyncio.get_running_loop().create_datagram_endpoint(Impaired,local_addr=('127.0.0.1',0))
+        try:
+            row=await asyncio.to_thread(gaming._stage,transport.get_extra_info('sockname'),self.key,3)
+            self.assertGreater(row['loss_percent'],5)
+            self.assertTrue(any('packet loss' in text for text in gaming.quality({'idle':row,'loaded':row})))
+        finally:transport.close()
+
     async def test_session_cap_and_expiry_are_bounded(self):
         with mock.patch.object(gaming,'MAX_SESSIONS',1):
             loop=asyncio.get_running_loop();a,b=self.client(),self.client()
