@@ -1,0 +1,263 @@
+{
+  "commit": "cae380bc718aa9d08aef0e1ffcebe884eafff75e",
+  "run_id": 40620155024,
+  "unit_tests": 243,
+  "reports": [
+    {
+      "profile": "backhaul-tcpmux",
+      "job_id": 122591965015,
+      "passed": true,
+      "owned_resources_removed": true,
+      "host_firewall_unchanged": true,
+      "host_routes_unchanged": true,
+      "host_forwarding_unchanged": true,
+      "engine_recovery_seconds": 9.49,
+      "public_datapath": {
+        "passed": true,
+        "echo_ms": [
+          3.81,
+          2.863,
+          2.897
+        ],
+        "success_ratio": 1,
+        "upload_mbps": 476.14,
+        "download_mbps": 417.823,
+        "half_close": true,
+        "after_idle": true,
+        "integrity": true,
+        "utc": "2026-10-28T02:19:40Z",
+        "payload_bytes": 262144,
+        "errors": [],
+        "seconds": 1.125
+      },
+      "after_engine_crash": {
+        "passed": true,
+        "echo_ms": [
+          3.876,
+          2.878,
+          2.777
+        ],
+        "success_ratio": 1,
+        "upload_mbps": 526.024,
+        "download_mbps": 391.943,
+        "half_close": true,
+        "after_idle": true,
+        "integrity": true,
+        "utc": "2026-10-28T02:19:50Z",
+        "payload_bytes": 262144,
+        "errors": [],
+        "seconds": 1.126
+      },
+      "hub_independence": {
+        "passed": true,
+        "echo_ms": [
+          3.754,
+          3.026,
+          2.827
+        ],
+        "success_ratio": 1,
+        "upload_mbps": 539.253,
+        "download_mbps": 475.379,
+        "half_close": true,
+        "after_idle": true,
+        "integrity": true,
+        "utc": "2026-10-28T02:19:52Z",
+        "payload_bytes": 262144,
+        "errors": [],
+        "seconds": 1.124
+      }
+    },
+    {
+      "profile": "parsa-spoof",
+      "job_id": 122591965228,
+      "passed": true,
+      "owned_resources_removed": true,
+      "host_firewall_unchanged": true,
+      "host_routes_unchanged": true,
+      "host_forwarding_unchanged": true,
+      "engine_recovery_seconds": 8.01,
+      "public_datapath": {
+        "passed": true,
+        "echo_ms": [
+          3.134,
+          2.262,
+          1.983
+        ],
+        "success_ratio": 1,
+        "upload_mbps": 198.393,
+        "download_mbps": 216.799,
+        "half_close": true,
+        "after_idle": true,
+        "integrity": true,
+        "utc": "2026-10-28T02:19:29Z",
+        "payload_bytes": 262144,
+        "errors": [],
+        "seconds": 1.133
+      },
+      "after_engine_crash": {
+        "passed": true,
+        "echo_ms": [
+          3.212,
+          2.13,
+          2.011
+        ],
+        "success_ratio": 1,
+        "upload_mbps": 198.119,
+        "download_mbps": 204.297,
+        "half_close": true,
+        "after_idle": true,
+        "integrity": true,
+        "utc": "2026-10-28T02:19:37Z",
+        "payload_bytes": 262144,
+        "errors": [],
+        "seconds": 1.133
+      },
+      "hub_independence": {
+        "passed": true,
+        "echo_ms": [
+          3.955,
+          2.275,
+          2.237
+        ],
+        "success_ratio": 1,
+        "upload_mbps": 202.375,
+        "download_mbps": 193.803,
+        "half_close": true,
+        "after_idle": true,
+        "integrity": true,
+        "utc": "2026-10-28T02:19:38Z",
+        "payload_bytes": 262144,
+        "errors": [],
+        "seconds": 1.135
+      }
+    },
+    {
+      "profile": "backhaul-tcp",
+      "job_id": 122591965296,
+      "passed": true,
+      "owned_resources_removed": true,
+      "host_firewall_unchanged": true,
+      "host_routes_unchanged": true,
+      "host_forwarding_unchanged": true,
+      "engine_recovery_seconds": 9.28,
+      "public_datapath": {
+        "passed": true,
+        "echo_ms": [
+          2.67,
+          2.063,
+          2.06
+        ],
+        "success_ratio": 1,
+        "upload_mbps": 871.523,
+        "download_mbps": 827.648,
+        "half_close": true,
+        "after_idle": true,
+        "integrity": true,
+        "utc": "2026-10-28T02:20:37Z",
+        "payload_bytes": 262144,
+        "errors": [],
+        "seconds": 1.116
+      },
+      "after_engine_crash": {
+        "passed": true,
+        "echo_ms": [
+          2.564,
+          1.942,
+          2.062
+        ],
+        "success_ratio": 1,
+        "upload_mbps": 888.867,
+        "download_mbps": 871.643,
+        "half_close": true,
+        "after_idle": true,
+        "integrity": true,
+        "utc": "2026-10-28T02:20:46Z",
+        "payload_bytes": 262144,
+        "errors": [],
+        "seconds": 1.116
+      },
+      "hub_independence": {
+        "passed": true,
+        "echo_ms": [
+          2.509,
+          2.391,
+          2.112
+        ],
+        "success_ratio": 1,
+        "upload_mbps": 973.041,
+        "download_mbps": 936.276,
+        "half_close": true,
+        "after_idle": true,
+        "integrity": true,
+        "utc": "2026-10-28T02:20:48Z",
+        "payload_bytes": 262144,
+        "errors": [],
+        "seconds": 1.115
+      }
+    },
+    {
+      "profile": "paqet",
+      "job_id": 122591965335,
+      "passed": true,
+      "owned_resources_removed": true,
+      "host_firewall_unchanged": true,
+      "host_routes_unchanged": true,
+      "host_forwarding_unchanged": true,
+      "engine_recovery_seconds": 10.91,
+      "public_datapath": {
+        "passed": true,
+        "echo_ms": [
+          96.634,
+          82.046,
+          82.051
+        ],
+        "success_ratio": 1,
+        "upload_mbps": 17.186,
+        "download_mbps": 12.581,
+        "half_close": true,
+        "after_idle": true,
+        "integrity": true,
+        "utc": "2026-10-28T02:19:33Z",
+        "payload_bytes": 262144,
+        "errors": [],
+        "seconds": 1.873
+      },
+      "after_engine_crash": {
+        "passed": true,
+        "echo_ms": [
+          69.159,
+          82.861,
+          82.055
+        ],
+        "success_ratio": 1,
+        "upload_mbps": 25.989,
+        "download_mbps": 24.156,
+        "half_close": true,
+        "after_idle": true,
+        "integrity": true,
+        "utc": "2026-10-28T02:19:45Z",
+        "payload_bytes": 262144,
+        "errors": [],
+        "seconds": 1.603
+      },
+      "hub_independence": {
+        "passed": true,
+        "echo_ms": [
+          78.893,
+          82.131,
+          82.122
+        ],
+        "success_ratio": 1,
+        "upload_mbps": 25.776,
+        "download_mbps": 24.715,
+        "half_close": true,
+        "after_idle": true,
+        "integrity": true,
+        "utc": "2026-10-28T02:19:47Z",
+        "payload_bytes": 262144,
+        "errors": [],
+        "seconds": 1.612
+      }
+    }
+  ]
+}

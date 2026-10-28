@@ -319,7 +319,7 @@ installation. Upstream source and licences are in `assets.lock.json` and `licens
 
 Spoof is excluded from ordinary setup, `pair --profiles all`, automatic recovery,
 standby replacement and automatic retesting, including old 0.3.15 histories.
-Paqet and Backhaul remain normal carriers. Open `sudo pronet` -> **7) Emergency
+Paqet and Backhaul remain normal carriers. Open `sudo pronet` -> **8) Emergency
 tunnels**, or run `sudo pronet emergency`. Emergency and normal carriers cannot
 be mixed in one pairing.
 
