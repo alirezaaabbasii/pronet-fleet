@@ -28,9 +28,10 @@ class FakeKernel:
         self.routes = []
         self.calls = []
         self.fail_address = False
+        self.omit_creation_alias = False
     def owned(self):
         e=self.expected
-        return {'ifname':e['name'],'ifalias':e['owner'],'linkinfo':{'info_kind':'gre','info_data':{
+        return {'ifindex':42,'ifname':e['name'],'ifalias':e['owner'],'linkinfo':{'info_kind':'gre','info_data':{
             'local':e['local'],'remote':e['remote'],'ikey':str(ipaddress.IPv4Address(e['key'])),
             'okey':str(ipaddress.IPv4Address(e['key']))}}}
     def command(self, args, **kw):
@@ -40,7 +41,11 @@ class FakeKernel:
         elif args == ['ip','-j','-4','route','show','table','all']:
             out=json.dumps(self.routes)
         elif args[:3] == ['ip','link','add']:
-            self.link=self.owned();out=''
+            self.link=self.owned()
+            if self.omit_creation_alias:self.link.pop('ifalias')
+            out=''
+        elif args[:3] == ['ip','link','set'] and 'alias' in args:
+            self.link['ifalias']=args[args.index('alias')+1];out=''
         elif args[:3] == ['ip','link','delete']:
             self.link=None;out=''
         elif args[:4] == ['ip','-4','address','replace'] and self.fail_address:
@@ -72,6 +77,21 @@ class NativeGRETests(unittest.TestCase):
         self.assertEqual(add[add.index('key')+1],str(gre.parameters(plan())['key']))
         self.assertNotIn('b'*64,str(self.kernel.calls))
         self.assertFalse(any('default' in c or 'sysctl' in c for c in self.kernel.calls))
+    def test_creation_alias_compatibility_uses_setlink_with_recorded_ownership(self):
+        self.kernel.omit_creation_alias=True
+        gre.up(plan())
+        self.assertEqual(self.kernel.link['ifalias'],self.kernel.expected['owner'])
+        gre.down(plan())
+        self.assertIsNone(self.kernel.link)
+    def test_pending_creation_is_recovered_but_a_replaced_interface_is_not_adopted(self):
+        self.kernel.link=self.kernel.owned();self.kernel.link.pop('ifalias')
+        write_json(gre.ownership_path(self.kernel.expected), {'expected':self.kernel.expected,'phase':'creating','ifindex':42})
+        gre.up(plan())
+        self.kernel.link.pop('ifalias')
+        self.kernel.link['ifindex']=99
+        write_json(gre.ownership_path(self.kernel.expected), {'expected':self.kernel.expected,'phase':'creating','ifindex':42})
+        with self.assertRaisesRegex(PronetError,'ownership'):
+            gre.down(plan())
     def test_reuse_and_removal_are_idempotent(self):
         gre.up(plan());gre.up(plan());gre.down(plan());gre.down(plan())
         self.assertEqual(sum(c[:3]==['ip','link','add'] for c in self.kernel.calls),1)

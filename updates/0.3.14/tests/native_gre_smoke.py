@@ -69,12 +69,13 @@ def main():
                 run(['ip','-n',namespaces[short],'address','add','198.18.0.%d/30'%number,'dev','eth0'])
                 run(['ip','-n',namespaces[short],'link','set','eth0','up'])
             name=native_gre.parameters(plans['i'])['name']
-            run(['ip','-n',namespaces['i'],'link','add',name,'alias','external-test-owner','type','dummy'])
+            run(['ip','-n',namespaces['i'],'link','add',name,'type','dummy'])
+            run(['ip','-n',namespaces['i'],'link','set','dev',name,'alias','external-test-owner'])
             try: invoke('i','up')
             except subprocess.CalledProcessError: pass
             else: raise RuntimeError('An unowned interface was adopted')
             row=json.loads(run(['ip','-n',namespaces['i'],'-j','-d','link','show','dev',name]).stdout)[0]
-            assert row['ifalias']=='external-test-owner' and row['linkinfo']['info_kind']=='dummy'
+            assert row.get('ifalias')=='external-test-owner' and row['linkinfo']['info_kind']=='dummy', json.dumps(row)
             run(['ip','-n',namespaces['i'],'link','delete',name]);report['unowned_interface_preserved']=True
             for short in namespaces:
                 invoke(short,'up');invoke(short,'up')

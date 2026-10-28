@@ -10,7 +10,7 @@ import ipaddress
 import json
 import threading
 
-from .common import ROOT, PronetError, command, lock
+from .common import ROOT, PronetError, command, lock, read_json, write_json
 from .model import iface, tunnel_ips, validate_profile
 
 MTU = 1280
@@ -48,11 +48,20 @@ def _key(value):
     raise ValueError('missing GRE key')
 
 
-def assert_owned(row, expected):
+def ownership_path(expected):
+    return ROOT / 'gre-ownership' / (expected['name'] + '.json')
+
+
+def assert_owned(row, expected, pending=False):
     info = row.get('linkinfo') or {}
     data = info.get('info_data') or {}
     try:
-        matches = (row.get('ifname') == expected['name'] and row.get('ifalias') == expected['owner']
+        tagged = row.get('ifalias') == expected['owner']
+        if pending and row.get('ifalias') in (None, ''):
+            record = read_json(ownership_path(expected), {})
+            tagged = (record.get('expected') == expected and record.get('phase') == 'creating'
+                      and ('ifindex' not in record or record['ifindex'] == row.get('ifindex')))
+        matches = (row.get('ifname') == expected['name'] and tagged
                    and info.get('info_kind') == 'gre' and data.get('local') == expected['local']
                    and data.get('remote') == expected['remote'] and _key(data.get('ikey')) == expected['key']
                    and _key(data.get('okey')) == expected['key'])
@@ -79,8 +88,9 @@ def _check_routes(plan, expected):
 def _down(expected):
     row = lookup(expected['name'])
     if row is not None:
-        assert_owned(row, expected)
+        assert_owned(row, expected, pending=True)
         command(['ip', 'link', 'delete', 'dev', expected['name']])
+    ownership_path(expected).unlink(missing_ok=True)
 
 
 def up(plan):
@@ -88,23 +98,33 @@ def up(plan):
     with lock(ROOT / 'gre-operation.lock'):
         current = lookup(expected['name'])
         if current is not None:
-            assert_owned(current, expected)
+            assert_owned(current, expected, pending=True)
         _check_routes(plan, expected)
         created = False
         try:
             if current is None:
-                # Alias and GRE link are created in ONE netlink request: even a
-                # SIGKILL immediately afterwards leaves identifiable ownership.
+                # Some kernels ignore IFLA_IFALIAS on NEWLINK. Record the
+                # creation intent first; only this exact pending identity can
+                # be recovered if the helper dies before SETLINK tags it.
+                write_json(ownership_path(expected), {'expected': expected, 'phase': 'creating'})
                 command(['ip', 'link', 'add', 'name', expected['name'], 'alias', expected['owner'],
                          'mtu', str(MTU), 'type', 'gre', 'local', expected['local'], 'remote', expected['remote'],
                          'key', str(expected['key']), 'ttl', '64'])
                 created = True
+            row = lookup(expected['name']) or {}
+            assert_owned(row, expected, pending=True)
+            if row.get('ifalias') != expected['owner']:
+                write_json(ownership_path(expected), {'expected': expected, 'phase': 'creating', 'ifindex': row['ifindex']})
+                command(['ip', 'link', 'set', 'dev', expected['name'], 'alias', expected['owner']])
+            write_json(ownership_path(expected), {'expected': expected, 'phase': 'active', 'ifindex': row.get('ifindex')})
             command(['ip', '-4', 'address', 'replace', expected['address'], 'dev', expected['name']])
             command(['ip', 'link', 'set', 'dev', expected['name'], 'mtu', str(MTU), 'up'])
             assert_owned(lookup(expected['name']) or {}, expected)
         except BaseException:
             if created:
                 _down(expected)
+            elif current is None:
+                ownership_path(expected).unlink(missing_ok=True)
             raise
     return {'interface': expected['name'], 'outer_protocol': 47, 'mtu': MTU}
 
