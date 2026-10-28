@@ -355,6 +355,10 @@ class Controller:
                         soaked["echo_ms"] = [sample for row in rows for sample in row["echo_ms"]]
                         soaked["upload_mbps"] = min(row["upload_mbps"] for row in rows)
                         soaked["download_mbps"] = min(row["download_mbps"] for row in rows)
+                        if soaked.get('gaming'):
+                            from .gaming import combine_stages
+                            soaked['gaming_stages']=combine_stages(rows)
+                            soaked['gaming_stages_aggregation']='worst-scored phase across qualification runs' 
                     soaked["observations"] = rows
                     for row in candidates:
                         if row["profile"] == name: row["soak"] = soaked

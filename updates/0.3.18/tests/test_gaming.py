@@ -28,6 +28,7 @@ class QualityTests(unittest.TestCase):
         slow=measured('bp-l3-udp',90);slow.update(upload_mbps=1000,download_mbps=1000)
         fast=measured('gre',20)
         self.assertEqual(model.ranking([slow,fast])[0]['profile'],'gre')
+        self.assertEqual(gaming.combine_stages([slow,fast])['idle']['p95_ms'],90)
     def test_loss_jitter_tail_and_loaded_latency_reject_independently(self):
         for field,value in [('loss_percent',2),('jitter_p95_ms',35),('p95_ms',300),('p99_ms',400),('max_gap_ms',400),('sent',3)]:
             row=measured();row['gaming_stages']['loaded'][field]=value
@@ -130,6 +131,7 @@ class RelayTests(unittest.IsolatedAsyncioTestCase):
         result=await asyncio.to_thread(gaming.benchmark,target,self.key)
         self.assertTrue(result['passed'],result['errors'])
         self.assertGreaterEqual(result['gaming_stages']['idle']['sent'],250)
+        self.assertLessEqual(len(result['gaming_stages']['idle']['echo_ms']),64)
         self.assertEqual(result['gaming_stages']['loaded']['loss_percent'],0)
     async def test_real_packet_loss_and_delay_are_rejected(self):
         key=bytes.fromhex(self.key)

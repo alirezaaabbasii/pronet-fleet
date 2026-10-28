@@ -156,7 +156,7 @@ def _stage(address, token, seconds, loaded=False, progress=None):
     return {'sent':len(sent),'received':len(seen),'loss_percent':round(100*(1-len(seen)/max(1,len(sent))),3),
             'p50_ms':percentile(delays,.5),'p95_ms':percentile(delays,.95),'p99_ms':percentile(delays,.99),
             'jitter_p95_ms':percentile(jitter,.95),'max_gap_ms':round(max(gaps,default=seconds)*1000,3),
-            'reordered':reordered,'integrity_errors':wrong,'echo_ms':delays,
+            'reordered':reordered,'integrity_errors':wrong,'echo_ms':delays[::max(1,math.ceil(len(delays)/64))],
             'load_reply_mbps':len(received)*1000*8/seconds/1e6 if loaded else 0}
 
 
@@ -181,6 +181,15 @@ def benchmark(address, token, long_test=False, progress=None):
             'gaming_stages':stages,'errors':errors,'reason':'; '.join(errors),'utc':utc(),
             'payload_bytes':1200,'load_scope':'paced UDP echo ~1 Mbit/s each direction; not saturation or a capacity estimate',
             'recommended_wireguard_mtu_ipv4':1160,'minimum_wireguard_mtu_ipv6':1280}
+
+
+def combine_stages(rows):
+    # Preserve one real, worst-scored phase from the repeated qualification.
+    # Counts and percentiles stay measurements from that same run.
+    def cost(stage):
+        return stage['loss_percent']*100+stage['p95_ms']+.5*stage['p99_ms']+3*stage['jitter_p95_ms']
+    return {phase:max((row['gaming_stages'][phase] for row in rows),key=cost)
+            for phase in ('idle','loaded')}
 
 
 def score(row):

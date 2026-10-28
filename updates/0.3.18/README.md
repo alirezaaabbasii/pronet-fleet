@@ -405,3 +405,5 @@ Gaming health checks are small authenticated UDP echoes at a nominal five-second
 Menus now list one choice per line, group actions, show version/local server identity and installed state without a network request, and provide explicit exit/back choices.
 
 Existing larger WireGuard datagrams use a per-relay-socket IPv4 fragmentation fallback; no global fragmentation setting changes. A measured smaller MTU avoids this extra work.
+
+Repeated qualification ranks the worst-scored measured phase across the three successful runs. All probes contribute to the measured percentiles; at most 64 representative RTT samples per phase are retained in reports.
