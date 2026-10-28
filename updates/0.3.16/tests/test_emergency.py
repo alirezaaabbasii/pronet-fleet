@@ -53,6 +53,19 @@ class EmergencyTests(unittest.TestCase):
         store.update_pair.assert_not_called()
         store.enqueue.assert_not_called()
 
+    def test_legacy_normal_recovery_never_retests_previously_passed_spoof(self):
+        store=mock.Mock()
+        pair={'id':'a'*24,'iran':'b'*24,'foreign_node':'c'*24,'result':{
+            'selected':[], 'results':[self.passed('parsa-spoof'),self.passed('paqet')]}}
+        store.pair.return_value=pair
+        controller=Controller(store)
+        controller.both=mock.Mock(return_value={})
+        controller.rpc=mock.Mock(return_value={'passed':False})
+        controller.recover(pair['id'],'pause')
+        self.assertEqual(controller.rpc.call_count,1)
+        self.assertEqual(controller.rpc.call_args.args[3]['profile'],'paqet')
+        self.assertEqual(pair['result']['recovery']['attempted'],['paqet'])
+
     def test_emergency_menu_back_does_not_start_or_modify_anything(self):
         with mock.patch.object(cli,'root_linux'),mock.patch.object(cli,'node_config',return_value={'role':'iran'}), \
                 mock.patch.object(cli,'ask',return_value='0'),mock.patch.object(cli,'new_tunnel') as start, \

@@ -298,7 +298,7 @@ sender will put in its outgoing packets:
 
 ```sh
 sudo pronet spoof-sources IRAN_SENDER_SOURCE_IP FOREIGN_SENDER_SOURCE_IP
-sudo pronet
+sudo pronet emergency
 ```
 
 This applies to new tunnels. Alternatively use `pronet pair --spoof-iran IP

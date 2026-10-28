@@ -160,7 +160,7 @@ def main(args):
             state = (row[0], detail.get("phase"), len(detail.get("results", [])))
             if state != previous:
                 print("LINUX_TEST", state, flush=True); previous = state
-            if row[0] in ("ACTIVE", "FAILED"): break
+            if row[0] in ("ACTIVE", "FAILED", "STOPPED"): break
             time.sleep(2)
         if args.test_only:
             if not row or row[0] != "STOPPED": raise PronetError("Emergency test did not finish cleanly")
