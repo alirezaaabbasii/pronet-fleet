@@ -1201,6 +1201,26 @@ def uninstall(confirmed=False):
     for path in units:
         # Stopping runs each unit's ExecStopPost, which removes its own firewall rules.
         attempt(["systemctl", "disable", "--now", path.name])
+    stopped = True
+    for path in units:
+        shown = command(["systemctl", "show", path.name, "--property=ActiveState,MainPID,ControlPID"], timeout=10, check=False)
+        props = dict(line.split("=", 1) for line in shown.stdout.splitlines() if "=" in line)
+        if (shown.returncode or props.get("ActiveState") not in ("inactive", "failed")
+                or props.get("MainPID") != "0" or props.get("ControlPID") != "0"):
+            problems.append(path.name + ": stop unconfirmed; ownership and code retained")
+            stopped = False
+    if stopped:
+        from .runtime import managed_firewall
+        for path in (ROOT / "pairs").glob("*/*/plan.json"):
+            try:
+                managed_firewall(path.parent, "engine", "down")
+            except PronetError as error:
+                problems.append(clean(error))
+                stopped = False
+    if not stopped:
+        say("Uninstall did not complete. Management files were retained for a safe retry:")
+        for problem in problems: say("  " + problem)
+        return False
     for path in units:
         with contextlib.suppress(OSError):
             path.unlink()
@@ -1209,14 +1229,18 @@ def uninstall(confirmed=False):
             if path.is_dir() and not path.is_symlink():
                 shutil.rmtree(path, ignore_errors=True)
     command(["systemctl", "daemon-reload"], check=False)
-    command(["systemctl", "reset-failed"], check=False)
+    if units:
+        command(["systemctl", "reset-failed"] + [path.name for path in units], check=False)
     iptables = shutil.which("iptables")
     if iptables:
-        listing = command([iptables, "-w", "5", "-S"], check=False).stdout
-        for line in listing.splitlines():
-            parts = line.split()
-            if len(parts) > 2 and parts[0] == "-A" and any(p.startswith("pronetf:") or p.startswith('"pronetf:') for p in parts):
-                attempt([iptables, "-w", "5", "-D"] + [p.strip('"') for p in parts[1:]])
+        import shlex
+        for table in ("filter", "raw", "mangle"):
+            listing = command([iptables, "-w", "5", "-t", table, "-S"], check=False).stdout
+            for line in listing.splitlines():
+                parts = shlex.split(line)
+                if (len(parts) > 2 and parts[0] == "-A" and "--comment" in parts
+                        and parts[parts.index("--comment") + 1].startswith("pronetf:")):
+                    attempt([iptables, "-w", "5", "-t", table, "-D"] + parts[1:])
     if shutil.which("nft"):
         for line in command(["nft", "list", "tables"], check=False).stdout.splitlines():
             parts = line.split()

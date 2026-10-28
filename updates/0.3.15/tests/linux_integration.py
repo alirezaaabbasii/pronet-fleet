@@ -210,9 +210,16 @@ def main(args):
                 try: process.wait(timeout=10)
                 except subprocess.TimeoutExpired: process.kill(); process.wait()
         cleanup_errors = []
+        report["owned_resources_removed"] = True
         for role in ("iran", "foreign"):
             try:
-                if (base / role / "config/node.json").exists(): child(role, "cleanup")
+                if (base / role / "config/node.json").exists():
+                    child(role, "cleanup")
+                    links = json.loads(run(in_ns(role, ["ip", "-j", "link", "show"])).stdout)
+                    rules = run(in_ns(role, ["iptables-save"])).stdout
+                    if any(str(link.get("ifalias", "")).startswith("pronetf:") for link in links) or "pronetf:" in rules:
+                        report["owned_resources_removed"] = False
+                        raise PronetError("Owned interface or firewall rules survived cleanup")
             except Exception as error: cleanup_errors.append(str(error))
         for namespace in reversed(created_namespaces):
             try: run(["ip", "netns", "delete", namespace])

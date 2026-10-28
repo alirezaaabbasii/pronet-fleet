@@ -2,7 +2,9 @@ name: Independent carrier validation
 on:
   pull_request:
     paths:
-      - 'updates/0.3.15/**'
+      - 'updates/0.3.15/pronet/**'
+      - 'updates/0.3.15/tests/**'
+      - 'updates/0.3.15/assets.lock.json'
       - 'tools/assemble-carriers-ci.py'
       - '.github/workflows/carriers.yml'
   workflow_dispatch:

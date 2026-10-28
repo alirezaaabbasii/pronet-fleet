@@ -8,12 +8,12 @@ from unittest import mock
 
 from pronet import carrier_engines, engines, model, spoof_wg
 from pronet.common import PronetError, write_json
-from test_extensions import ExtensionTests
+import test_extensions
 
 
 class IndependentCarriers(unittest.TestCase):
     def plan(self, profile, role='iran'):
-        return ExtensionTests().plan(profile, role)
+        return test_extensions.ExtensionTests().plan(profile, role)
 
     def test_existing_profile_indices_stay_unchanged(self):
         self.assertEqual(list(model.PROFILES).index('gre'), 21)
@@ -83,7 +83,7 @@ class IndependentCarriers(unittest.TestCase):
         record={'expected':item,'ifindex':4,'phase':'active'}
         with mock.patch.object(spoof_wg,'read_json',return_value=record):
             spoof_wg.owned(row,item)
-            for altered in (dict(row,ifindex=5),dict(row,ifalias='outside'),dict(row,linkinfo={'info_kind':'dummy'})):
+            for altered in (dict(row,ifindex=5),dict(row,ifalias='outside'),dict(row,ifalias=None),dict(row,linkinfo={'info_kind':'dummy'})):
                 with self.assertRaises(PronetError): spoof_wg.owned(altered,item)
 
     def test_wireguard_requires_exact_key_not_a_command_or_file_path(self):

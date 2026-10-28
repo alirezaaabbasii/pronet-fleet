@@ -4,7 +4,7 @@
 
 **Iran ⇄ foreign tunnel manager: it tests every carrier on your real route, picks the best one, keeps warm standbys and fails over by itself.**
 
-![version](https://img.shields.io/badge/version-0.3.14-blue)
+![version](https://img.shields.io/badge/version-0.3.15-blue)
 ![platform](https://img.shields.io/badge/platform-Linux%20amd64%20%7C%20arm64-lightgrey)
 ![python](https://img.shields.io/badge/python-3.10%2B-green)
 ![carriers](https://img.shields.io/badge/carriers-20%2B-orange)
@@ -208,14 +208,14 @@ This removes Pronet's services, tagged firewall rules, nftables tables, state, c
 
 ## Offline install (GitHub blocked on a server)
 
-The online installer verifies the 0.3.12 base ZIP and the small 0.3.14 update ZIP before assembling the new version. For offline installation, use the complete `pronet-fleet-0.3.14.zip` with `get.sh`, then:
+The online installer verifies the 0.3.12 base ZIP and the small 0.3.15 update ZIP before assembling the new version. For offline installation, use the complete `pronet-fleet-0.3.15.zip` with `get.sh`, then:
 
 ```bash
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.14.zip bash get.sh                  # Iran
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.14.zip bash get.sh join PNF1-...    # foreign
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.15.zip bash get.sh                  # Iran
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.15.zip bash get.sh join PNF1-...    # foreign
 ```
 
-`get.sh` checks the ZIP's SHA256 before installing. You can also use a mirror with `PRONET_URL=https://…/pronet-fleet-0.3.14.zip`.
+`get.sh` checks the ZIP's SHA256 before installing. You can also use a mirror with `PRONET_URL=https://…/pronet-fleet-0.3.15.zip`.
 
 ## FAQ
 
@@ -244,7 +244,7 @@ Licenses, notices and the BackPack source are included in the release ZIP (`lice
 
 Release notes (Persian) are inside each release ZIP as `CHANGES-<version>.fa.md`.
 
-- **0.3.14**
+- **0.3.15**
   - Independent native Linux GRE in the default carrier tests, with bidirectional integrity, half-close, idle and throughput qualification.
   - Owned interface cleanup, peer-restricted protocol-47 firewall rules and independent GRE family ranking.
 - **0.3.13**
@@ -278,3 +278,38 @@ Release notes (Persian) are inside each release ZIP as `CHANGES-<version>.fa.md`
 - **0.3.6**
   - Stable recovery policy by default.
   - Fix for the gateway CPU/RAM runaway.
+
+
+## Independent carriers added in 0.3.15
+
+Paqet (`paqet`, pinned v1.0.0-alpha.21) is an independent engine, not a BackPack mode.
+Backhaul v0.7.2 provides `backhaul-tcp` and `backhaul-tcpmux`. Both use Pronet's
+authenticated FIN/ACK bridge, preserving application half-close despite upstream's
+full-close behaviour. These TCP modes do not encrypt payload; use authenticated
+application encryption. Upstream WSS is deliberately excluded because its client
+skips certificate validation. No upstream installation script or global tuning runs.
+
+`parsa-spoof` uses the Parsa v3.1.0-beta.0 raw TCP carrier with **WireGuard** inside.
+WireGuard supplies encryption, peer authentication and replay protection. Both servers
+need `wireguard-tools` and kernel WireGuard support, plus permitted spoofed egress.
+The source addresses must be explicitly chosen by the operator; Pronet does not
+invent addresses or scan public ranges. On Iran, configure the address that each
+sender will put in its outgoing packets:
+
+```sh
+sudo pronet spoof-sources IRAN_SENDER_SOURCE_IP FOREIGN_SENDER_SOURCE_IP
+sudo pronet
+```
+
+This applies to new tunnels. Alternatively use `pronet pair --spoof-iran IP
+--spoof-foreign IP`. Without source addresses the profile fails preflight immediately
+with a clear reason and emits no spoof traffic. An answering authenticated test over
+WireGuard, integrity, bidirectional throughput, half-close and idle survival are still
+required before selection. A lab test cannot establish compatibility with a public
+Iran/foreign route. ICMP and XDP modes are excluded to avoid global sysctl changes
+and attachment to a shared physical interface. Existing tunnels keep their committed
+carriers until an explicit new setup or retest. GFK remains unimplemented and is not
+in automatic tests.
+
+All six new Linux amd64/arm64 assets are checksum-pinned and bundled for offline
+installation. Upstream source and licences are in `assets.lock.json` and `licenses/`.

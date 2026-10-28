@@ -62,9 +62,10 @@ def record_path(item):
 
 def owned(row, item):
     record = read_json(record_path(item), {})
+    tagged = row.get('ifalias') == item['owner'] or (record.get('phase') == 'creating' and row.get('ifalias') in (None, ''))
     if (row.get('linkinfo', {}).get('info_kind') != 'wireguard'
             or record.get('expected') != item or record.get('ifindex') != row.get('ifindex')
-            or row.get('ifalias') not in (item['owner'], '' if record.get('phase') == 'creating' else None)):
+            or not tagged):
         raise PronetError('Spoof interface ownership changed; leaving interface untouched')
 
 
@@ -96,6 +97,8 @@ def up(plan, directory):
     config = directory / 'wireguard.conf'
     atomic_write(config, text)
     with lock(ROOT / 'spoof-operation.lock'):
+        from .native_gre import _check_routes
+        _check_routes(plan, item)
         row = lookup(item['name'])
         if row is None:
             write_json(record_path(item), {'expected': item, 'phase': 'creating'})
