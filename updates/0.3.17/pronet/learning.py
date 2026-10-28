@@ -31,7 +31,10 @@ def fingerprint(profile):
     spec = PROFILES[profile]
     assets = json.loads((APP / 'assets.lock.json').read_text())
     engine = assets.get(spec['engine'], {'version':'native-1'})
-    data = [spec, engine.get('version'), engine.get('assets'), 'qualification-v1']
+    adapter = 'carrier_engines.py' if spec['engine'] in ('paqet','backhaul','parsa-spoof') else 'native_gre.py' if spec['engine']=='native-gre' else 'engines.py'
+    adapter_hash=hashlib.sha256((APP/'pronet'/adapter).read_bytes()).hexdigest()
+    qualifier_hash=hashlib.sha256((APP/'pronet'/'wire.py').read_bytes()).hexdigest()
+    data = [spec, engine.get('version'), engine.get('assets'), adapter_hash, qualifier_hash, 'qualification-v1']
     return hashlib.sha256(json.dumps(data, sort_keys=True).encode()).hexdigest()[:16]
 
 

@@ -42,6 +42,20 @@ class IndependentCarriers(unittest.TestCase):
                     self.assertNotIn('b'*64, str(recipe))
                     if role == 'iran': self.assertIn('127.0.0.1:24445=127.0.0.1:24447', text)
 
+    def test_repeated_backhaul_start_does_not_trigger_upstream_config_hot_reload(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path=pathlib.Path(folder)
+            plan=self.plan('backhaul-tcpmux')
+            engines.render(plan,path,{'backhaul':'/managed/backhaul'})
+            before=(path/'engine.toml').stat()
+            engines.render(plan,path,{'backhaul':'/managed/backhaul'})
+            after=(path/'engine.toml').stat()
+            self.assertEqual(before.st_mtime_ns,after.st_mtime_ns)
+            self.assertEqual(before.st_ino,after.st_ino)
+            changed=dict(plan,token='c'*64)
+            engines.render(changed,path,{'backhaul':'/managed/backhaul'})
+            self.assertIn('c'*64,(path/'engine.toml').read_text())
+
     def test_paqet_uses_real_route_and_pinned_port_on_both_nodes(self):
         with tempfile.TemporaryDirectory() as folder, mock.patch.object(carrier_engines,'route',return_value=('eth8','aa:bb:cc:dd:ee:ff')):
             for role in ('iran','foreign'):

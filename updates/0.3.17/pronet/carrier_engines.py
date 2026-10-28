@@ -53,7 +53,12 @@ def render(plan, directory, binaries):
             values.update(remote_addr=f"{plan['iran_ip']}:{plan['control_port']}",
                           retry_interval=3, dial_timeout=8, connection_pool=4)
         path = directory / 'engine.toml'
-        atomic_write(path, toml_table('server' if iran else 'client', values))
+        text=toml_table('server' if iran else 'client', values)
+        # Upstream watches mtime every few seconds and tears down all streams
+        # when it changes. Repeated qualification/start must not reload an
+        # already running engine if its immutable configuration is identical.
+        if path.is_symlink() or not path.is_file() or path.read_text()!=text:
+            atomic_write(path,text)
         return dict(command=[binaries[engine], '-c', str(path)], validate=None, environment={})
     if engine == 'paqet':
         peer = plan['foreign_ip'] if iran else plan['iran_ip']
