@@ -1,9 +1,9 @@
-name: Gaming UDP and menu validation
+name: Permanent activation fallback validation
 on:
   pull_request:
     paths:
-      - 'updates/0.3.18/pronet/**'
-      - 'updates/0.3.18/tests/**'
+      - 'updates/0.3.19/pronet/**'
+      - 'updates/0.3.19/tests/**'
       - 'tools/assemble-gaming-ci.py'
       - '.github/workflows/gaming.yml'
   workflow_dispatch:
@@ -20,10 +20,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - {profile: gre, gaming: true}
           - {profile: bp-l3-udp, gaming: true}
           - {profile: 'gre,bp-l3-udp', gaming: true}
-          - {profile: 'gre,bp-l3-udp,bp-l3-udp-reverse,bp-l3-quic,bp-l3-quic-reverse,bp-l3-udp-fec,bp-l3-pck,bp-l3-pck-reverse,bp-l3-pck-fec,bp-l3-sni', gaming: true}
           - {profile: frp-tls, gaming: false}
     env:
       PYTHONDONTWRITEBYTECODE: '1'

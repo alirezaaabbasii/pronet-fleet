@@ -14,7 +14,7 @@ url='https://raw.githubusercontent.com/alirezaaabbasii/pronet-fleet/main/dist/pr
 data=urllib.request.urlopen(url,timeout=60).read()
 assert hashlib.sha256(data).hexdigest()=='3f1c4483c41c1f288281dabb789289888e043a9132e1d99f814929e55ba2fb37'
 with zipfile.ZipFile(io.BytesIO(data)) as archive: archive.extractall(base)
-shutil.copytree(repo/'updates/0.3.18',base/'pronet-fleet-0.3.12',dirs_exist_ok=True)
+shutil.copytree(repo/'updates/0.3.19',base/'pronet-fleet-0.3.12',dirs_exist_ok=True)
 print(base/'pronet-fleet-0.3.12')
 
 import json,subprocess
