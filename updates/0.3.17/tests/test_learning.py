@@ -84,6 +84,12 @@ class MemoryTests(unittest.TestCase):
         self.memory.record(pair(1),[good(),good('parsa-spoof')])
         self.assertNotIn('parsa-spoof',[r['profile'] for r in self.memory.summary()['profiles']])
 
+    def test_advanced_emergency_success_can_confirm_route_health_without_learning_emergency_statistics(self):
+        self.memory.record(pair(1,advanced=True),[bad(),good('parsa-spoof')])
+        rows={row['profile']:row for row in self.memory.summary()['profiles']}
+        self.assertEqual(rows['bp-quic']['n'],1)
+        self.assertNotIn('parsa-spoof',rows)
+
     def test_duplicate_run_version_change_and_clear(self):
         self.train()
         count=self.memory.summary()['profiles'][0]['n']

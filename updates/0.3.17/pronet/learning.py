@@ -144,7 +144,7 @@ class CarrierMemory:
             return
         values = [(r,observation(r)) for r in rows if r.get('profile') in PROFILES and not PROFILES[r['profile']].get('emergency')]
         # An entirely dead route is not evidence against every individual engine.
-        if not any(ok is True for _,ok in values): return
+        if not any(observation(row) is True for row in rows if row.get('profile') in PROFILES): return
         route = route_key(pair)
         now = self.clock()
         day,bucket = int(now//86400),int(now//WINDOW)
