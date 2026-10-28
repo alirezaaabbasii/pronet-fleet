@@ -582,7 +582,7 @@ class Controller:
 
     def recover(self, pair_id, pause_id):
         pair = self.store.pair(pair_id)
-        if pair["request"].get("emergency"):
+        if pair.get("request", {}).get("emergency"):
             return
         result = pair["result"]
         old = result.get("selected", [])
@@ -884,7 +884,7 @@ class Controller:
         """Swap an unstable standby for the next qualified carrier while the
         primary keeps serving users (it is never restarted or switched)."""
         pair = self.store.pair(pair_id)
-        if pair["request"].get("emergency"):
+        if pair.get("request", {}).get("emergency"):
             return
         result = pair["result"]
         now = time.time()
@@ -941,7 +941,7 @@ class Controller:
         """
         from . import __version__
         pair = self.store.pair(pair_id)
-        if pair["request"].get("emergency"):
+        if pair.get("request", {}).get("emergency"):
             return
         result = pair["result"]
         now = time.time()
