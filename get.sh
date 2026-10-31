@@ -97,20 +97,21 @@ else
   unzip -q "$base_zip" -d "$work"
   mv "$work/pronet-fleet-${BASE_VERSION}" "$src"
   unzip -oq "$update_zip" -d "$work"
-  # Additional independent engines: source/version/digest come from the
-  # already verified update. Fetch both architectures to preserve the complete
-  # offline bundle manifest; nothing executes before verification.
+  # Additional independent engines are mirrored under their original digest.
+  # Keep every download on the same raw host as this installer: some routes
+  # allow raw.githubusercontent.com but cannot reach github.com Releases.
+  # Fetch both architectures to preserve the complete offline bundle manifest.
   python3 - "$src" > "$work/extra-assets.tsv" <<'PY'
 import json,pathlib,sys
 bundle=pathlib.Path(sys.argv[1])
 locked=json.loads((bundle/'assets.lock.json').read_text())
 for engine in ('paqet','backhaul','parsa-spoof'):
     for asset in locked[engine]['assets'].values():
-        print(asset['url'],asset['name'],asset['sha256'],sep='\t')
+        print(asset['name'],asset['sha256'],sep='\t')
 PY
-  while IFS="$(printf '\t')" read -r asset_url asset_name asset_sha; do
+  while IFS="$(printf '\t')" read -r asset_name asset_sha; do
     say "Downloading verified engine: $asset_name"
-    fetch "$asset_url" "$src/vendor/$asset_name"
+    fetch "https://raw.githubusercontent.com/${OWNER_REPO}/main/dist/engines/${asset_sha}/${asset_name}" "$src/vendor/$asset_name"
     verify_zip "$asset_sha" "$src/vendor/$asset_name"
   done < "$work/extra-assets.tsv"
 fi
