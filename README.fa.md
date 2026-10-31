@@ -81,6 +81,9 @@ Pronet Fleet برعکس کار می‌کند:
 curl -fsSL https://raw.githubusercontent.com/alirezaaabbasii/pronet-fleet/main/get.sh | sudo bash
 ```
 
+تمام فایل‌های Pronet و موتورهای همراه از `raw.githubusercontent.com` دریافت می‌شوند؛ دسترسی مستقیم به بخش Releases روی `github.com` برای نصب لازم نیست. صحت همهٔ فایل‌ها با SHA256 بررسی می‌شود. پیش‌نیازهای سیستم همچنان از مخزن بسته‌های سیستم‌عامل نصب می‌شوند.
+
+
 <div dir="rtl">
 
 گزینهٔ `1` (Iran) را بزنید. بعد Enter بزنید تا IP عمومی تشخیص‌داده‌شده و پورت `2053` قبول شود.

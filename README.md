@@ -76,6 +76,9 @@ Your clients always use the same `IRAN_IP:PORT`. Carrier changes happen behind t
 curl -fsSL https://raw.githubusercontent.com/alirezaaabbasii/pronet-fleet/main/get.sh | sudo bash
 ```
 
+All Pronet bundles and bundled engines download from `raw.githubusercontent.com`; installation does not require direct access to `github.com` Releases. Every file is verified against its pinned SHA256. System prerequisites still come from the operating system package repositories.
+
+
 Choose `1` (Iran), then press Enter to accept the detected public IP and client port `2053`.
 Iran sets up the coordinator and prints **one command** for the foreign server. That command stays on screen until the foreign server joins.
 
