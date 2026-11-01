@@ -1,0 +1,50 @@
+name: Multi-IP live upgrade and isolation
+on:
+  pull_request:
+    paths:
+      - 'updates/0.3.20/**'
+      - 'tools/assemble-multi-ip-ci.py'
+      - '.github/workflows/multi-ip.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: multi-ip-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  unit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - run: python3 tools/assemble-multi-ip-ci.py "$RUNNER_TEMP/pronet"
+      - run: cd "$RUNNER_TEMP/pronet/0.3.20" && python3 -m unittest discover -s tests
+  live-upgrade:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {profile: frp-tls, count: 4, gaming: false}
+          - {profile: gre, count: 2, gaming: true}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - run: sudo python3 tools/assemble-multi-ip-ci.py /opt/pronet-fleet
+      - name: Keep old connection alive through upgrade and additional same-port tunnels
+        run: sudo python3 /opt/pronet-fleet/0.3.20/tests/linux_multi_ip.py --old-source /opt/pronet-fleet/0.3.19 --profile "${{ matrix.profile }}" --count "${{ matrix.count }}" ${{ matrix.gaming && '--gaming' || '' }}
+  wireguard:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq wireguard-tools
+      - run: python3 tools/assemble-multi-ip-ci.py "$RUNNER_TEMP/pronet"
+      - name: Full Gaming setup and real WireGuard datapath
+        run: sudo -E python3 "$RUNNER_TEMP/pronet/0.3.20/tests/linux_integration.py" --profiles bp-l3-udp --gaming --timeout 1080

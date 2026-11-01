@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import subprocess
 import tempfile
@@ -21,9 +22,10 @@ def exercise(repo, source, base, *, tamper=False, upgrade=False, join=False):
         requests = root / 'requests.jsonl'
         actions = root / 'actions.jsonl'
         locked = json.loads((source / 'assets.lock.json').read_text())
+        version = re.search(r'^VERSION="([^"]+)"', (repo / 'get.sh').read_text(), re.M).group(1)
         files = {
             'https://raw.githubusercontent.com/alirezaaabbasii/pronet-fleet/main/dist/pronet-fleet-0.3.12.zip': str(base),
-            'https://raw.githubusercontent.com/alirezaaabbasii/pronet-fleet/main/dist/pronet-fleet-0.3.19-update.zip': str(repo / 'dist/pronet-fleet-0.3.19-update.zip'),
+            f'https://raw.githubusercontent.com/alirezaaabbasii/pronet-fleet/main/dist/pronet-fleet-{version}-update.zip': str(repo / f'dist/pronet-fleet-{version}-update.zip'),
         }
         for engine in ('paqet', 'backhaul', 'parsa-spoof'):
             for asset in locked[engine]['assets'].values():

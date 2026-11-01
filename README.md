@@ -4,7 +4,7 @@
 
 **Iran ⇄ foreign tunnel manager: it tests every carrier on your real route, picks the best one, keeps warm standbys and fails over by itself.**
 
-![version](https://img.shields.io/badge/version-0.3.19-blue)
+![version](https://img.shields.io/badge/version-0.3.20-blue)
 ![platform](https://img.shields.io/badge/platform-Linux%20amd64%20%7C%20arm64-lightgrey)
 ![python](https://img.shields.io/badge/python-3.10%2B-green)
 ![carriers](https://img.shields.io/badge/carriers-20%2B-orange)
@@ -14,6 +14,14 @@
 </div>
 
 ---
+
+## Multiple Iran IPs with the same client port
+
+Choose an assigned Iran IPv4 for each new Standard or Gaming tunnel. Four different local IPs may all use client port `2053`, with each endpoint paired to a different foreign server. Internal carrier ports are allocated separately. WireGuard requires Gaming/UDP mode.
+
+Update Iran and the existing foreign node using the usual installer; do not uninstall. Upgrade activation restarts management services while leaving running carriers and gateways intact. Choosing an additional IP requires no service restart and does not change existing client endpoints or the coordinator address.
+
+Run `sudo pronet`, choose Standard or Gaming, select the Iran IP, enter the client port, and run the new join command on the intended foreign server. CLI example: `sudo pronet pair --public-ip IP_SECOND --port 2053 --gaming`.
 
 ## Why Pronet Fleet
 
@@ -211,14 +219,14 @@ This removes Pronet's services, tagged firewall rules, nftables tables, state, c
 
 ## Offline install (GitHub blocked on a server)
 
-The online installer verifies the 0.3.12 base ZIP and the small 0.3.19 update ZIP before assembling the new version. For offline installation, use the complete `pronet-fleet-0.3.19.zip` with `get.sh`, then:
+The online installer verifies the 0.3.12 base ZIP and the small 0.3.20 update ZIP before assembling the new version. For offline installation, use the complete `pronet-fleet-0.3.20.zip` with `get.sh`, then:
 
 ```bash
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.19.zip bash get.sh                  # Iran
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.19.zip bash get.sh join PNF1-...    # foreign
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.20.zip bash get.sh                  # Iran
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.20.zip bash get.sh join PNF1-...    # foreign
 ```
 
-`get.sh` checks the ZIP's SHA256 before installing. You can also use a mirror with `PRONET_URL=https://…/pronet-fleet-0.3.19.zip`.
+`get.sh` checks the ZIP's SHA256 before installing. You can also use a mirror with `PRONET_URL=https://…/pronet-fleet-0.3.20.zip`.
 
 ## FAQ
 
@@ -389,7 +397,7 @@ Without them, only Spoof is explicitly omitted. Nothing can bypass missing kerne
 or hardware prerequisites. This is all implemented adapters, not the research list.
 
 
-## Gaming tunnel (WireGuard / UDP) — 0.3.19
+## Gaming tunnel (WireGuard / UDP) — 0.3.20
 
 On Iran choose **2) Gaming tunnel** from the registered main menu, **4) Gaming tunnel** on a fresh install, or run `sudo pronet gaming`. The existing public-IP, authorized client ports and foreign join flow is retained. Enter the WireGuard **UDP** listening port(s) on the foreign server; those same UDP ports open on Iran. Change clients' WireGuard Endpoint to the Iran IP and selected port. Existing WireGuard keys/peer configuration are not edited.
 
