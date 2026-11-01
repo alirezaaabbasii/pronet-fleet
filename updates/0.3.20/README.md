@@ -15,6 +15,14 @@
 
 ---
 
+## Multiple Iran IPs with the same client port
+
+Choose an assigned Iran IPv4 for each new Standard or Gaming tunnel. Four different local IPs may all use client port `2053`, with each endpoint paired to a different foreign server. Internal carrier ports are allocated separately. WireGuard requires Gaming/UDP mode.
+
+Update Iran and the existing foreign node using the usual installer; do not uninstall. Upgrade activation restarts management services while leaving running carriers and gateways intact. Choosing an additional IP requires no service restart and does not change existing client endpoints or the coordinator address.
+
+Run `sudo pronet`, choose Standard or Gaming, select the Iran IP, enter the client port, and run the new join command on the intended foreign server. CLI example: `sudo pronet pair --public-ip IP_SECOND --port 2053 --gaming`.
+
 ## Why Pronet Fleet
 
 Most tunnel scripts make you pick a protocol, hope it survives the filtering on *your* route, and fix it by hand when it dies at 3 a.m.

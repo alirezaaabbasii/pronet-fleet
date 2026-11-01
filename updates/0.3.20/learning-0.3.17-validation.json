@@ -1,0 +1,294 @@
+{
+  "commit": "ccf939a450e737f0bc7da08b2ec4f32c87e20b05",
+  "run_id": 40627405470,
+  "unit_tests": 269,
+  "runtime_arch": "linux-amd64",
+  "reports": [
+    {
+      "job": "linux-carriers (parsa-spoof, false)",
+      "job_id": 122615535219,
+      "test_only": false,
+      "advanced_explicit": false,
+      "advanced_requested_all_supported": false,
+      "passed": true,
+      "owned_resources_removed": true,
+      "host_firewall_unchanged": true,
+      "host_routes_unchanged": true,
+      "host_forwarding_unchanged": true,
+      "phase": "complete",
+      "selected": [
+        "parsa-spoof"
+      ],
+      "carriers_tested": 1,
+      "memory_bypassed": true,
+      "public_datapath": {
+        "passed": true,
+        "echo_ms": [
+          3.31,
+          2.266,
+          2.2
+        ],
+        "success_ratio": 1,
+        "upload_mbps": 204.878,
+        "download_mbps": 185.984,
+        "half_close": true,
+        "after_idle": true,
+        "integrity": true,
+        "utc": "2026-10-28T03:34:55Z",
+        "payload_bytes": 262144,
+        "errors": [],
+        "seconds": 1.134
+      },
+      "after_engine_crash": {
+        "passed": true,
+        "echo_ms": [
+          3.268,
+          2.326,
+          5.256
+        ],
+        "success_ratio": 1,
+        "upload_mbps": 207.769,
+        "download_mbps": 207.285,
+        "half_close": true,
+        "after_idle": true,
+        "integrity": true,
+        "utc": "2026-10-28T03:35:03Z",
+        "payload_bytes": 262144,
+        "errors": [],
+        "seconds": 1.137
+      }
+    },
+    {
+      "job": "linux-carriers (frp-quic, true)",
+      "job_id": 122615535422,
+      "test_only": false,
+      "advanced_explicit": true,
+      "advanced_requested_all_supported": true,
+      "passed": true,
+      "owned_resources_removed": true,
+      "host_firewall_unchanged": true,
+      "host_routes_unchanged": true,
+      "host_forwarding_unchanged": true,
+      "phase": "complete",
+      "selected": [
+        "gre"
+      ],
+      "carriers_tested": 26,
+      "memory_bypassed": true,
+      "public_datapath": {
+        "passed": true,
+        "echo_ms": [
+          1.543,
+          2.028,
+          1.536
+        ],
+        "success_ratio": 1,
+        "upload_mbps": 1645.557,
+        "download_mbps": 1387.784,
+        "half_close": true,
+        "after_idle": true,
+        "integrity": true,
+        "utc": "2026-10-28T03:36:57Z",
+        "payload_bytes": 262144,
+        "errors": [],
+        "seconds": 1.11
+      },
+      "after_engine_crash": {
+        "passed": true,
+        "echo_ms": [
+          1.467,
+          0.648,
+          0.576
+        ],
+        "success_ratio": 1,
+        "upload_mbps": 1812.692,
+        "download_mbps": 1472.607,
+        "half_close": true,
+        "after_idle": true,
+        "integrity": true,
+        "utc": "2026-10-28T03:37:04Z",
+        "payload_bytes": 262144,
+        "errors": [],
+        "seconds": 1.107
+      }
+    },
+    {
+      "job": "linux-carriers (backhaul-tcp, false)",
+      "job_id": 122615535455,
+      "test_only": false,
+      "advanced_explicit": false,
+      "advanced_requested_all_supported": false,
+      "passed": true,
+      "owned_resources_removed": true,
+      "host_firewall_unchanged": true,
+      "host_routes_unchanged": true,
+      "host_forwarding_unchanged": true,
+      "phase": "complete",
+      "selected": [
+        "backhaul-tcp"
+      ],
+      "carriers_tested": 1,
+      "memory_bypassed": false,
+      "public_datapath": {
+        "passed": true,
+        "echo_ms": [
+          4.037,
+          3.102,
+          2.811
+        ],
+        "success_ratio": 1,
+        "upload_mbps": 551.775,
+        "download_mbps": 473.467,
+        "half_close": true,
+        "after_idle": true,
+        "integrity": true,
+        "utc": "2026-10-28T03:36:19Z",
+        "payload_bytes": 262144,
+        "errors": [],
+        "seconds": 1.124
+      },
+      "after_engine_crash": {
+        "passed": true,
+        "echo_ms": [
+          3.857,
+          2.58,
+          2.901
+        ],
+        "success_ratio": 1,
+        "upload_mbps": 603.675,
+        "download_mbps": 480.174,
+        "half_close": true,
+        "after_idle": true,
+        "integrity": true,
+        "utc": "2026-10-28T03:36:28Z",
+        "payload_bytes": 262144,
+        "errors": [],
+        "seconds": 1.123
+      }
+    },
+    {
+      "job": "linux-carriers (parsa-spoof, true)",
+      "job_id": 122615535464,
+      "test_only": true,
+      "advanced_explicit": false,
+      "advanced_requested_all_supported": false,
+      "passed": true,
+      "owned_resources_removed": true,
+      "host_firewall_unchanged": true,
+      "host_routes_unchanged": true,
+      "host_forwarding_unchanged": true,
+      "phase": "emergency-tested",
+      "selected": [],
+      "carriers_tested": 1,
+      "memory_bypassed": true
+    },
+    {
+      "job": "linux-carriers (backhaul-tcpmux, false)",
+      "job_id": 122615535512,
+      "test_only": false,
+      "advanced_explicit": false,
+      "advanced_requested_all_supported": false,
+      "passed": true,
+      "owned_resources_removed": true,
+      "host_firewall_unchanged": true,
+      "host_routes_unchanged": true,
+      "host_forwarding_unchanged": true,
+      "phase": "complete",
+      "selected": [
+        "backhaul-tcpmux"
+      ],
+      "carriers_tested": 1,
+      "memory_bypassed": false,
+      "public_datapath": {
+        "passed": true,
+        "echo_ms": [
+          3.141,
+          2.377,
+          2.303
+        ],
+        "success_ratio": 1,
+        "upload_mbps": 676.574,
+        "download_mbps": 638.546,
+        "half_close": true,
+        "after_idle": true,
+        "integrity": true,
+        "utc": "2026-10-28T03:34:48Z",
+        "payload_bytes": 262144,
+        "errors": [],
+        "seconds": 1.119
+      },
+      "after_engine_crash": {
+        "passed": true,
+        "echo_ms": [
+          3.123,
+          2.349,
+          2.298
+        ],
+        "success_ratio": 1,
+        "upload_mbps": 703.908,
+        "download_mbps": 644.232,
+        "half_close": true,
+        "after_idle": true,
+        "integrity": true,
+        "utc": "2026-10-28T03:34:57Z",
+        "payload_bytes": 262144,
+        "errors": [],
+        "seconds": 1.119
+      }
+    },
+    {
+      "job": "linux-carriers (paqet, false)",
+      "job_id": 122615535567,
+      "test_only": false,
+      "advanced_explicit": false,
+      "advanced_requested_all_supported": false,
+      "passed": true,
+      "owned_resources_removed": true,
+      "host_firewall_unchanged": true,
+      "host_routes_unchanged": true,
+      "host_forwarding_unchanged": true,
+      "phase": "complete",
+      "selected": [
+        "paqet"
+      ],
+      "carriers_tested": 1,
+      "memory_bypassed": false,
+      "public_datapath": {
+        "passed": true,
+        "echo_ms": [
+          111.005,
+          82.484,
+          81.863
+        ],
+        "success_ratio": 1,
+        "upload_mbps": 25.797,
+        "download_mbps": 24.469,
+        "half_close": true,
+        "after_idle": true,
+        "integrity": true,
+        "utc": "2026-10-28T03:35:00Z",
+        "payload_bytes": 262144,
+        "errors": [],
+        "seconds": 1.726
+      },
+      "after_engine_crash": {
+        "passed": true,
+        "echo_ms": [
+          90.281,
+          82.192,
+          82.167
+        ],
+        "success_ratio": 1,
+        "upload_mbps": 25.847,
+        "download_mbps": 24.618,
+        "half_close": true,
+        "after_idle": true,
+        "integrity": true,
+        "utc": "2026-10-28T03:35:08Z",
+        "payload_bytes": 262144,
+        "errors": [],
+        "seconds": 1.622
+      }
+    }
+  ]
+}
