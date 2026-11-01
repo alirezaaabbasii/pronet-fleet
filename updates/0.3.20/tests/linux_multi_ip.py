@@ -159,8 +159,15 @@ def main(a):
   action('iran','upgrade')
   # Only management processes restart. All carrier/gateway PIDs and the original
   # client's TCP socket (or UDP socket) must remain intact through this step.
-  for p in (hub,agents['iran']):p.terminate();p.wait(timeout=15)
-  hub=start('hub',[sys.executable,APP/'main.py','hub-run'],'hub-new');agents['iran']=start('iran',[sys.executable,APP/'main.py','agent'],'iran-agent-new');time.sleep(1)
+  for p in [hub]+list(agents.values()):p.terminate();p.wait(timeout=15)
+  hub=start('hub',[sys.executable,APP/'main.py','hub-run'],'hub-new')
+  for role in roles[1:]:agents[role]=start(role,[sys.executable,APP/'main.py','agent'],role+'-agent-new')
+  deadline=time.monotonic()+20
+  while time.monotonic()<deadline:
+   with sqlite3.connect(cfg['database']) as db:metrics=[json.loads(row[0]) for row in db.execute('SELECT metrics FROM nodes')]
+   if metrics and all(m.get('version')=='0.3.20' for m in metrics):break
+   time.sleep(.5)
+  else:raise PronetError('Updated management versions were not reported')
   if pids(pid)!=snapshot:raise PronetError('Upgrade restarted a live carrier or gateway')
   for index,ip in enumerate(client_ips[1:],2):
    action('iran','pair',public_ip=ip);action('f'+str(index),'join');new=json.loads((base/'created.json').read_text())['pair_id'];pair_ids.append(new);result=await_active(new)
