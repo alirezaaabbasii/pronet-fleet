@@ -91,8 +91,9 @@ def main(a):
  if sys.platform!='linux' or os.geteuid()!=0:raise PronetError('Explicit root Linux lab only')
  if list(pathlib.Path('/etc/systemd/system').glob('pronetf-*.service')):raise PronetError('Run on a disposable host without existing Pronet units')
  before=baseline();base=pathlib.Path(tempfile.mkdtemp(prefix='pronet-multi-ip-',dir='/var/tmp'));base.chmod(0o700)
- roles=['hub','iran']+['f'+str(i) for i in range(1,a.count+1)];tag=secrets.token_hex(3)
- ns={r:'pnmulti-'+tag+'-'+r for r in roles};created=[];processes=[];files=[];pair_ids=[]
+ roles=['hub','iran']+['f'+str(i) for i in range(1,a.count+1)];tag=secrets.token_hex(4)
+ # Use the production helper's deliberately restricted lab namespace names.
+ ns={r:'pronettest-'+(tag if r in ('hub','iran') else secrets.token_hex(4))+'-'+(r if r in ('hub','iran') else 'foreign') for r in roles};created=[];processes=[];files=[];pair_ids=[]
  addresses=dict(hub='198.18.0.254',iran='198.18.0.1',**{'f'+str(i):'198.18.0.'+str(i+1) for i in range(1,a.count+1)})
  client_ips=['198.18.0.1']+['198.18.0.'+str(i+10) for i in range(1,a.count)]
  fixture=dict(addresses=addresses,enrollment_key=secret(),admin_key=secret())
@@ -118,7 +119,9 @@ def main(a):
   while time.monotonic()<deadline:
    with sqlite3.connect(cfg['database']) as db:row=db.execute('SELECT state,result FROM pairs WHERE id=?',(pid,)).fetchone()
    if row[0]=='ACTIVE':return json.loads(row[1])
-   if row[0]=='FAILED':raise PronetError('Pair failed: '+str(json.loads(row[1]).get('error')))
+   if row[0]=='FAILED':
+    data=json.loads(row[1]);details=[(r.get('profile'),r.get('reason')) for r in data.get('results',[])]
+    raise PronetError('Pair failed: '+str(data.get('error'))+'; results='+str(details))
    time.sleep(1)
   raise PronetError('Pair setup timed out')
  def pids(pid):
