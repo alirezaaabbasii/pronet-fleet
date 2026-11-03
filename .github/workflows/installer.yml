@@ -5,6 +5,8 @@ on:
       - 'get.sh'
       - 'dist/engines/**'
       - 'tools/test-get-installer.py'
+      - 'tools/iran-apt-mirrors.py'
+      - 'tools/test_apt_mirrors.py'
       - '.github/workflows/installer.yml'
   workflow_dispatch:
 permissions:
@@ -19,6 +21,8 @@ jobs:
           persist-credentials: false
       - name: Check shell syntax
         run: bash -n get.sh
+      - name: Test temporary Iran mirror sources and authenticated selection
+        run: python3 tools/test_apt_mirrors.py
       - name: Build verified fixtures using only the raw host
         run: |
           curl -fL --retry 3 https://raw.githubusercontent.com/alirezaaabbasii/pronet-fleet/main/dist/pronet-fleet-0.3.12.zip -o "$RUNNER_TEMP/base.zip"
@@ -27,8 +31,8 @@ jobs:
           root=pathlib.Path(os.environ['RUNNER_TEMP']);base=root/'base.zip'
           assert hashlib.sha256(base.read_bytes()).hexdigest()=='3f1c4483c41c1f288281dabb789289888e043a9132e1d99f814929e55ba2fb37'
           with zipfile.ZipFile(base) as z:z.extractall(root)
-          source=root/'pronet-fleet-0.3.20';(root/'pronet-fleet-0.3.12').rename(source)
-          with zipfile.ZipFile('dist/pronet-fleet-0.3.20-update.zip') as z:z.extractall(root)
+          source=root/'pronet-fleet-0.3.21';(root/'pronet-fleet-0.3.12').rename(source)
+          with zipfile.ZipFile('dist/pronet-fleet-0.3.21-update.zip') as z:z.extractall(root)
           locked=json.loads((source/'assets.lock.json').read_text())
           for engine in ('paqet','backhaul','parsa-spoof'):
               for asset in locked[engine]['assets'].values():
@@ -37,4 +41,4 @@ jobs:
                   shutil.copyfile(path,source/'vendor'/asset['name'])
           PY
       - name: Fresh install, upgrade, join and corrupted download with Releases unavailable
-        run: python3 tools/test-get-installer.py --source "$RUNNER_TEMP/pronet-fleet-0.3.20" --base "$RUNNER_TEMP/base.zip"
+        run: python3 tools/test-get-installer.py --source "$RUNNER_TEMP/pronet-fleet-0.3.21" --base "$RUNNER_TEMP/base.zip"

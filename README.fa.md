@@ -1,10 +1,12 @@
+
+> **نسخهٔ 0.3.21:** میرور موقت نصب ایران، پیشنهاد DNS بدون تغییر تنظیمات، انتخاب خودکار یا دستی حامل‌ها، تست متعادل Gaming و فرمان اتصال خارج بدون انقضای زمانی. [شرح تغییرات](CHANGES-0.3.21.fa.md)
 <div align="center" dir="rtl">
 
 # Pronet Fleet
 
 **مدیریت تونل ایران ⇄ خارج: همهٔ حامل‌ها را روی مسیر واقعی شما تست می‌کند، بهترین را انتخاب می‌کند، پشتیبان آماده نگه می‌دارد و خودش سوییچ می‌کند.**
 
-![version](https://img.shields.io/badge/version-0.3.20-blue)
+![version](https://img.shields.io/badge/version-0.3.21-blue)
 ![platform](https://img.shields.io/badge/platform-Linux%20amd64%20%7C%20arm64-lightgrey)
 ![python](https://img.shields.io/badge/python-3.10%2B-green)
 
@@ -217,13 +219,13 @@ sudo pronet uninstall
 
 ## نصب بدون دسترسی به گیت‌هاب
 
-نصب‌کنندهٔ آنلاین، ZIP پایهٔ 0.3.12 و ZIP کوچک به‌روزرسانی 0.3.20 را جداگانه با SHA256 بررسی و نسخهٔ جدید را می‌سازد. برای نصب آفلاین، ZIP کامل `pronet-fleet-0.3.20.zip` و `get.sh` را با scp روی سرور بریزید:
+نصب‌کنندهٔ آنلاین، ZIP پایهٔ 0.3.12 و ZIP کوچک به‌روزرسانی 0.3.21 را جداگانه با SHA256 بررسی و نسخهٔ جدید را می‌سازد. برای نصب آفلاین، ZIP کامل `pronet-fleet-0.3.21.zip` و `get.sh` را با scp روی سرور بریزید:
 
 </div>
 
 ```bash
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.20.zip bash get.sh                  # ایران
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.20.zip bash get.sh join PNF1-...    # خارج
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.21.zip bash get.sh                  # ایران
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.21.zip bash get.sh join PNF1-...    # خارج
 ```
 
 <div dir="rtl">
@@ -312,7 +314,7 @@ sudo pronet pair --full-test
 در تست پیشرفته محدودیت حافظه کنار می‌رود و تمام حامل‌های پشتیبانی‌شده، آزمایشی، کنارگذاشته‌ها و Spoof اضطراریِ دارای تنظیمات لازم بررسی می‌شوند. اگر مبدأهای Spoof را نداشته باشی، فقط همان با علت مشخص کنار گذاشته می‌شود. منظور همهٔ آداپتورهای پیاده‌شده است، نه نام‌های فهرست تحقیقاتی.
 
 
-## تونل Gaming برای WireGuard و UDP ـ 0.3.20
+## تونل Gaming برای WireGuard و UDP ـ 0.3.21
 
 روی ایرانِ ثبت‌شده گزینهٔ **۲) Gaming tunnel**، در نصب تازه گزینهٔ **۴) Gaming tunnel** یا دستور `sudo pronet gaming` را انتخاب کنید. روند IP، انتخاب پورت و اتصال سرور خارج حفظ شده است. پورت UDP وایرگارد خارج را وارد کنید؛ همان پورت روی ایران باز می‌شود. Endpoint کلاینت‌های WireGuard باید IP ایران و همان پورت باشد. کلیدها و peerهای وایرگارد شما تغییر نمی‌کنند.
 
