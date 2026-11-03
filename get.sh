@@ -10,22 +10,30 @@
 # Existing tunnels, routes, firewall policy and panel configuration are untouched.
 #
 # Optional:
-#   PRONET_ZIP=/root/pronet-fleet-0.3.20.zip   use a file already copied to the server
+#   PRONET_ZIP=/root/pronet-fleet-0.3.21.zip   use a file already copied to the server
 #   PRONET_URL=https://mirror/...zip          use a mirror if GitHub is slow/blocked
 #   PRONET_NO_MENU=1                          install only
+#   bash get.sh --iran-mirrors               temporary Ubuntu mirror test for Iran installation
 set -euo pipefail
 
-VERSION="0.3.20"
+VERSION="0.3.21"
 OWNER_REPO="alirezaaabbasii/pronet-fleet"
-SHA256="bd9edb2c51883c70d39bd7f8e97954b6c3d23bdbd5e1ad98447b1d14f108647c"
+SHA256="47cb84c0052ba8c4b7ab38e3d5d0047e66ab06c9225c4626d1be0ae9c6949fac"
 BASE_VERSION="0.3.12"
 BASE_SHA256="3f1c4483c41c1f288281dabb789289888e043a9132e1d99f814929e55ba2fb37"
-UPDATE_SHA256="bf8db3365944aa4753ffff6c64c93439d0ed017386020d2dda8206f82c999d0a"
+UPDATE_SHA256="89f76b7fcae87dbd83569ad948375fd0d848257766ab5baed4ce8c9d52d250c8"
 BASE_URL="https://raw.githubusercontent.com/${OWNER_REPO}/main/dist/pronet-fleet-${BASE_VERSION}.zip"
 UPDATE_URL="https://raw.githubusercontent.com/${OWNER_REPO}/main/dist/pronet-fleet-${VERSION}-update.zip"
 
 say()  { printf '\033[1;36m[pronet]\033[0m %s\n' "$*"; }
 fail() { printf '\033[1;31m[pronet] error:\033[0m %s\n' "$*" >&2; exit 1; }
+
+iran_mirrors=0
+if [ "${1:-}" = "--iran-mirrors" ]; then
+  iran_mirrors=1
+  shift
+  [ "${1:-}" != "join" ] || fail "--iran-mirrors is for Iran installation; run the foreign join command without it."
+fi
 
 [ "$(id -u)" -eq 0 ] || fail "run as root:  curl -fsSL ... | sudo bash"
 [ "$(uname -s)" = "Linux" ] || fail "Linux is required."
@@ -48,17 +56,115 @@ if [ "$installed" = "$VERSION" ] && [ -z "${PRONET_ZIP:-}" ]; then
   exit 0
 fi
 
+if [ "$iran_mirrors" -eq 0 ] && [ "${1:-}" != "join" ] && [ "${PRONET_NO_MENU:-}" != "1" ]; then
+  foreign_node=0
+  if [ -f /etc/pronet-fleet/node.json ] && command -v python3 >/dev/null 2>&1; then
+    if python3 -c 'import json,sys; sys.exit(0 if json.load(open("/etc/pronet-fleet/node.json")).get("role")=="foreign" else 1)' 2>/dev/null; then
+      foreign_node=1
+    fi
+  fi
+  if [ "$foreign_node" -eq 0 ] && (exec </dev/tty) 2>/dev/null; then
+    printf '\n  IRAN INSTALLATION - UBUNTU MIRRORS\n'
+    printf '  On an Iran server, test mirrors to speed up prerequisite downloads?\n'
+    printf '   1) Yes - test mirrors temporarily and suggest DNS (no DNS change)\n'
+    printf '   2) No - use the current server mirror\n'
+    printf '  Original APT sources and DNS are kept; temporary mirror files are removed.\n'
+    while true; do
+      printf 'Select [2]: '
+      IFS= read -r mirror_choice </dev/tty || mirror_choice=2
+      case "${mirror_choice:-2}" in
+        1) iran_mirrors=1; break ;;
+        2) break ;;
+        *) printf 'Choose 1 or 2.\n' ;;
+      esac
+    done
+  fi
+fi
+
 need=""
-for pair in python3:python3 unzip:unzip ip:iproute2 ss:iproute2 iptables:iptables openssl:openssl ssh-keygen:openssh-client nft:nftables sha256sum:coreutils curl:curl wg:wireguard-tools; do
+for pair in python3:python3 unzip:unzip ip:iproute2 ss:iproute2 iptables:iptables openssl:openssl ssh-keygen:openssh-client nft:nftables sha256sum:coreutils curl:curl wg:wireguard-tools gpgv:gpgv; do
   cmd="${pair%%:*}"; pkg="${pair##*:}"
   command -v "$cmd" >/dev/null 2>&1 || case " $need " in *" $pkg "*) ;; *) need="$need $pkg" ;; esac
 done
+if [ "$iran_mirrors" -eq 1 ]; then
+  mirror_work="$(mktemp -d /tmp/pronet-apt.XXXXXX)"
+  trap 'rm -rf "$mirror_work"' EXIT
+  bootstrap_need=""
+  for pair in python3:python3 curl:curl sha256sum:coreutils gpgv:gpgv; do
+    command -v "${pair%%:*}" >/dev/null 2>&1 || bootstrap_need="$bootstrap_need ${pair##*:}"
+  done
+  if [ -n "$bootstrap_need" ]; then
+    command -v apt-get >/dev/null 2>&1 || fail "APT is required to prepare the mirror tester."
+    # The signed APT path itself can bootstrap the optional Python tester.
+    # Only this private Ubuntu source file is used; live sources stay intact.
+    . /etc/os-release
+    [ "${ID:-}" = "ubuntu" ] || fail "Iran mirror testing needs Ubuntu."
+    [ -f /usr/share/keyrings/ubuntu-archive-keyring.gpg ] || fail "Ubuntu archive keyring is missing."
+    case "${VERSION_CODENAME:-}" in ""|*[!a-z]*) fail "Unknown Ubuntu release." ;; esac
+    boot="$mirror_work/bootstrap"
+    mkdir -p "$boot/parts" "$boot/lists/partial" "$boot/archives/partial"
+    boot_apt=(apt-get -o "Dir::Etc::sourcelist=$boot/sources.list"
+              -o "Dir::Etc::sourceparts=$boot/parts" -o "Dir::State::lists=$boot/lists"
+              -o "Dir::Cache::archives=$boot/archives" -o Acquire::Retries=0
+              -o Acquire::http::Timeout=8 -o Acquire::https::Timeout=8)
+    case "$(dpkg --print-architecture)" in
+      amd64) bootstrap_mirrors="https://ubuntu.pishgaman.net/ubuntu https://archive.ubuntu.com/ubuntu https://mirror.leaseweb.com/ubuntu https://ftp.fau.de/ubuntu" ;;
+      arm64) bootstrap_mirrors="https://ports.ubuntu.com/ubuntu-ports" ;;
+      *) fail "Unsupported Ubuntu architecture." ;;
+    esac
+    bootstrap_ok=0
+    for mirror in $bootstrap_mirrors; do
+      say "Preparing mirror tester with authenticated Ubuntu packages: $mirror"
+      printf 'deb [signed-by=/usr/share/keyrings/ubuntu-archive-keyring.gpg] %s %s main universe\n' "$mirror" "$VERSION_CODENAME" > "$boot/sources.list"
+      printf 'deb [signed-by=/usr/share/keyrings/ubuntu-archive-keyring.gpg] %s %s-updates main universe\n' "$mirror" "$VERSION_CODENAME" >> "$boot/sources.list"
+      printf 'deb [signed-by=/usr/share/keyrings/ubuntu-archive-keyring.gpg] %s %s-security main universe\n' "$mirror" "$VERSION_CODENAME" >> "$boot/sources.list"
+      # APT keeps its normal signature checks; never use trusted=yes.
+      # shellcheck disable=SC2086
+      if "${boot_apt[@]}" -o APT::Update::Error-Mode=any update -qq &&
+         DEBIAN_FRONTEND=noninteractive "${boot_apt[@]}" --download-only -y -qq install $bootstrap_need; then
+        # shellcheck disable=SC2086
+        DEBIAN_FRONTEND=noninteractive "${boot_apt[@]}" --no-download -y -qq install $bootstrap_need
+        bootstrap_ok=1
+        break
+      fi
+    done
+    [ "$bootstrap_ok" -eq 1 ] || fail "Could not prepare mirror tester; original APT sources are unchanged."
+  fi
+  mirror_tool="$mirror_work/iran-apt-mirrors.py"
+  curl -fsSL --connect-timeout 5 --max-time 30 \
+    "https://raw.githubusercontent.com/${OWNER_REPO}/main/tools/iran-apt-mirrors.py" -o "$mirror_tool"
+  echo "675fef7103573865c03d3eef6fd791f19ed40f1108b9dc2471639d8ea5675e7f  $mirror_tool" | sha256sum -c --status \
+    || fail "mirror selector checksum mismatch; nothing was changed."
+fi
+if [ -z "$need" ] && [ "$iran_mirrors" -eq 1 ]; then
+  say "Prerequisites are already installed; checking DNS only, without changing system settings."
+  python3 "$mirror_tool" --directory "$mirror_work/apt" --dns-only
+  rm -rf "$mirror_work"
+  trap - EXIT
+fi
 if [ -n "$need" ]; then
   command -v apt-get >/dev/null 2>&1 || fail "missing tools:$need"
+  apt_command=(apt-get)
+  if [ "$iran_mirrors" -eq 1 ]; then
+    # Package names come only from the fixed prerequisite list above.
+    # shellcheck disable=SC2086
+    python3 "$mirror_tool" --directory "$mirror_work/apt" --packages $need
+    apt_command=(apt-get -o "Dir::Etc::sourcelist=$mirror_work/apt/sources.list"
+                 -o "Dir::Etc::sourceparts=$mirror_work/apt/sources.list.d"
+                 -o "Dir::State::lists=$mirror_work/apt/lists"
+                 -o "Dir::Cache::archives=$mirror_work/apt/archives")
+  else
+    say "Updating prerequisite package indexes using the current mirror ..."
+    DEBIAN_FRONTEND=noninteractive apt-get update -qq
+  fi
   say "Installing prerequisites:$need"
-  DEBIAN_FRONTEND=noninteractive apt-get update -qq
   # shellcheck disable=SC2086
-  DEBIAN_FRONTEND=noninteractive apt-get install -y -qq $need >/dev/null
+  DEBIAN_FRONTEND=noninteractive "${apt_command[@]}" install -y -qq $need >/dev/null
+  if [ "$iran_mirrors" -eq 1 ]; then
+    rm -rf "$mirror_work"
+    trap - EXIT
+    say "Temporary mirror settings, indexes and downloads removed; original APT sources are unchanged."
+  fi
 fi
 python3 -c 'import sys; sys.exit(0 if sys.version_info >= (3, 10) else 1)' || fail "Python 3.10+ is required."
 

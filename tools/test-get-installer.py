@@ -40,7 +40,7 @@ def exercise(repo, source, base, *, tamper=False, upgrade=False, join=False):
             path.chmod(0o755)
         program('id', 'print(0)\n')
         program('uname', "import sys\nprint('x86_64' if '-m' in sys.argv else 'Linux')\n")
-        for name in ('ip', 'ss', 'iptables', 'nft', 'wg'):
+        for name in ('ip', 'ss', 'iptables', 'nft', 'wg', 'gpgv'):
             program(name, 'pass\n')
         program('curl', '''import json,os,sys,pathlib,shutil
 args=sys.argv[1:];url=args[-1] if args[-1].startswith('https:') else next(x for x in args if x.startswith('https:'))
@@ -78,6 +78,7 @@ else:
         env.pop('PRONET_ZIP', None); env.pop('PRONET_URL', None)
         args = ['join', 'synthetic-test-token'] if join else []
         result = subprocess.run(['bash', str(path)] + args, env=env, text=True, capture_output=True)
+        assert requests.exists(), result.stdout + result.stderr
         seen = [json.loads(line) for line in requests.read_text().splitlines()]
         calls = [json.loads(line) for line in actions.read_text().splitlines()] if actions.exists() else []
         if tamper:
