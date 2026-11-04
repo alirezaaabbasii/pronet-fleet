@@ -10,18 +10,18 @@
 # Existing tunnels, routes, firewall policy and panel configuration are untouched.
 #
 # Optional:
-#   PRONET_ZIP=/root/pronet-fleet-0.3.21.zip   use a file already copied to the server
+#   PRONET_ZIP=/root/pronet-fleet-0.3.22.zip   use a file already copied to the server
 #   PRONET_URL=https://mirror/...zip          use a mirror if GitHub is slow/blocked
 #   PRONET_NO_MENU=1                          install only
 #   bash get.sh --iran-mirrors               temporary Ubuntu mirror test for Iran installation
 set -euo pipefail
 
-VERSION="0.3.21"
+VERSION="0.3.22"
 OWNER_REPO="alirezaaabbasii/pronet-fleet"
-SHA256="47cb84c0052ba8c4b7ab38e3d5d0047e66ab06c9225c4626d1be0ae9c6949fac"
+SHA256="a65941cb76cc5cf865b324b94cf3ade9af52cbb16aee4aeb0473603e8ad66aa3"
 BASE_VERSION="0.3.12"
 BASE_SHA256="3f1c4483c41c1f288281dabb789289888e043a9132e1d99f814929e55ba2fb37"
-UPDATE_SHA256="89f76b7fcae87dbd83569ad948375fd0d848257766ab5baed4ce8c9d52d250c8"
+UPDATE_SHA256="c27aba51c4d88b64234dc51cf7837c9c11b1b5e7025689c80c73cbaee6cf04b0"
 BASE_URL="https://raw.githubusercontent.com/${OWNER_REPO}/main/dist/pronet-fleet-${BASE_VERSION}.zip"
 UPDATE_URL="https://raw.githubusercontent.com/${OWNER_REPO}/main/dist/pronet-fleet-${VERSION}-update.zip"
 
