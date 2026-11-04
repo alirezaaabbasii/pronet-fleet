@@ -1,3 +1,5 @@
+> **0.3.22:** غربال اولیهٔ سریع‌تر و راه‌اندازی گروهی سرویس‌ها؛ آزمون نهایی حفظ شده است. [جزئیات](CHANGES-0.3.22.fa.md)
+
 
 > **نسخهٔ 0.3.21:** میرور موقت نصب ایران، پیشنهاد DNS بدون تغییر تنظیمات، انتخاب خودکار یا دستی حامل‌ها، تست متعادل Gaming و فرمان اتصال خارج بدون انقضای زمانی. [شرح تغییرات](CHANGES-0.3.21.fa.md)
 <div align="center" dir="rtl">
@@ -6,7 +8,7 @@
 
 **مدیریت تونل ایران ⇄ خارج: همهٔ حامل‌ها را روی مسیر واقعی شما تست می‌کند، بهترین را انتخاب می‌کند، پشتیبان آماده نگه می‌دارد و خودش سوییچ می‌کند.**
 
-![version](https://img.shields.io/badge/version-0.3.21-blue)
+![version](https://img.shields.io/badge/version-0.3.22-blue)
 ![platform](https://img.shields.io/badge/platform-Linux%20amd64%20%7C%20arm64-lightgrey)
 ![python](https://img.shields.io/badge/python-3.10%2B-green)
 
@@ -219,13 +221,13 @@ sudo pronet uninstall
 
 ## نصب بدون دسترسی به گیت‌هاب
 
-نصب‌کنندهٔ آنلاین، ZIP پایهٔ 0.3.12 و ZIP کوچک به‌روزرسانی 0.3.21 را جداگانه با SHA256 بررسی و نسخهٔ جدید را می‌سازد. برای نصب آفلاین، ZIP کامل `pronet-fleet-0.3.21.zip` و `get.sh` را با scp روی سرور بریزید:
+نصب‌کنندهٔ آنلاین، ZIP پایهٔ 0.3.12 و ZIP کوچک به‌روزرسانی 0.3.22 را جداگانه با SHA256 بررسی و نسخهٔ جدید را می‌سازد. برای نصب آفلاین، ZIP کامل `pronet-fleet-0.3.22.zip` و `get.sh` را با scp روی سرور بریزید:
 
 </div>
 
 ```bash
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.21.zip bash get.sh                  # ایران
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.21.zip bash get.sh join PNF1-...    # خارج
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.22.zip bash get.sh                  # ایران
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.22.zip bash get.sh join PNF1-...    # خارج
 ```
 
 <div dir="rtl">
