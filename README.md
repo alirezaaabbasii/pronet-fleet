@@ -1,3 +1,5 @@
+> **0.3.23:** remove one tunnel from Iran or Foreign without uninstalling Pronet; confirmed cleanup status and clearer TCP/TLS join diagnostics. [Details](CHANGES-0.3.23.fa.md).
+
 > **0.3.22:** faster initial screening, grouped service startup and unchanged final qualification. [Details](CHANGES-0.3.22.fa.md).
 
 
@@ -8,7 +10,7 @@
 
 **Iran ⇄ foreign tunnel manager: it tests every carrier on your real route, picks the best one, keeps warm standbys and fails over by itself.**
 
-![version](https://img.shields.io/badge/version-0.3.22-blue)
+![version](https://img.shields.io/badge/version-0.3.23-blue)
 ![platform](https://img.shields.io/badge/platform-Linux%20amd64%20%7C%20arm64-lightgrey)
 ![python](https://img.shields.io/badge/python-3.10%2B-green)
 ![carriers](https://img.shields.io/badge/carriers-20%2B-orange)
@@ -223,14 +225,14 @@ This removes Pronet's services, tagged firewall rules, nftables tables, state, c
 
 ## Offline install (GitHub blocked on a server)
 
-The online installer verifies the 0.3.12 base ZIP and the small 0.3.22 update ZIP before assembling the new version. For offline installation, use the complete `pronet-fleet-0.3.22.zip` with `get.sh`, then:
+The online installer verifies the 0.3.12 base ZIP and the small 0.3.23 update ZIP before assembling the new version. For offline installation, use the complete `pronet-fleet-0.3.23.zip` with `get.sh`, then:
 
 ```bash
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.22.zip bash get.sh                  # Iran
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.22.zip bash get.sh join PNF1-...    # foreign
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.23.zip bash get.sh                  # Iran
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.23.zip bash get.sh join PNF1-...    # foreign
 ```
 
-`get.sh` checks the ZIP's SHA256 before installing. You can also use a mirror with `PRONET_URL=https://…/pronet-fleet-0.3.22.zip`.
+`get.sh` checks the ZIP's SHA256 before installing. You can also use a mirror with `PRONET_URL=https://…/pronet-fleet-0.3.23.zip`.
 
 ## FAQ
 

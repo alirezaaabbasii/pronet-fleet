@@ -1,0 +1,27 @@
+{
+  "scope": "local UDP loopback screening only; not total WAN setup time",
+  "baseline": {
+    "mode": "baseline",
+    "elapsed": 14.612,
+    "passed": true,
+    "integrity": true,
+    "after_idle": true,
+    "samples": {
+      "idle": 285,
+      "loaded": 288
+    }
+  },
+  "optimized": {
+    "mode": "screen",
+    "elapsed": 8.612,
+    "passed": true,
+    "integrity": true,
+    "after_idle": true,
+    "samples": {
+      "idle": 143,
+      "loaded": 144
+    }
+  },
+  "reduction_percent": 41.06,
+  "saved_seconds_per_direction": 6.0
+}
