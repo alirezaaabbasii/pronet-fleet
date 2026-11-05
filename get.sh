@@ -18,10 +18,10 @@ set -euo pipefail
 
 VERSION="0.3.23"
 OWNER_REPO="alirezaaabbasii/pronet-fleet"
-SHA256="0ff34ec7ce4c8628de27e9f4e715a787df69ec8350ce3656dc9ba8882c3f9e81"
+SHA256="584861a5b567561f4e1313a1117c18c2db5e87ddad9ae21e299f7e0ed2a8ca8a"
 BASE_VERSION="0.3.12"
 BASE_SHA256="3f1c4483c41c1f288281dabb789289888e043a9132e1d99f814929e55ba2fb37"
-UPDATE_SHA256="b97cdba8987793aa911a1c7ac2bd48ddcffadea4187ed185ae0878d4321aa5f6"
+UPDATE_SHA256="eb6d5de4764cda408a0a1e91220496543c4707e97a3f458844585c5e56ed07d5"
 BASE_URL="https://raw.githubusercontent.com/${OWNER_REPO}/main/dist/pronet-fleet-${BASE_VERSION}.zip"
 UPDATE_URL="https://raw.githubusercontent.com/${OWNER_REPO}/main/dist/pronet-fleet-${VERSION}-update.zip"
 

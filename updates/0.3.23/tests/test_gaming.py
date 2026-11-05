@@ -64,7 +64,7 @@ class QualityTests(unittest.TestCase):
             with mock.patch.object(cli,'CONFIG',config),mock.patch.object(cli,'ask',return_value='2'),mock.patch.object(cli,'setup_iran') as setup,mock.patch.object(cli,'say') as say:
                 cli._wizard_once();setup.assert_called_once_with(gaming=True)
                 choices=[args[0] for args,_ in say.call_args_list if ') ' in args[0]]
-                self.assertEqual(len(choices),12)
+                self.assertEqual(len(choices),13)
                 self.assertTrue(all(line.count(') ')==1 for line in choices))
     def test_udp_listener_report_does_not_walk_firewall_or_routes(self):
         from pronet import runtime

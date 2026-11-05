@@ -102,4 +102,40 @@ class JoinDiagnosisTests(unittest.TestCase):
                 cli.fetch_pinned_ca('https://192.0.2.1:9443','a'*64)
 
 
+class LocalRestartMenuTests(unittest.TestCase):
+    def setUp(self):
+        self.temp=tempfile.TemporaryDirectory();self.root=pathlib.Path(self.temp.name)
+        for identity in ('a'*24,'b'*24):
+            directory=self.root/'pairs'/identity
+            (directory/'gre').mkdir(parents=True)
+            cli.write_json(directory/'active.json',{})
+            cli.write_json(directory/'selection.json',{'profiles':['gre'],'active':'gre'})
+            cli.write_json(directory/'gre/plan.json',{'gateway_public_ip':'192.0.2.1','inbound_port':443})
+    def tearDown(self):self.temp.cleanup()
+    def run_menu(self, answers):
+        with mock.patch.object(cli,'ROOT',self.root),mock.patch.object(cli,'root_linux'), \
+                mock.patch.object(cli,'say'),mock.patch('builtins.input',side_effect=answers), \
+                mock.patch.object(cli,'node_client') as client,mock.patch.object(cli,'repair') as repair:
+            cli.restart_tunnel_menu()
+            client.assert_not_called()
+        return repair
+    def test_exact_selected_local_tunnel_restarts_without_hub_access(self):
+        self.run_menu(['2','y']).assert_called_once_with('b'*24,restart=True)
+    def test_decline_does_not_restart(self):
+        self.run_menu(['1','n']).assert_not_called()
+    def test_removed_tunnel_is_not_offered(self):
+        cli.write_json(self.root/'pairs'/('b'*24)/'stopped.json',{})
+        self.run_menu(['y']).assert_called_once_with('a'*24,restart=True)
+    def test_no_installed_tunnel_does_not_restart_any_service(self):
+        for directory in (self.root/'pairs').iterdir():cli.write_json(directory/'stopped.json',{})
+        self.run_menu([]).assert_not_called()
+    def test_both_menus_dispatch_local_restart(self):
+        for role,choice in (('iran','9'),('foreign','5')):
+            with mock.patch.object(cli,'menu_header'),mock.patch.object(cli,'CONFIG',self.root), \
+                    mock.patch.object(cli,'node_config',return_value={'role':role}), \
+                    mock.patch.object(cli,'ask',return_value=choice),mock.patch.object(cli,'say'), \
+                    mock.patch.object(cli,'restart_tunnel_menu') as restart:
+                (self.root/'node.json').touch();cli._wizard_once()
+            restart.assert_called_once_with()
+
 if __name__=='__main__':unittest.main()

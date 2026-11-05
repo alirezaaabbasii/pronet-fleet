@@ -1,4 +1,4 @@
-> **0.3.23:** remove one tunnel from Iran or Foreign without uninstalling Pronet; confirmed cleanup status and clearer TCP/TLS join diagnostics. [Details](CHANGES-0.3.23.fa.md).
+> **0.3.23:** recover corrupt traffic counters without dropping the gateway; per-tunnel removal and local restart menus. [Details](CHANGES-0.3.23.fa.md).
 
 > **0.3.22:** faster initial screening, grouped service startup and unchanged final qualification. [Details](CHANGES-0.3.22.fa.md).
 

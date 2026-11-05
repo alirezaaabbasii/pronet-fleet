@@ -21,7 +21,7 @@ import struct
 import sys
 import time
 
-from .common import PronetError, read_json, write_json, utc
+from .common import PronetError, read_json, read_traffic_stats, write_json, utc
 
 HEADER = struct.Struct('!4sBH8sQ')
 MAGIC = b'PNG1'
@@ -304,7 +304,7 @@ async def listen(address,relay,freebind=False):
 class Gateway:
     def __init__(self,config,stats):
         self.config=pathlib.Path(config);self.stats=pathlib.Path(stats);self.relays=[];self.task=None;self.closed=False
-        previous=read_json(self.stats,{})
+        previous=read_traffic_stats(self.stats)
         self.base={key:previous.get(key,0) for key in ('rx_bytes','tx_bytes','connections_total')}
         self.previous=(time.monotonic(),self.base['rx_bytes'],self.base['tx_bytes'])
     async def start(self):
@@ -339,11 +339,12 @@ class Gateway:
         rx_rate=max(0,(rx-self.previous[1])/elapsed);tx_rate=max(0,(tx-self.previous[2])/elapsed)
         self.previous=(now,rx,tx)
         seen=max((r.rx_at for r in self.relays),default=0)
-        write_json(self.stats,{'backend_rx_at':{'%s:%s'%tuple(self.settings['active_backend']):seen},
-            'rx_bytes':rx,'tx_bytes':tx,'rx_Bps':round(rx_rate,1),'tx_Bps':round(tx_rate,1),
-            'connections_active':sum(len(r.sessions) for r in self.relays),
-            'connections_total':self.base['connections_total']+sum(r.connections_total for r in self.relays),
-            'activity':'ACTIVE' if rx_rate+tx_rate else 'IDLE','protocol':'udp','utc':utc()},durable=False)
+        with contextlib.suppress(OSError, PronetError):
+            write_json(self.stats,{'backend_rx_at':{'%s:%s'%tuple(self.settings['active_backend']):seen},
+                'rx_bytes':rx,'tx_bytes':tx,'rx_Bps':round(rx_rate,1),'tx_Bps':round(tx_rate,1),
+                'connections_active':sum(len(r.sessions) for r in self.relays),
+                'connections_total':self.base['connections_total']+sum(r.connections_total for r in self.relays),
+                'activity':'ACTIVE' if rx_rate+tx_rate else 'IDLE','protocol':'udp','utc':utc()},durable=False)
     async def close(self):
         self.closed=True
         if hasattr(self,'settings'):self.snapshot()

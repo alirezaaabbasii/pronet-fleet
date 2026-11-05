@@ -1341,6 +1341,47 @@ def emergency_menu():
                standby=False, spoof=sources, emergency=True, test_only=choice == "1")
 
 
+def restart_tunnel_menu():
+    """Local recovery stays available even when the coordinator is unreachable."""
+    root_linux()
+    choices = []
+    for selected_path in sorted((ROOT / 'pairs').glob('*/selection.json')):
+        directory = selected_path.parent
+        if directory.is_symlink() or (directory/'stopped.json').exists() or not (directory/'active.json').exists():
+            continue
+        identifier(directory.name)
+        selection = read_json(selected_path)
+        profiles = selection.get('profiles', [])
+        if not isinstance(profiles, list) or not profiles or any(name not in PROFILES for name in profiles):
+            continue
+        plan = read_json(directory/profiles[0]/'plan.json')
+        endpoint = '%s:%s' % (plan.get('gateway_public_ip', plan.get('iran_ip', '?')),
+                              ','.join(str(port) for port in inbound_ports(plan)))
+        choices.append((directory.name, endpoint, selection.get('active', profiles[0])))
+    if not choices:
+        say('No installed tunnel on this server to restart.')
+        return
+    say('RESTART ONE TUNNEL - THIS SERVER ONLY')
+    for number, (pair_id, endpoint, profile) in enumerate(choices, 1):
+        say('  %d) %s  carrier %s  ID %s' % (number, endpoint, profile, pair_id))
+    chosen = choices[0]
+    if len(choices) > 1:
+        say('  0) Back')
+        while True:
+            value = ask('Tunnel number', '0')
+            if value == '0': return
+            if value.isdigit() and 1 <= int(value) <= len(choices):
+                chosen = choices[int(value)-1]
+                break
+            say('Choose a tunnel number from this list.')
+    say('This restarts the selected tunnel locally and disconnects its current sessions.')
+    if ask('Restart this tunnel on this server? (y/N)', 'n').lower() not in ('y', 'yes'):
+        say('Canceled.')
+        return
+    repair(chosen[0], restart=True)
+    say('Services restarted locally. Repeat on the other server if needed; check sudo pronet status on Iran.')
+
+
 def remove_tunnel(pair_id=None, confirm=True, wait=True, timeout=150):
     """Request one owned pair's cleanup; report success only after both ends confirm."""
     root_linux()
@@ -1491,11 +1532,12 @@ def _wizard_once():
         say('  STATUS AND MANAGEMENT')
         menu_options([('3','Live status'),('4','Last setup report'),('5','Web dashboard link'),
                       ('6','Automatic recovery policy'),('7','Return a tunnel to its main carrier'),
-                      ('8','Remove a tunnel - keep Pronet installed')])
+                      ('8','Remove a tunnel - keep Pronet installed'),
+                      ('9','Restart a tunnel - this server only')])
         say('')
         say('  TESTING AND DIAGNOSTICS')
-        menu_options([('9','Emergency tunnels - manual only'),('10','Carrier memory - compact statistics'),
-                      ('11','Advanced retry - after failed ordinary testing'),('0','Exit')])
+        menu_options([('10','Emergency tunnels - manual only'),('11','Carrier memory - compact statistics'),
+                      ('12','Advanced retry - after failed ordinary testing'),('0','Exit')])
         say('')
         choice = ask('Select','1')
         if choice == '1': setup_iran()
@@ -1511,14 +1553,15 @@ def _wizard_once():
             elif option!='0':raise PronetError('Choose 0, 1 or 2')
         elif choice == '7': switch_carrier(ask('Tunnel ID (Enter if there is only one)','') or None)
         elif choice == '8': remove_tunnel()
-        elif choice == '9': emergency_menu()
-        elif choice == '10': memory_command('status')
-        elif choice == '11': advanced_test()
+        elif choice == '9': restart_tunnel_menu()
+        elif choice == '10': emergency_menu()
+        elif choice == '11': memory_command('status')
+        elif choice == '12': advanced_test()
         elif choice == '0': return False
         else: raise PronetError('Choose one of the listed menu numbers')
 
     else:
-        menu_options([('1','Join a tunnel - paste the command from Iran'),('2','Live status'),('3','Telegram alerts'),('4','Remove a tunnel - keep Pronet installed'),('0','Exit')])
+        menu_options([('1','Join a tunnel - paste the command from Iran'),('2','Live status'),('3','Telegram alerts'),('4','Remove a tunnel - keep Pronet installed'),('5','Restart a tunnel - this server only'),('0','Exit')])
         choice = ask("Select", "1")
         if choice == "2":
             monitor(watch=True)
@@ -1529,6 +1572,7 @@ def _wizard_once():
                 notify_command("telegram")
         elif choice == '0': return False
         elif choice == '4': remove_tunnel()
+        elif choice == '5': restart_tunnel_menu()
         elif choice == '1':
             text = input("Paste the command from your Iran server: ").strip()
             if not text:

@@ -179,6 +179,21 @@ def main(a):
   # Delete just the final added pair through the same foreground UI helper
   # used on Foreign. The original client must survive on the other tunnel.
   removed=pair_ids[-1]
+  # Reproduce the production failure: a 275-byte zeroed optional cache must
+  # not prevent either UDP or TCP gateway from starting and forwarding.
+  gateway_unit='pronetf-'+removed+'-gateway.service'
+  run(['systemctl','stop',gateway_unit])
+  (base/'iran/state/pairs'/removed/'traffic.json').write_bytes(b'\0'*275)
+  run(['systemctl','start',gateway_unit])
+  deadline=time.monotonic()+15
+  while True:
+   try:
+    action('hub','verify',public_ip=client_ips[-1],expected='f'+str(a.count))
+    break
+   except subprocess.CalledProcessError:
+    if time.monotonic()>=deadline:raise
+    time.sleep(.3)
+  report['corrupt_statistics_recovered']=True
   others={identity:pids(identity) for identity in pair_ids[:-1]}
   action('f'+str(a.count),'remove',pair_id=removed)
   with sqlite3.connect(cfg['database']) as db:state=db.execute('SELECT state FROM pairs WHERE id=?',(removed,)).fetchone()[0]

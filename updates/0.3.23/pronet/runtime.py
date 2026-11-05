@@ -16,7 +16,7 @@ import time
 
 from . import engines
 from .common import (APP, CONFIG, ROOT, PronetError, atomic_write, clean, command, inbound_ports,
-                     event, identifier, lock, read_json, utc, write_json)
+                     event, identifier, lock, read_json, read_traffic_stats, utc, write_json)
 from .model import PROFILES, iface, tunnel_ips, validate_profile
 from .wire import DEFAULT_CONNECTION_LIMIT, LinkLock, benchmark, echo, tcp_state, tls_state
 
@@ -1209,7 +1209,7 @@ class Runtime:
         # The raw probe history stays local; heartbeats carry only its summary.
         selected = {k: v for k, v in selected.items() if k != "history"}
         result = {"id": pair_id, "selection": selected, "profiles": {},
-                  "traffic": read_json(directory / "traffic.json", {}), "active": read_json(directory / "active.json", {})}
+                  "traffic": read_traffic_stats(directory / "traffic.json"), "active": read_json(directory / "active.json", {})}
         units, plan = {}, None
         for profile in selected.get("profiles", []):
             plan = self.validate(read_json(directory / profile / "plan.json"))
@@ -1277,7 +1277,7 @@ class Runtime:
     def traffic_alive(self, directory, plan):
         if self.identity.get("role") != "iran":
             return False
-        seen = (read_json(directory / "traffic.json", {}) or {}).get("backend_rx_at") or {}
+        seen = (read_traffic_stats(directory / "traffic.json") or {}).get("backend_rx_at") or {}
         stamp = seen.get("%s:%s" % tuple(engines.data_address(plan))) if isinstance(seen, dict) else None
         return type(stamp) in (int, float) and 0 <= time.time() - stamp <= (10 if plan.get("gaming") else TRAFFIC_ALIVE)
 
