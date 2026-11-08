@@ -1,3 +1,5 @@
+> **0.3.24:** دانلود چندمنبعی با بررسی هش، آینهٔ قطعه‌ای بستهٔ بزرگ و قطع دانلودهای گیرکرده. [جزئیات](CHANGES-0.3.24.fa.md)
+
 > **0.3.23:** رفع توقف درگاه بر اثر آمار خراب؛ حذف تک‌تونل و ری‌استارت محلی از منو. [جزئیات](CHANGES-0.3.23.fa.md)
 
 > **0.3.22:** غربال اولیهٔ سریع‌تر و راه‌اندازی گروهی سرویس‌ها؛ آزمون نهایی حفظ شده است. [جزئیات](CHANGES-0.3.22.fa.md)
@@ -10,7 +12,7 @@
 
 **مدیریت تونل ایران ⇄ خارج: همهٔ حامل‌ها را روی مسیر واقعی شما تست می‌کند، بهترین را انتخاب می‌کند، پشتیبان آماده نگه می‌دارد و خودش سوییچ می‌کند.**
 
-![version](https://img.shields.io/badge/version-0.3.23-blue)
+![version](https://img.shields.io/badge/version-0.3.24-blue)
 ![platform](https://img.shields.io/badge/platform-Linux%20amd64%20%7C%20arm64-lightgrey)
 ![python](https://img.shields.io/badge/python-3.10%2B-green)
 
@@ -94,7 +96,14 @@ Pronet Fleet برعکس کار می‌کند:
 </div>
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/alirezaaabbasii/pronet-fleet/main/get.sh | sudo bash
+(
+pronet_bootstrap=$(mktemp) || exit
+trap 'rm -f "$pronet_bootstrap"' EXIT
+curl -fL --connect-timeout 10 --max-time 45 \
+  https://cdn.jsdelivr.net/gh/alirezaaabbasii/pronet-fleet@main/installers/0.3.24/install.sh \
+  -o "$pronet_bootstrap" &&
+sudo bash "$pronet_bootstrap"
+)
 ```
 
 تمام فایل‌های Pronet و موتورهای همراه از `raw.githubusercontent.com` دریافت می‌شوند؛ دسترسی مستقیم به بخش Releases روی `github.com` برای نصب لازم نیست. صحت همهٔ فایل‌ها با SHA256 بررسی می‌شود. پیش‌نیازهای سیستم همچنان از مخزن بسته‌های سیستم‌عامل نصب می‌شوند.
@@ -110,7 +119,14 @@ curl -fsSL https://raw.githubusercontent.com/alirezaaabbasii/pronet-fleet/main/g
 </div>
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/alirezaaabbasii/pronet-fleet/main/get.sh | sudo bash -s -- join PNF1-...
+(
+pronet_bootstrap=$(mktemp) || exit
+trap 'rm -f "$pronet_bootstrap"' EXIT
+curl -fL --connect-timeout 10 --max-time 45 \
+  https://cdn.jsdelivr.net/gh/alirezaaabbasii/pronet-fleet@main/installers/0.3.24/install.sh \
+  -o "$pronet_bootstrap" &&
+sudo bash "$pronet_bootstrap" join PNF1-...
+)
 ```
 
 <div dir="rtl">
@@ -223,13 +239,13 @@ sudo pronet uninstall
 
 ## نصب بدون دسترسی به گیت‌هاب
 
-نصب‌کنندهٔ آنلاین، ZIP پایهٔ 0.3.12 و ZIP کوچک به‌روزرسانی 0.3.23 را جداگانه با SHA256 بررسی و نسخهٔ جدید را می‌سازد. برای نصب آفلاین، ZIP کامل `pronet-fleet-0.3.23.zip` و `get.sh` را با scp روی سرور بریزید:
+نصب‌کنندهٔ آنلاین، ZIP پایهٔ 0.3.12 و ZIP کوچک به‌روزرسانی 0.3.24 را جداگانه با SHA256 بررسی و نسخهٔ جدید را می‌سازد. برای نصب آفلاین، ZIP کامل `pronet-fleet-0.3.24.zip` و `get.sh` را با scp روی سرور بریزید:
 
 </div>
 
 ```bash
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.23.zip bash get.sh                  # ایران
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.23.zip bash get.sh join PNF1-...    # خارج
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.24.zip bash get.sh                  # ایران
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.24.zip bash get.sh join PNF1-...    # خارج
 ```
 
 <div dir="rtl">
@@ -339,3 +355,7 @@ sudo pronet pair --full-test
 برای بسته‌های بزرگ‌تر وایرگارد، امکان قطعه‌قطعه شدن IPv4 فقط روی سوکت خود رله فعال است تا اتصال فعلی با MTU بزرگ‌تر سیاه‌چاله نشود؛ این کار جای MTU مناسب و اندازه‌گیری مسیر را نمی‌گیرد.
 
 در سه دور پایداری، بدترین دورِ اندازه‌گیری‌شده مبنای انتخاب نهایی است. صدک‌ها از تمام نمونه‌ها محاسبه می‌شوند، ولی برای جلوگیری از حجیم شدن گزارش فقط حداکثر ۶۴ نمونهٔ نماینده در هر مرحله نگه می‌ماند.
+
+## منابع جایگزین نصب در 0.3.24
+
+اسکریپت ورودی از HTTPS دریافت می‌شود و نصب‌کنندهٔ نسخه‌دار را قبل از اجرا با SHA256 بررسی می‌کند. بسته‌ها و ابزار Mirror از منابع جایگزین Raw، CDN و API گیت‌هاب دریافت می‌شوند؛ موتورهای مستقل منبع اصلی سازنده را هم دارند. بستهٔ بزرگ، آینهٔ قطعه‌های ۵۱۲ کیلوبایتی دارد؛ هش هر قطعه و فایل کامل بررسی می‌شود. دانلود گیرکرده پس از مهلت محدود به منبع بعدی می‌رود. تضمین دسترسی همهٔ شبکه‌ها ممکن نیست؛ نصب آفلاین همچنان پشتیبانی می‌شود. DNS و منابع اصلی APT عوض نمی‌شوند.
