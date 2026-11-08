@@ -1,8 +1,15 @@
-name: Single-host installer validation
+name: Verified multi-source installer validation
 on:
   pull_request:
     paths:
       - 'get.sh'
+      - 'install.sh'
+      - 'installers/0.3.24/**'
+      - 'dist/chunks/**'
+      - 'tools/download.sh'
+      - 'tools/base-chunks.json'
+      - 'tools/render-bootstrap.py'
+      - 'tools/test_downloads.py'
       - 'dist/engines/**'
       - 'tools/test-get-installer.py'
       - 'tools/iran-apt-mirrors.py'
@@ -20,7 +27,9 @@ jobs:
         with:
           persist-credentials: false
       - name: Check shell syntax
-        run: bash -n get.sh
+        run: bash -n get.sh && bash -n install.sh
+      - name: Test bounded fallbacks, chunk verification and bootstrap integrity
+        run: python3 tools/test_downloads.py
       - name: Test temporary Iran mirror sources and authenticated selection
         run: python3 tools/test_apt_mirrors.py
       - name: Build verified fixtures using only the raw host
@@ -31,8 +40,8 @@ jobs:
           root=pathlib.Path(os.environ['RUNNER_TEMP']);base=root/'base.zip'
           assert hashlib.sha256(base.read_bytes()).hexdigest()=='3f1c4483c41c1f288281dabb789289888e043a9132e1d99f814929e55ba2fb37'
           with zipfile.ZipFile(base) as z:z.extractall(root)
-          source=root/'pronet-fleet-0.3.23';(root/'pronet-fleet-0.3.12').rename(source)
-          with zipfile.ZipFile('dist/pronet-fleet-0.3.23-update.zip') as z:z.extractall(root)
+          source=root/'pronet-fleet-0.3.24';(root/'pronet-fleet-0.3.12').rename(source)
+          with zipfile.ZipFile('dist/pronet-fleet-0.3.24-update.zip') as z:z.extractall(root)
           locked=json.loads((source/'assets.lock.json').read_text())
           for engine in ('paqet','backhaul','parsa-spoof'):
               for asset in locked[engine]['assets'].values():
@@ -40,5 +49,5 @@ jobs:
                   assert hashlib.sha256(path.read_bytes()).hexdigest()==asset['sha256']
                   shutil.copyfile(path,source/'vendor'/asset['name'])
           PY
-      - name: Fresh install, upgrade, join and corrupted download with Releases unavailable
-        run: python3 tools/test-get-installer.py --source "$RUNNER_TEMP/pronet-fleet-0.3.23" --base "$RUNNER_TEMP/base.zip"
+      - name: Fresh install, upgrade, join, corrupt downloads, blocked Raw and mirror helper fallback
+        run: python3 tools/test-get-installer.py --source "$RUNNER_TEMP/pronet-fleet-0.3.24" --base "$RUNNER_TEMP/base.zip"
