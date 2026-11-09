@@ -1,0 +1,1521 @@
+{
+  "commit": "87759fa3a555a85eac00122b702e04d0bdac733f",
+  "run_id": 40633431256,
+  "unit_tests": 285,
+  "runtime_arch": "linux-amd64",
+  "reports": [
+    {
+      "job": "linux-gaming (gre,bp-l3-udp,bp-l3-udp-reverse,bp-l3-quic,bp-l3-quic-reverse,bp-l3-udp-fec,bp-l3-p...",
+      "job_id": 122634934606,
+      "phase": "complete",
+      "carriers_tested": 10,
+      "carriers_passed": 7,
+      "selected": [
+        "gre",
+        "bp-l3-pck-reverse",
+        "bp-l3-udp"
+      ],
+      "passed": true,
+      "owned_resources_removed": true,
+      "host_firewall_unchanged": true,
+      "host_routes_unchanged": true,
+      "host_forwarding_unchanged": true,
+      "public_datapath": {
+        "gaming": true,
+        "passed": true,
+        "success_ratio": 1,
+        "upload_mbps": 0.8906666666666666,
+        "download_mbps": 0.8906666666666666,
+        "half_close": false,
+        "after_idle": true,
+        "integrity": true,
+        "gaming_stages": {
+          "idle": {
+            "sent": 285,
+            "received": 285,
+            "loss_percent": 0,
+            "p50_ms": 15.914880999957859,
+            "p95_ms": 17.774959000007584,
+            "p99_ms": 18.30048399995121,
+            "jitter_p95_ms": 2.6871750000054817,
+            "max_gap_ms": 25.546,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0
+          },
+          "loaded": {
+            "sent": 286,
+            "received": 286,
+            "loss_percent": 0,
+            "p50_ms": 15.894858000024215,
+            "p95_ms": 17.447249999918313,
+            "p99_ms": 18.074638000030063,
+            "jitter_p95_ms": 2.9350369999292525,
+            "max_gap_ms": 25.616,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0.8906666666666666
+          }
+        },
+        "errors": [],
+        "reason": "",
+        "utc": "2026-10-28T04:47:46Z",
+        "payload_bytes": 1200,
+        "load_scope": "paced UDP echo ~1 Mbit/s each direction; not saturation or a capacity estimate",
+        "recommended_wireguard_mtu_ipv4": 1160,
+        "minimum_wireguard_mtu_ipv6": 1280,
+        "quality_passed": true,
+        "verification_scope": "WireGuard connectivity, integrity and datagram boundaries; strict carrier ranking is tested during setup",
+        "wireguard_handshake": true,
+        "datagram_sizes": [
+          64,
+          512,
+          1200,
+          1400
+        ]
+      },
+      "wireguard_standard_mtu": {
+        "gaming": true,
+        "passed": true,
+        "success_ratio": 1,
+        "upload_mbps": 0.8933333333333334,
+        "download_mbps": 0.8933333333333334,
+        "half_close": false,
+        "after_idle": true,
+        "integrity": true,
+        "gaming_stages": {
+          "idle": {
+            "sent": 286,
+            "received": 286,
+            "loss_percent": 0,
+            "p50_ms": 16.032271999961267,
+            "p95_ms": 17.93293400010043,
+            "p99_ms": 18.38118500006658,
+            "jitter_p95_ms": 2.965317000075629,
+            "max_gap_ms": 25.215,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0
+          },
+          "loaded": {
+            "sent": 286,
+            "received": 286,
+            "loss_percent": 0,
+            "p50_ms": 15.865509000036582,
+            "p95_ms": 17.461519999983466,
+            "p99_ms": 17.990702000020065,
+            "jitter_p95_ms": 2.637832999994316,
+            "max_gap_ms": 24.389,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0.8933333333333334
+          }
+        },
+        "errors": [],
+        "reason": "",
+        "utc": "2026-10-28T04:48:01Z",
+        "payload_bytes": 1200,
+        "load_scope": "paced UDP echo ~1 Mbit/s each direction; not saturation or a capacity estimate",
+        "recommended_wireguard_mtu_ipv4": 1160,
+        "minimum_wireguard_mtu_ipv6": 1280,
+        "quality_passed": true,
+        "verification_scope": "WireGuard connectivity, integrity and datagram boundaries; strict carrier ranking is tested during setup",
+        "wireguard_handshake": true,
+        "datagram_sizes": [
+          64,
+          512,
+          1200,
+          1400
+        ]
+      },
+      "after_engine_crash": {
+        "gaming": true,
+        "passed": true,
+        "success_ratio": 1,
+        "upload_mbps": 0.8893333333333334,
+        "download_mbps": 0.8893333333333334,
+        "half_close": false,
+        "after_idle": true,
+        "integrity": true,
+        "gaming_stages": {
+          "idle": {
+            "sent": 286,
+            "received": 286,
+            "loss_percent": 0,
+            "p50_ms": 15.961689000050683,
+            "p95_ms": 17.5649790000989,
+            "p99_ms": 18.01420100002815,
+            "jitter_p95_ms": 2.597439999931339,
+            "max_gap_ms": 24.637,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0
+          },
+          "loaded": {
+            "sent": 286,
+            "received": 286,
+            "loss_percent": 0,
+            "p50_ms": 15.903965000006792,
+            "p95_ms": 17.57096900007582,
+            "p99_ms": 18.114477000040097,
+            "jitter_p95_ms": 2.7118289999634726,
+            "max_gap_ms": 25.424,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0.8893333333333334
+          }
+        },
+        "errors": [],
+        "reason": "",
+        "utc": "2026-10-28T04:48:22Z",
+        "payload_bytes": 1200,
+        "load_scope": "paced UDP echo ~1 Mbit/s each direction; not saturation or a capacity estimate",
+        "recommended_wireguard_mtu_ipv4": 1160,
+        "minimum_wireguard_mtu_ipv6": 1280,
+        "quality_passed": true,
+        "verification_scope": "WireGuard connectivity, integrity and datagram boundaries; strict carrier ranking is tested during setup",
+        "wireguard_handshake": true,
+        "datagram_sizes": [
+          64,
+          512,
+          1200,
+          1400
+        ]
+      },
+      "engine_recovery_seconds": 20.82,
+      "engine_recovery_attempts": 1,
+      "failover": {
+        "active": "bp-l3-pck-reverse",
+        "passed": true
+      },
+      "after_failover": {
+        "gaming": true,
+        "passed": true,
+        "success_ratio": 1,
+        "upload_mbps": 0.8946666666666666,
+        "download_mbps": 0.8946666666666666,
+        "half_close": false,
+        "after_idle": true,
+        "integrity": true,
+        "gaming_stages": {
+          "idle": {
+            "sent": 285,
+            "received": 285,
+            "loss_percent": 0,
+            "p50_ms": 16.164539999977023,
+            "p95_ms": 17.828662000056283,
+            "p99_ms": 18.307403999983762,
+            "jitter_p95_ms": 2.9614359999641238,
+            "max_gap_ms": 25.171,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0
+          },
+          "loaded": {
+            "sent": 286,
+            "received": 286,
+            "loss_percent": 0,
+            "p50_ms": 16.027190000045266,
+            "p95_ms": 17.75656099994194,
+            "p99_ms": 18.370119999985945,
+            "jitter_p95_ms": 2.78575799995906,
+            "max_gap_ms": 24.976,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0.8946666666666666
+          }
+        },
+        "errors": [],
+        "reason": "",
+        "utc": "2026-10-28T04:49:05Z",
+        "payload_bytes": 1200,
+        "load_scope": "paced UDP echo ~1 Mbit/s each direction; not saturation or a capacity estimate",
+        "recommended_wireguard_mtu_ipv4": 1160,
+        "minimum_wireguard_mtu_ipv6": 1280,
+        "quality_passed": true,
+        "verification_scope": "WireGuard connectivity, integrity and datagram boundaries; strict carrier ranking is tested during setup",
+        "wireguard_handshake": true,
+        "datagram_sizes": [
+          64,
+          512,
+          1200,
+          1400
+        ]
+      },
+      "hub_independence": {
+        "gaming": true,
+        "passed": true,
+        "success_ratio": 1,
+        "upload_mbps": 0.896,
+        "download_mbps": 0.896,
+        "half_close": false,
+        "after_idle": true,
+        "integrity": true,
+        "gaming_stages": {
+          "idle": {
+            "sent": 287,
+            "received": 287,
+            "loss_percent": 0,
+            "p50_ms": 16.290765000007923,
+            "p95_ms": 18.04919799997151,
+            "p99_ms": 18.67064299995036,
+            "jitter_p95_ms": 2.9249469998831046,
+            "max_gap_ms": 24.908,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0
+          },
+          "loaded": {
+            "sent": 286,
+            "received": 286,
+            "loss_percent": 0,
+            "p50_ms": 16.05955700006234,
+            "p95_ms": 17.548078000004352,
+            "p99_ms": 17.915439000034894,
+            "jitter_p95_ms": 2.5775689999818496,
+            "max_gap_ms": 25.042,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0.896
+          }
+        },
+        "errors": [],
+        "reason": "",
+        "utc": "2026-10-28T04:49:20Z",
+        "payload_bytes": 1200,
+        "load_scope": "paced UDP echo ~1 Mbit/s each direction; not saturation or a capacity estimate",
+        "recommended_wireguard_mtu_ipv4": 1160,
+        "minimum_wireguard_mtu_ipv6": 1280,
+        "quality_passed": true,
+        "verification_scope": "WireGuard connectivity, integrity and datagram boundaries; strict carrier ranking is tested during setup",
+        "wireguard_handshake": true,
+        "datagram_sizes": [
+          64,
+          512,
+          1200,
+          1400
+        ]
+      },
+      "cleanup_errors": [],
+      "carriers": [
+        {
+          "profile": "bp-l3-pck-reverse",
+          "passed": true,
+          "reason": "",
+          "qualification_runs": 3,
+          "gaming_stages": {
+            "idle": {
+              "integrity_errors": 0,
+              "jitter_p95_ms": 2.361181000082979,
+              "load_reply_mbps": 0,
+              "loss_percent": 0,
+              "max_gap_ms": 24.813,
+              "p50_ms": 10.385685999949601,
+              "p95_ms": 11.855416999992485,
+              "p99_ms": 12.170951000030072,
+              "received": 572,
+              "reordered": 0,
+              "sent": 572
+            },
+            "loaded": {
+              "integrity_errors": 0,
+              "jitter_p95_ms": 2.1471799999517316,
+              "load_reply_mbps": 0.8926666666666666,
+              "loss_percent": 0,
+              "max_gap_ms": 24.352,
+              "p50_ms": 10.312690999967344,
+              "p95_ms": 11.690143000009812,
+              "p99_ms": 12.075815999992301,
+              "received": 572,
+              "reordered": 0,
+              "sent": 572
+            }
+          }
+        },
+        {
+          "profile": "bp-l3-pck",
+          "passed": false,
+          "reason": "no end-to-end connectivity within 20 s"
+        },
+        {
+          "profile": "bp-l3-pck-fec",
+          "passed": false,
+          "reason": "no end-to-end connectivity within 20 s"
+        },
+        {
+          "profile": "bp-l3-sni",
+          "passed": false,
+          "reason": "no end-to-end connectivity within 20 s"
+        },
+        {
+          "profile": "gre",
+          "passed": true,
+          "reason": "",
+          "qualification_runs": 3,
+          "gaming_stages": {
+            "idle": {
+              "integrity_errors": 0,
+              "jitter_p95_ms": 2.287086000023919,
+              "load_reply_mbps": 0,
+              "loss_percent": 0,
+              "max_gap_ms": 24.569,
+              "p50_ms": 10.22226300000284,
+              "p95_ms": 11.611931999993885,
+              "p99_ms": 12.032363000002988,
+              "received": 571,
+              "reordered": 0,
+              "sent": 571
+            },
+            "loaded": {
+              "integrity_errors": 0,
+              "jitter_p95_ms": 2.2728590000156146,
+              "load_reply_mbps": 0.8986666666666666,
+              "loss_percent": 0,
+              "max_gap_ms": 24.318,
+              "p50_ms": 10.228159000007508,
+              "p95_ms": 11.549707000028775,
+              "p99_ms": 11.90881799999488,
+              "received": 571,
+              "reordered": 0,
+              "sent": 571
+            }
+          }
+        },
+        {
+          "profile": "bp-l3-udp",
+          "passed": true,
+          "reason": "",
+          "qualification_runs": 3,
+          "gaming_stages": {
+            "idle": {
+              "integrity_errors": 0,
+              "jitter_p95_ms": 2.376004000041121,
+              "load_reply_mbps": 0,
+              "loss_percent": 0,
+              "max_gap_ms": 24.604,
+              "p50_ms": 10.409736000042358,
+              "p95_ms": 11.801710000042931,
+              "p99_ms": 12.085050000052888,
+              "received": 572,
+              "reordered": 0,
+              "sent": 572
+            },
+            "loaded": {
+              "integrity_errors": 0,
+              "jitter_p95_ms": 2.2334650000175316,
+              "load_reply_mbps": 0.8933333333333334,
+              "loss_percent": 0,
+              "max_gap_ms": 24.845,
+              "p50_ms": 10.33669399998871,
+              "p95_ms": 11.56962199991085,
+              "p99_ms": 12.103477999971801,
+              "received": 573,
+              "reordered": 0,
+              "sent": 573
+            }
+          }
+        },
+        {
+          "profile": "bp-l3-udp-reverse",
+          "passed": true,
+          "reason": "",
+          "gaming_stages": {
+            "idle": {
+              "integrity_errors": 0,
+              "jitter_p95_ms": 2.4740409999992607,
+              "load_reply_mbps": 0,
+              "loss_percent": 0,
+              "max_gap_ms": 24.579,
+              "p50_ms": 10.361888000005592,
+              "p95_ms": 11.780843999986246,
+              "p99_ms": 12.19235700000354,
+              "received": 286,
+              "reordered": 0,
+              "sent": 286
+            },
+            "loaded": {
+              "integrity_errors": 0,
+              "jitter_p95_ms": 2.2119140000143034,
+              "load_reply_mbps": 0.8946666666666666,
+              "loss_percent": 0,
+              "max_gap_ms": 24.695,
+              "p50_ms": 10.432922999996208,
+              "p95_ms": 11.800561000001153,
+              "p99_ms": 12.126896000012266,
+              "received": 287,
+              "reordered": 0,
+              "sent": 287
+            }
+          }
+        },
+        {
+          "profile": "bp-l3-quic",
+          "passed": true,
+          "reason": "",
+          "gaming_stages": {
+            "idle": {
+              "integrity_errors": 0,
+              "jitter_p95_ms": 2.211622000004354,
+              "load_reply_mbps": 0,
+              "loss_percent": 0,
+              "max_gap_ms": 24.709,
+              "p50_ms": 10.371994999985645,
+              "p95_ms": 11.801437999992004,
+              "p99_ms": 12.187352000012197,
+              "received": 286,
+              "reordered": 0,
+              "sent": 286
+            },
+            "loaded": {
+              "integrity_errors": 0,
+              "jitter_p95_ms": 2.17948600001705,
+              "load_reply_mbps": 0.8906666666666666,
+              "loss_percent": 0,
+              "max_gap_ms": 25.084,
+              "p50_ms": 10.458335999999235,
+              "p95_ms": 11.855677999989211,
+              "p99_ms": 12.261218000020335,
+              "received": 286,
+              "reordered": 0,
+              "sent": 286
+            }
+          }
+        },
+        {
+          "profile": "bp-l3-quic-reverse",
+          "passed": true,
+          "reason": "",
+          "gaming_stages": {
+            "idle": {
+              "integrity_errors": 0,
+              "jitter_p95_ms": 2.2751959999993687,
+              "load_reply_mbps": 0,
+              "loss_percent": 0,
+              "max_gap_ms": 24.623,
+              "p50_ms": 10.559473999990132,
+              "p95_ms": 11.863712999996778,
+              "p99_ms": 12.354055999992397,
+              "received": 285,
+              "reordered": 0,
+              "sent": 285
+            },
+            "loaded": {
+              "integrity_errors": 0,
+              "jitter_p95_ms": 2.2487949999856482,
+              "load_reply_mbps": 0.892,
+              "loss_percent": 0,
+              "max_gap_ms": 24.606,
+              "p50_ms": 10.396130999993147,
+              "p95_ms": 11.732300999995005,
+              "p99_ms": 12.12534600000481,
+              "received": 285,
+              "reordered": 0,
+              "sent": 285
+            }
+          }
+        },
+        {
+          "profile": "bp-l3-udp-fec",
+          "passed": true,
+          "reason": "",
+          "gaming_stages": {
+            "idle": {
+              "integrity_errors": 0,
+              "jitter_p95_ms": 2.2445550000043113,
+              "load_reply_mbps": 0,
+              "loss_percent": 0,
+              "max_gap_ms": 24.489,
+              "p50_ms": 10.187742999988814,
+              "p95_ms": 11.66617300000894,
+              "p99_ms": 12.021385999986478,
+              "received": 286,
+              "reordered": 0,
+              "sent": 286
+            },
+            "loaded": {
+              "integrity_errors": 0,
+              "jitter_p95_ms": 2.2921899999914785,
+              "load_reply_mbps": 0.8986666666666666,
+              "loss_percent": 0,
+              "max_gap_ms": 24.621,
+              "p50_ms": 10.218627000000424,
+              "p95_ms": 11.709633999998914,
+              "p99_ms": 12.015533999999661,
+              "received": 286,
+              "reordered": 0,
+              "sent": 286
+            }
+          }
+        }
+      ]
+    },
+    {
+      "job": "linux-gaming (gre, true)",
+      "job_id": 122634934770,
+      "phase": "complete",
+      "carriers_tested": 1,
+      "carriers_passed": 1,
+      "selected": [
+        "gre"
+      ],
+      "passed": true,
+      "owned_resources_removed": true,
+      "host_firewall_unchanged": true,
+      "host_routes_unchanged": true,
+      "host_forwarding_unchanged": true,
+      "public_datapath": {
+        "gaming": true,
+        "passed": true,
+        "success_ratio": 1,
+        "upload_mbps": 0.8893333333333334,
+        "download_mbps": 0.8893333333333334,
+        "half_close": false,
+        "after_idle": true,
+        "integrity": true,
+        "gaming_stages": {
+          "idle": {
+            "sent": 286,
+            "received": 286,
+            "loss_percent": 0,
+            "p50_ms": 15.408359999980803,
+            "p95_ms": 17.266794999983404,
+            "p99_ms": 17.949745999999323,
+            "jitter_p95_ms": 3.149062999995067,
+            "max_gap_ms": 25.51,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0
+          },
+          "loaded": {
+            "sent": 286,
+            "received": 286,
+            "loss_percent": 0,
+            "p50_ms": 15.588503999993009,
+            "p95_ms": 17.377280000005157,
+            "p99_ms": 18.397294999999758,
+            "jitter_p95_ms": 2.9534519999856457,
+            "max_gap_ms": 26.218,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0.8893333333333334
+          }
+        },
+        "errors": [],
+        "reason": "",
+        "utc": "2026-10-28T04:41:16Z",
+        "payload_bytes": 1200,
+        "load_scope": "paced UDP echo ~1 Mbit/s each direction; not saturation or a capacity estimate",
+        "recommended_wireguard_mtu_ipv4": 1160,
+        "minimum_wireguard_mtu_ipv6": 1280,
+        "quality_passed": true,
+        "verification_scope": "WireGuard connectivity, integrity and datagram boundaries; strict carrier ranking is tested during setup",
+        "wireguard_handshake": true,
+        "datagram_sizes": [
+          64,
+          512,
+          1200,
+          1400
+        ]
+      },
+      "wireguard_standard_mtu": {
+        "gaming": true,
+        "passed": true,
+        "success_ratio": 1,
+        "upload_mbps": 0.892,
+        "download_mbps": 0.892,
+        "half_close": false,
+        "after_idle": true,
+        "integrity": true,
+        "gaming_stages": {
+          "idle": {
+            "sent": 286,
+            "received": 286,
+            "loss_percent": 0,
+            "p50_ms": 15.689499000018259,
+            "p95_ms": 17.391788999987057,
+            "p99_ms": 17.866161000000602,
+            "jitter_p95_ms": 3.1763749999811353,
+            "max_gap_ms": 25.781,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0
+          },
+          "loaded": {
+            "sent": 286,
+            "received": 286,
+            "loss_percent": 0,
+            "p50_ms": 15.472289000001638,
+            "p95_ms": 17.06584299998326,
+            "p99_ms": 17.615653000007114,
+            "jitter_p95_ms": 2.8554479999911564,
+            "max_gap_ms": 25.473,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0.892
+          }
+        },
+        "errors": [],
+        "reason": "",
+        "utc": "2026-10-28T04:41:31Z",
+        "payload_bytes": 1200,
+        "load_scope": "paced UDP echo ~1 Mbit/s each direction; not saturation or a capacity estimate",
+        "recommended_wireguard_mtu_ipv4": 1160,
+        "minimum_wireguard_mtu_ipv6": 1280,
+        "quality_passed": true,
+        "verification_scope": "WireGuard connectivity, integrity and datagram boundaries; strict carrier ranking is tested during setup",
+        "wireguard_handshake": true,
+        "datagram_sizes": [
+          64,
+          512,
+          1200,
+          1400
+        ]
+      },
+      "after_engine_crash": {
+        "gaming": true,
+        "passed": true,
+        "success_ratio": 1,
+        "upload_mbps": 0.892,
+        "download_mbps": 0.892,
+        "half_close": false,
+        "after_idle": true,
+        "integrity": true,
+        "gaming_stages": {
+          "idle": {
+            "sent": 287,
+            "received": 287,
+            "loss_percent": 0,
+            "p50_ms": 15.691589999988764,
+            "p95_ms": 17.49246400001425,
+            "p99_ms": 18.310589999998683,
+            "jitter_p95_ms": 2.6517459999979565,
+            "max_gap_ms": 25.247,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0
+          },
+          "loaded": {
+            "sent": 286,
+            "received": 286,
+            "loss_percent": 0,
+            "p50_ms": 15.583706999990454,
+            "p95_ms": 17.0429710000235,
+            "p99_ms": 17.64815999999314,
+            "jitter_p95_ms": 2.649617999992415,
+            "max_gap_ms": 25.036,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0.892
+          }
+        },
+        "errors": [],
+        "reason": "",
+        "utc": "2026-10-28T04:41:52Z",
+        "payload_bytes": 1200,
+        "load_scope": "paced UDP echo ~1 Mbit/s each direction; not saturation or a capacity estimate",
+        "recommended_wireguard_mtu_ipv4": 1160,
+        "minimum_wireguard_mtu_ipv6": 1280,
+        "quality_passed": true,
+        "verification_scope": "WireGuard connectivity, integrity and datagram boundaries; strict carrier ranking is tested during setup",
+        "wireguard_handshake": true,
+        "datagram_sizes": [
+          64,
+          512,
+          1200,
+          1400
+        ]
+      },
+      "engine_recovery_seconds": 20.78,
+      "engine_recovery_attempts": 1,
+      "hub_independence": {
+        "gaming": true,
+        "passed": true,
+        "success_ratio": 1,
+        "upload_mbps": 0.888,
+        "download_mbps": 0.888,
+        "half_close": false,
+        "after_idle": true,
+        "integrity": true,
+        "gaming_stages": {
+          "idle": {
+            "sent": 286,
+            "received": 286,
+            "loss_percent": 0,
+            "p50_ms": 15.584769999975379,
+            "p95_ms": 17.301806999995506,
+            "p99_ms": 17.81923199999369,
+            "jitter_p95_ms": 2.8149780000035207,
+            "max_gap_ms": 26.152,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0
+          },
+          "loaded": {
+            "sent": 286,
+            "received": 286,
+            "loss_percent": 0,
+            "p50_ms": 15.468975999993972,
+            "p95_ms": 17.154207999993787,
+            "p99_ms": 17.569567000009556,
+            "jitter_p95_ms": 2.8356559999735964,
+            "max_gap_ms": 25.282,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0.888
+          }
+        },
+        "errors": [],
+        "reason": "",
+        "utc": "2026-10-28T04:42:07Z",
+        "payload_bytes": 1200,
+        "load_scope": "paced UDP echo ~1 Mbit/s each direction; not saturation or a capacity estimate",
+        "recommended_wireguard_mtu_ipv4": 1160,
+        "minimum_wireguard_mtu_ipv6": 1280,
+        "quality_passed": true,
+        "verification_scope": "WireGuard connectivity, integrity and datagram boundaries; strict carrier ranking is tested during setup",
+        "wireguard_handshake": true,
+        "datagram_sizes": [
+          64,
+          512,
+          1200,
+          1400
+        ]
+      },
+      "cleanup_errors": [],
+      "carriers": [
+        {
+          "profile": "gre",
+          "passed": true,
+          "reason": "",
+          "qualification_runs": 3,
+          "gaming_stages": {
+            "idle": {
+              "integrity_errors": 0,
+              "jitter_p95_ms": 2.440484000004517,
+              "load_reply_mbps": 0,
+              "loss_percent": 0,
+              "max_gap_ms": 24.42,
+              "p50_ms": 10.245621000009919,
+              "p95_ms": 11.588304999989418,
+              "p99_ms": 12.018334999993385,
+              "received": 571,
+              "reordered": 0,
+              "sent": 571
+            },
+            "loaded": {
+              "integrity_errors": 0,
+              "jitter_p95_ms": 2.3957209999991846,
+              "load_reply_mbps": 0.9006666666666666,
+              "loss_percent": 0,
+              "max_gap_ms": 24.601,
+              "p50_ms": 10.16546500000004,
+              "p95_ms": 11.488103999994337,
+              "p99_ms": 11.828288000003795,
+              "received": 573,
+              "reordered": 0,
+              "sent": 573
+            }
+          }
+        }
+      ]
+    },
+    {
+      "job": "linux-gaming (bp-l3-udp, true)",
+      "job_id": 122634934799,
+      "phase": "complete",
+      "carriers_tested": 1,
+      "carriers_passed": 1,
+      "selected": [
+        "bp-l3-udp"
+      ],
+      "passed": true,
+      "owned_resources_removed": true,
+      "host_firewall_unchanged": true,
+      "host_routes_unchanged": true,
+      "host_forwarding_unchanged": true,
+      "public_datapath": {
+        "gaming": true,
+        "passed": true,
+        "success_ratio": 1,
+        "upload_mbps": 0.8906666666666666,
+        "download_mbps": 0.8906666666666666,
+        "half_close": false,
+        "after_idle": true,
+        "integrity": true,
+        "gaming_stages": {
+          "idle": {
+            "sent": 285,
+            "received": 285,
+            "loss_percent": 0,
+            "p50_ms": 15.956057999972018,
+            "p95_ms": 17.92695299997149,
+            "p99_ms": 19.093627000017932,
+            "jitter_p95_ms": 2.8536599999711143,
+            "max_gap_ms": 25.514,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0
+          },
+          "loaded": {
+            "sent": 286,
+            "received": 286,
+            "loss_percent": 0,
+            "p50_ms": 15.825744999972358,
+            "p95_ms": 17.629862999967827,
+            "p99_ms": 18.04389500000525,
+            "jitter_p95_ms": 2.699812999992446,
+            "max_gap_ms": 26.419,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0.8906666666666666
+          }
+        },
+        "errors": [],
+        "reason": "",
+        "utc": "2026-10-28T04:41:28Z",
+        "payload_bytes": 1200,
+        "load_scope": "paced UDP echo ~1 Mbit/s each direction; not saturation or a capacity estimate",
+        "recommended_wireguard_mtu_ipv4": 1160,
+        "minimum_wireguard_mtu_ipv6": 1280,
+        "quality_passed": true,
+        "verification_scope": "WireGuard connectivity, integrity and datagram boundaries; strict carrier ranking is tested during setup",
+        "wireguard_handshake": true,
+        "datagram_sizes": [
+          64,
+          512,
+          1200,
+          1400
+        ]
+      },
+      "wireguard_standard_mtu": {
+        "gaming": true,
+        "passed": true,
+        "success_ratio": 1,
+        "upload_mbps": 0.8933333333333334,
+        "download_mbps": 0.8933333333333334,
+        "half_close": false,
+        "after_idle": true,
+        "integrity": true,
+        "gaming_stages": {
+          "idle": {
+            "sent": 286,
+            "received": 286,
+            "loss_percent": 0,
+            "p50_ms": 15.942176999999447,
+            "p95_ms": 17.602693000014824,
+            "p99_ms": 18.139981999979682,
+            "jitter_p95_ms": 2.6689769999848068,
+            "max_gap_ms": 24.646,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0
+          },
+          "loaded": {
+            "sent": 287,
+            "received": 287,
+            "loss_percent": 0,
+            "p50_ms": 15.730853999968986,
+            "p95_ms": 17.34172699997316,
+            "p99_ms": 17.981337999970037,
+            "jitter_p95_ms": 2.7311489999988225,
+            "max_gap_ms": 25.73,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0.8933333333333334
+          }
+        },
+        "errors": [],
+        "reason": "",
+        "utc": "2026-10-28T04:41:43Z",
+        "payload_bytes": 1200,
+        "load_scope": "paced UDP echo ~1 Mbit/s each direction; not saturation or a capacity estimate",
+        "recommended_wireguard_mtu_ipv4": 1160,
+        "minimum_wireguard_mtu_ipv6": 1280,
+        "quality_passed": true,
+        "verification_scope": "WireGuard connectivity, integrity and datagram boundaries; strict carrier ranking is tested during setup",
+        "wireguard_handshake": true,
+        "datagram_sizes": [
+          64,
+          512,
+          1200,
+          1400
+        ]
+      },
+      "after_engine_crash": {
+        "gaming": true,
+        "passed": true,
+        "success_ratio": 1,
+        "upload_mbps": 0.8906666666666666,
+        "download_mbps": 0.8906666666666666,
+        "half_close": false,
+        "after_idle": true,
+        "integrity": true,
+        "gaming_stages": {
+          "idle": {
+            "sent": 286,
+            "received": 286,
+            "loss_percent": 0,
+            "p50_ms": 15.957087999993291,
+            "p95_ms": 17.56049900001244,
+            "p99_ms": 18.232282000042233,
+            "jitter_p95_ms": 2.7780880000136676,
+            "max_gap_ms": 25.298,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0
+          },
+          "loaded": {
+            "sent": 286,
+            "received": 286,
+            "loss_percent": 0,
+            "p50_ms": 15.659578999986934,
+            "p95_ms": 17.293020000010983,
+            "p99_ms": 17.795446999969045,
+            "jitter_p95_ms": 2.948256000024685,
+            "max_gap_ms": 25.29,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0.8906666666666666
+          }
+        },
+        "errors": [],
+        "reason": "",
+        "utc": "2026-10-28T04:42:04Z",
+        "payload_bytes": 1200,
+        "load_scope": "paced UDP echo ~1 Mbit/s each direction; not saturation or a capacity estimate",
+        "recommended_wireguard_mtu_ipv4": 1160,
+        "minimum_wireguard_mtu_ipv6": 1280,
+        "quality_passed": true,
+        "verification_scope": "WireGuard connectivity, integrity and datagram boundaries; strict carrier ranking is tested during setup",
+        "wireguard_handshake": true,
+        "datagram_sizes": [
+          64,
+          512,
+          1200,
+          1400
+        ]
+      },
+      "engine_recovery_seconds": 20.8,
+      "engine_recovery_attempts": 1,
+      "hub_independence": {
+        "gaming": true,
+        "passed": true,
+        "success_ratio": 1,
+        "upload_mbps": 0.8906666666666666,
+        "download_mbps": 0.8906666666666666,
+        "half_close": false,
+        "after_idle": true,
+        "integrity": true,
+        "gaming_stages": {
+          "idle": {
+            "sent": 287,
+            "received": 287,
+            "loss_percent": 0,
+            "p50_ms": 16.223847999981444,
+            "p95_ms": 17.68990099998291,
+            "p99_ms": 18.249768999965,
+            "jitter_p95_ms": 2.579794999974183,
+            "max_gap_ms": 25.965,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0
+          },
+          "loaded": {
+            "sent": 286,
+            "received": 286,
+            "loss_percent": 0,
+            "p50_ms": 15.757733999976153,
+            "p95_ms": 17.640262000043094,
+            "p99_ms": 18.25159100002338,
+            "jitter_p95_ms": 2.7545840000584576,
+            "max_gap_ms": 27.008,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0.8906666666666666
+          }
+        },
+        "errors": [],
+        "reason": "",
+        "utc": "2026-10-28T04:42:19Z",
+        "payload_bytes": 1200,
+        "load_scope": "paced UDP echo ~1 Mbit/s each direction; not saturation or a capacity estimate",
+        "recommended_wireguard_mtu_ipv4": 1160,
+        "minimum_wireguard_mtu_ipv6": 1280,
+        "quality_passed": true,
+        "verification_scope": "WireGuard connectivity, integrity and datagram boundaries; strict carrier ranking is tested during setup",
+        "wireguard_handshake": true,
+        "datagram_sizes": [
+          64,
+          512,
+          1200,
+          1400
+        ]
+      },
+      "cleanup_errors": [],
+      "carriers": [
+        {
+          "profile": "bp-l3-udp",
+          "passed": true,
+          "reason": "",
+          "qualification_runs": 3,
+          "gaming_stages": {
+            "idle": {
+              "integrity_errors": 0,
+              "jitter_p95_ms": 2.322494999987157,
+              "load_reply_mbps": 0,
+              "loss_percent": 0,
+              "max_gap_ms": 24.763,
+              "p50_ms": 10.524578000001839,
+              "p95_ms": 11.712832000000617,
+              "p99_ms": 12.221238999984507,
+              "received": 570,
+              "reordered": 0,
+              "sent": 570
+            },
+            "loaded": {
+              "integrity_errors": 0,
+              "jitter_p95_ms": 2.358228000048257,
+              "load_reply_mbps": 0.8966666666666666,
+              "loss_percent": 0,
+              "max_gap_ms": 25.015,
+              "p50_ms": 10.307444000034138,
+              "p95_ms": 11.71429500004706,
+              "p99_ms": 12.014008999983616,
+              "received": 571,
+              "reordered": 0,
+              "sent": 571
+            }
+          }
+        }
+      ]
+    },
+    {
+      "job": "linux-gaming (gre,bp-l3-udp, true)",
+      "job_id": 122634934839,
+      "phase": "complete",
+      "carriers_tested": 2,
+      "carriers_passed": 2,
+      "selected": [
+        "bp-l3-udp",
+        "gre"
+      ],
+      "passed": true,
+      "owned_resources_removed": true,
+      "host_firewall_unchanged": true,
+      "host_routes_unchanged": true,
+      "host_forwarding_unchanged": true,
+      "public_datapath": {
+        "gaming": true,
+        "passed": true,
+        "success_ratio": 1,
+        "upload_mbps": 0.8893333333333334,
+        "download_mbps": 0.8893333333333334,
+        "half_close": false,
+        "after_idle": true,
+        "integrity": true,
+        "gaming_stages": {
+          "idle": {
+            "sent": 287,
+            "received": 287,
+            "loss_percent": 0,
+            "p50_ms": 15.943297000035273,
+            "p95_ms": 17.329678999999487,
+            "p99_ms": 18.11787000002596,
+            "jitter_p95_ms": 2.594074000001001,
+            "max_gap_ms": 24.574,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0
+          },
+          "loaded": {
+            "sent": 286,
+            "received": 286,
+            "loss_percent": 0,
+            "p50_ms": 15.69272999995519,
+            "p95_ms": 17.469870000013543,
+            "p99_ms": 17.933816999970986,
+            "jitter_p95_ms": 3.0045130000075915,
+            "max_gap_ms": 25.324,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0.8893333333333334
+          }
+        },
+        "errors": [],
+        "reason": "",
+        "utc": "2026-10-28T04:43:13Z",
+        "payload_bytes": 1200,
+        "load_scope": "paced UDP echo ~1 Mbit/s each direction; not saturation or a capacity estimate",
+        "recommended_wireguard_mtu_ipv4": 1160,
+        "minimum_wireguard_mtu_ipv6": 1280,
+        "quality_passed": true,
+        "verification_scope": "WireGuard connectivity, integrity and datagram boundaries; strict carrier ranking is tested during setup",
+        "wireguard_handshake": true,
+        "datagram_sizes": [
+          64,
+          512,
+          1200,
+          1400
+        ]
+      },
+      "wireguard_standard_mtu": {
+        "gaming": true,
+        "passed": true,
+        "success_ratio": 1,
+        "upload_mbps": 0.888,
+        "download_mbps": 0.888,
+        "half_close": false,
+        "after_idle": true,
+        "integrity": true,
+        "gaming_stages": {
+          "idle": {
+            "sent": 285,
+            "received": 285,
+            "loss_percent": 0,
+            "p50_ms": 15.83573499999602,
+            "p95_ms": 17.603197000028104,
+            "p99_ms": 18.1667830000265,
+            "jitter_p95_ms": 2.9087300000014693,
+            "max_gap_ms": 24.468,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0
+          },
+          "loaded": {
+            "sent": 286,
+            "received": 286,
+            "loss_percent": 0,
+            "p50_ms": 15.62661000002663,
+            "p95_ms": 17.423390999965704,
+            "p99_ms": 18.049842000039007,
+            "jitter_p95_ms": 2.8132070000310705,
+            "max_gap_ms": 26.496,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0.888
+          }
+        },
+        "errors": [],
+        "reason": "",
+        "utc": "2026-10-28T04:43:28Z",
+        "payload_bytes": 1200,
+        "load_scope": "paced UDP echo ~1 Mbit/s each direction; not saturation or a capacity estimate",
+        "recommended_wireguard_mtu_ipv4": 1160,
+        "minimum_wireguard_mtu_ipv6": 1280,
+        "quality_passed": true,
+        "verification_scope": "WireGuard connectivity, integrity and datagram boundaries; strict carrier ranking is tested during setup",
+        "wireguard_handshake": true,
+        "datagram_sizes": [
+          64,
+          512,
+          1200,
+          1400
+        ]
+      },
+      "after_engine_crash": {
+        "gaming": true,
+        "passed": true,
+        "success_ratio": 1,
+        "upload_mbps": 0.888,
+        "download_mbps": 0.888,
+        "half_close": false,
+        "after_idle": true,
+        "integrity": true,
+        "gaming_stages": {
+          "idle": {
+            "sent": 286,
+            "received": 286,
+            "loss_percent": 0,
+            "p50_ms": 15.924790999974903,
+            "p95_ms": 17.510600000036902,
+            "p99_ms": 18.01172700004372,
+            "jitter_p95_ms": 2.894830999991882,
+            "max_gap_ms": 25.042,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0
+          },
+          "loaded": {
+            "sent": 286,
+            "received": 286,
+            "loss_percent": 0,
+            "p50_ms": 15.814131000013276,
+            "p95_ms": 17.28231199996344,
+            "p99_ms": 17.82978500000354,
+            "jitter_p95_ms": 2.7677590000507735,
+            "max_gap_ms": 24.899,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0.888
+          }
+        },
+        "errors": [],
+        "reason": "",
+        "utc": "2026-10-28T04:43:48Z",
+        "payload_bytes": 1200,
+        "load_scope": "paced UDP echo ~1 Mbit/s each direction; not saturation or a capacity estimate",
+        "recommended_wireguard_mtu_ipv4": 1160,
+        "minimum_wireguard_mtu_ipv6": 1280,
+        "quality_passed": true,
+        "verification_scope": "WireGuard connectivity, integrity and datagram boundaries; strict carrier ranking is tested during setup",
+        "wireguard_handshake": true,
+        "datagram_sizes": [
+          64,
+          512,
+          1200,
+          1400
+        ]
+      },
+      "engine_recovery_seconds": 20.8,
+      "engine_recovery_attempts": 1,
+      "failover": {
+        "active": "gre",
+        "passed": true
+      },
+      "after_failover": {
+        "gaming": true,
+        "passed": true,
+        "success_ratio": 1,
+        "upload_mbps": 0.888,
+        "download_mbps": 0.888,
+        "half_close": false,
+        "after_idle": true,
+        "integrity": true,
+        "gaming_stages": {
+          "idle": {
+            "sent": 285,
+            "received": 285,
+            "loss_percent": 0,
+            "p50_ms": 15.785171999993963,
+            "p95_ms": 17.68715000002885,
+            "p99_ms": 18.2815640000058,
+            "jitter_p95_ms": 3.152607000004082,
+            "max_gap_ms": 25.368,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0
+          },
+          "loaded": {
+            "sent": 287,
+            "received": 287,
+            "loss_percent": 0,
+            "p50_ms": 15.49003000002358,
+            "p95_ms": 17.165709000039442,
+            "p99_ms": 17.5313589999746,
+            "jitter_p95_ms": 2.6031109999848923,
+            "max_gap_ms": 25.294,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0.888
+          }
+        },
+        "errors": [],
+        "reason": "",
+        "utc": "2026-10-28T04:44:30Z",
+        "payload_bytes": 1200,
+        "load_scope": "paced UDP echo ~1 Mbit/s each direction; not saturation or a capacity estimate",
+        "recommended_wireguard_mtu_ipv4": 1160,
+        "minimum_wireguard_mtu_ipv6": 1280,
+        "quality_passed": true,
+        "verification_scope": "WireGuard connectivity, integrity and datagram boundaries; strict carrier ranking is tested during setup",
+        "wireguard_handshake": true,
+        "datagram_sizes": [
+          64,
+          512,
+          1200,
+          1400
+        ]
+      },
+      "hub_independence": {
+        "gaming": true,
+        "passed": true,
+        "success_ratio": 1,
+        "upload_mbps": 0.888,
+        "download_mbps": 0.888,
+        "half_close": false,
+        "after_idle": true,
+        "integrity": true,
+        "gaming_stages": {
+          "idle": {
+            "sent": 286,
+            "received": 286,
+            "loss_percent": 0,
+            "p50_ms": 15.797951000024568,
+            "p95_ms": 17.364035000014155,
+            "p99_ms": 17.85650499999747,
+            "jitter_p95_ms": 2.903301999992891,
+            "max_gap_ms": 24.827,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0
+          },
+          "loaded": {
+            "sent": 286,
+            "received": 286,
+            "loss_percent": 0,
+            "p50_ms": 15.56533100000479,
+            "p95_ms": 17.06716299997879,
+            "p99_ms": 17.491215999996257,
+            "jitter_p95_ms": 2.349692000052528,
+            "max_gap_ms": 25.115,
+            "reordered": 0,
+            "integrity_errors": 0,
+            "load_reply_mbps": 0.888
+          }
+        },
+        "errors": [],
+        "reason": "",
+        "utc": "2026-10-28T04:44:46Z",
+        "payload_bytes": 1200,
+        "load_scope": "paced UDP echo ~1 Mbit/s each direction; not saturation or a capacity estimate",
+        "recommended_wireguard_mtu_ipv4": 1160,
+        "minimum_wireguard_mtu_ipv6": 1280,
+        "quality_passed": true,
+        "verification_scope": "WireGuard connectivity, integrity and datagram boundaries; strict carrier ranking is tested during setup",
+        "wireguard_handshake": true,
+        "datagram_sizes": [
+          64,
+          512,
+          1200,
+          1400
+        ]
+      },
+      "cleanup_errors": [],
+      "carriers": [
+        {
+          "profile": "gre",
+          "passed": true,
+          "reason": "",
+          "qualification_runs": 3,
+          "gaming_stages": {
+            "idle": {
+              "integrity_errors": 0,
+              "jitter_p95_ms": 2.3863059999484904,
+              "load_reply_mbps": 0,
+              "loss_percent": 0,
+              "max_gap_ms": 24.478,
+              "p50_ms": 10.256672000025446,
+              "p95_ms": 11.630496000009316,
+              "p99_ms": 12.028745000009167,
+              "received": 570,
+              "reordered": 0,
+              "sent": 570
+            },
+            "loaded": {
+              "integrity_errors": 0,
+              "jitter_p95_ms": 2.2844129999839424,
+              "load_reply_mbps": 0.8966666666666666,
+              "loss_percent": 0,
+              "max_gap_ms": 24.414,
+              "p50_ms": 10.082830999976977,
+              "p95_ms": 11.435854000012569,
+              "p99_ms": 11.797524999963116,
+              "received": 573,
+              "reordered": 0,
+              "sent": 573
+            }
+          }
+        },
+        {
+          "profile": "bp-l3-udp",
+          "passed": true,
+          "reason": "",
+          "qualification_runs": 3,
+          "gaming_stages": {
+            "idle": {
+              "integrity_errors": 0,
+              "jitter_p95_ms": 2.362519999991264,
+              "load_reply_mbps": 0,
+              "loss_percent": 0,
+              "max_gap_ms": 24.665,
+              "p50_ms": 10.410150000012663,
+              "p95_ms": 11.810332999999673,
+              "p99_ms": 12.087949000004983,
+              "received": 571,
+              "reordered": 0,
+              "sent": 571
+            },
+            "loaded": {
+              "integrity_errors": 0,
+              "jitter_p95_ms": 2.1040669999763395,
+              "load_reply_mbps": 0.8933333333333334,
+              "loss_percent": 0,
+              "max_gap_ms": 24.621,
+              "p50_ms": 10.243492000000742,
+              "p95_ms": 11.541991000001417,
+              "p99_ms": 11.990467000003946,
+              "received": 573,
+              "reordered": 0,
+              "sent": 573
+            }
+          }
+        }
+      ]
+    },
+    {
+      "job": "linux-gaming (frp-tls, false)",
+      "job_id": 122634934868,
+      "phase": "complete",
+      "carriers_tested": 1,
+      "carriers_passed": 1,
+      "selected": [
+        "frp-tls"
+      ],
+      "passed": true,
+      "owned_resources_removed": true,
+      "host_firewall_unchanged": true,
+      "host_routes_unchanged": true,
+      "host_forwarding_unchanged": true,
+      "public_datapath": {
+        "passed": true,
+        "success_ratio": 1,
+        "upload_mbps": 490.112,
+        "download_mbps": 349.627,
+        "half_close": true,
+        "after_idle": true,
+        "integrity": true,
+        "utc": "2026-10-28T04:40:53Z",
+        "payload_bytes": 262144,
+        "errors": [],
+        "seconds": 1.126
+      },
+      "after_engine_crash": {
+        "passed": true,
+        "success_ratio": 1,
+        "upload_mbps": 542.941,
+        "download_mbps": 412.75,
+        "half_close": true,
+        "after_idle": true,
+        "integrity": true,
+        "utc": "2026-10-28T04:41:03Z",
+        "payload_bytes": 262144,
+        "errors": [],
+        "seconds": 1.124
+      },
+      "engine_recovery_seconds": 9.47,
+      "engine_recovery_attempts": 4,
+      "hub_independence": {
+        "passed": true,
+        "success_ratio": 1,
+        "upload_mbps": 562.132,
+        "download_mbps": 400.487,
+        "half_close": true,
+        "after_idle": true,
+        "integrity": true,
+        "utc": "2026-10-28T04:41:04Z",
+        "payload_bytes": 262144,
+        "errors": [],
+        "seconds": 1.124
+      },
+      "cleanup_errors": [],
+      "carriers": [
+        {
+          "profile": "frp-tls",
+          "passed": true,
+          "reason": "",
+          "qualification_runs": 1
+        }
+      ]
+    }
+  ]
+}

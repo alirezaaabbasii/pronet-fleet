@@ -216,5 +216,17 @@ repo_fetch dist/release.bin "$2" "$3" "$4" "$5"
         self.assertNotIn('forbidden',result.stdout)
 
 
+    def test_truncated_stream_does_not_start_bootstrap(self):
+        script = (ROOT / 'install.sh').read_text()
+        end = script.rfind('}')
+        self.assertGreater(end, 0)
+        result = subprocess.run(['bash', '-s', '--', 'join', 'synthetic-token'],
+                                input=script[:end], env=dict(self.env, TMPDIR=str(self.root)),
+                                text=True, capture_output=True, timeout=15)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertEqual(self.requests, [])
+        self.assertFalse(list(self.root.glob('pronet-bootstrap.*')))
+
+
 if __name__=='__main__':
     unittest.main()
