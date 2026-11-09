@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
-# Small online entry point. The full installer is checked BEFORE execution.
+# The group must parse in full before a streamed bootstrap executes.
+{
 set -euo pipefail
 umask 077
 OWNER_REPO="alirezaaabbasii/pronet-fleet"
 REPO_REF="main"
-VERSION="0.3.24"
-INSTALLER_SHA256="655f7ce95ea909a85b93f8bf1e71bcae4348106fb289b08b4997d6ca11c592ae"
+VERSION="0.3.25"
+INSTALLER_SHA256="65dacf60b1934f65de1864102b0880f3246642e3915c722ba8b68aaefa9b102d"
 say() { printf '[pronet] %s\n' "$*"; }
 fail() { printf '[pronet] error: %s\n' "$*" >&2; exit 1; }
 command -v curl >/dev/null 2>&1 || fail 'curl is required.'
@@ -119,3 +120,4 @@ trap 'rm -rf "$bootstrap_work"' EXIT
 repo_fetch "installers/${VERSION}/get.sh" "$INSTALLER_SHA256" "$bootstrap_work/get.sh"
 export PRONET_PREFERRED_SOURCE="$DOWNLOAD_PREFERRED_SOURCE"
 bash "$bootstrap_work/get.sh" "$@"
+}

@@ -1,3 +1,5 @@
+> **0.3.25:** Iran HTTPS reachability in the Spoof menu, Persian setup prompts, and a shorter foreign join command. [Details](CHANGES-0.3.25.fa.md).
+
 > **0.3.24:** verified multi-source downloads, small-part archive mirror, bounded stalled transfers and complete-download foreign join commands. [Details](CHANGES-0.3.24.fa.md).
 
 > **0.3.23:** recover corrupt traffic counters without dropping the gateway; per-tunnel removal and local restart menus. [Details](CHANGES-0.3.23.fa.md).
@@ -12,7 +14,7 @@
 
 **Iran ⇄ foreign tunnel manager: it tests every carrier on your real route, picks the best one, keeps warm standbys and fails over by itself.**
 
-![version](https://img.shields.io/badge/version-0.3.24-blue)
+![version](https://img.shields.io/badge/version-0.3.25-blue)
 ![platform](https://img.shields.io/badge/platform-Linux%20amd64%20%7C%20arm64-lightgrey)
 ![python](https://img.shields.io/badge/python-3.10%2B-green)
 ![carriers](https://img.shields.io/badge/carriers-20%2B-orange)
@@ -89,14 +91,13 @@ Your clients always use the same `IRAN_IP:PORT`. Carrier changes happen behind t
 **1. Iran server (always start here)**
 
 ```bash
-(
-pronet_bootstrap=$(mktemp) || exit
-trap 'rm -f "$pronet_bootstrap"' EXIT
-curl -fL --connect-timeout 10 --max-time 45 \
-  https://cdn.jsdelivr.net/gh/alirezaaabbasii/pronet-fleet@main/installers/0.3.24/install.sh \
-  -o "$pronet_bootstrap" &&
-sudo bash "$pronet_bootstrap"
-)
+bash -c 'p=$(curl -fsSL --connect-timeout 10 --max-time 45 https://cdn.jsdelivr.net/gh/alirezaaabbasii/pronet-fleet@main/installers/0.3.25/install.sh) && test -n "$p" && bash -n <<< "$p" && sudo bash -s -- "$@" <<< "$p"' --
+```
+
+[Installer on GitHub](install.sh). The direct GitHub entry point is also available.
+
+```bash
+bash -c 'p=$(curl -fsSL --connect-timeout 10 --max-time 45 https://raw.githubusercontent.com/alirezaaabbasii/pronet-fleet/main/install.sh) && test -n "$p" && bash -n <<< "$p" && sudo bash -s -- "$@" <<< "$p"' --
 ```
 
 The small entry script is trusted through HTTPS. It verifies the versioned installer before execution. Installer payloads try GitHub Raw, jsDelivr, GitHub API and locked upstream engine Releases as applicable; every payload is SHA256 checked. If the large base archive cannot download directly, verified 512 KiB parts are downloaded and reassembled, then the full archive digest is checked again. Stalled transfers move to the next source. System prerequisites still come from OS repositories; no public endpoint can be guaranteed reachable on every network.
@@ -108,14 +109,7 @@ Iran sets up the coordinator and prints **one command** for the foreign server. 
 **2. Foreign server**: paste the whole line printed on Iran, for example:
 
 ```bash
-(
-pronet_bootstrap=$(mktemp) || exit
-trap 'rm -f "$pronet_bootstrap"' EXIT
-curl -fL --connect-timeout 10 --max-time 45 \
-  https://cdn.jsdelivr.net/gh/alirezaaabbasii/pronet-fleet@main/installers/0.3.24/install.sh \
-  -o "$pronet_bootstrap" &&
-sudo bash "$pronet_bootstrap" join PNF1-...
-)
+bash -c 'p=$(curl -fsSL --connect-timeout 10 --max-time 45 https://cdn.jsdelivr.net/gh/alirezaaabbasii/pronet-fleet@main/installers/0.3.25/install.sh) && test -n "$p" && bash -n <<< "$p" && sudo bash -s -- "$@" <<< "$p"' -- join PNF1-...
 ```
 
 > The join line contains a one-time secret. Don't post it anywhere.
@@ -241,14 +235,14 @@ This removes Pronet's services, tagged firewall rules, nftables tables, state, c
 
 ## Offline install (GitHub blocked on a server)
 
-The online installer verifies the 0.3.12 base ZIP and the small 0.3.23 update ZIP before assembling the new version. For offline installation, use the complete `pronet-fleet-0.3.24.zip` with `get.sh`, then:
+The online installer verifies the 0.3.12 base ZIP and the small 0.3.23 update ZIP before assembling the new version. For offline installation, use the complete `pronet-fleet-0.3.25.zip` with `get.sh`, then:
 
 ```bash
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.24.zip bash get.sh                  # Iran
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.24.zip bash get.sh join PNF1-...    # foreign
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.25.zip bash get.sh                  # Iran
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.25.zip bash get.sh join PNF1-...    # foreign
 ```
 
-`get.sh` checks the ZIP's SHA256 before installing. You can also use a mirror with `PRONET_URL=https://…/pronet-fleet-0.3.24.zip`.
+`get.sh` checks the ZIP's SHA256 before installing. You can also use a mirror with `PRONET_URL=https://…/pronet-fleet-0.3.25.zip`.
 
 ## FAQ
 
@@ -442,3 +436,8 @@ Existing larger WireGuard datagrams use a per-relay-socket IPv4 fragmentation fa
 Repeated qualification ranks the worst-scored measured run across the three successful runs. All probes contribute to the measured percentiles; at most 64 representative RTT samples per phase are retained in reports.
 
 Archive parts use CDN/Raw rather than one API request per part; the API remains a whole-archive fallback to preserve its unauthenticated request quota.
+
+
+## Iran reachability scan
+
+On the Iran node, use menu **10 → 3** or `sudo pronet spoof-scan`. The bundled snapshot has 84 hostname and public Iranian IPv4 pairs. Probes use the stored IP and authenticated hostname on HTTPS port 443, with no live DNS lookup or coordinator request. Results are saved to `/var/lib/pronet-fleet/spoof-scan.json`. The scan measures public service reachability. Origin egress and Spoof compatibility require separate tests.

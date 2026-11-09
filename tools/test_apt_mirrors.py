@@ -176,7 +176,7 @@ class MirrorTests(unittest.TestCase):
                         except OSError: break
                         if not chunk: break
                         output+=chunk
-                        if b'Select [2]:' in output and not replied:
+                        if b' [2]:' in output and not replied:
                             os.write(terminal,(answer+'\n').encode()); replied=True
                     if not replied:
                         os.kill(pid,9)
@@ -219,8 +219,8 @@ class MirrorTests(unittest.TestCase):
     def test_ordinary_install_prompts_and_yes_selects_temporary_mirrors(self):
         result,calls=self.prerequisite_run(answer='1')
         self.assertEqual(result.returncode,0,result.stderr)
-        self.assertIn('IRAN INSTALLATION',result.stdout)
-        self.assertLess(result.stdout.index('IRAN INSTALLATION'), result.stdout.index('DNS and mirror selection completed'))
+        self.assertIn('نصب روی ایران',result.stdout)
+        self.assertLess(result.stdout.index('نصب روی ایران'), result.stdout.index('DNS and mirror selection completed'))
         self.assertLess(result.stdout.index('DNS and mirror selection completed'), result.stdout.index('Installing prerequisites'))
         self.assertTrue(any(Path(x[0]).name=='python3' for x in calls))
 

@@ -9,7 +9,8 @@ version=re.search(rb'^VERSION="([^"]+)"',installer,re.M).group(1).decode()
 digest=hashlib.sha256(installer).hexdigest()
 shared=(repo/'tools/download.sh').read_text()
 bootstrap='''#!/usr/bin/env bash
-# Small online entry point. The full installer is checked BEFORE execution.
+# The group must parse in full before a streamed bootstrap executes.
+{
 set -euo pipefail
 umask 077
 OWNER_REPO="alirezaaabbasii/pronet-fleet"
@@ -28,6 +29,7 @@ trap 'rm -rf "$bootstrap_work"' EXIT
 repo_fetch "installers/${VERSION}/get.sh" "$INSTALLER_SHA256" "$bootstrap_work/get.sh"
 export PRONET_PREFERRED_SOURCE="$DOWNLOAD_PREFERRED_SOURCE"
 bash "$bootstrap_work/get.sh" "$@"
+}
 '''
 (repo/'install.sh').write_text(bootstrap)
 archive=repo/'installers'/version

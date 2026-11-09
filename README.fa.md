@@ -1,3 +1,5 @@
+> **نسخهٔ 0.3.25:** اسکن مقصدهای ایران در منوی Spoof، منوی فارسی و فرمان کوتاه اتصال خارج. [شرح تغییرات](CHANGES-0.3.25.fa.md)
+
 > **0.3.24:** دانلود چندمنبعی با بررسی هش، آینهٔ قطعه‌ای بستهٔ بزرگ و قطع دانلودهای گیرکرده. [جزئیات](CHANGES-0.3.24.fa.md)
 
 > **0.3.23:** رفع توقف درگاه بر اثر آمار خراب؛ حذف تک‌تونل و ری‌استارت محلی از منو. [جزئیات](CHANGES-0.3.23.fa.md)
@@ -12,7 +14,7 @@
 
 **مدیریت تونل ایران ⇄ خارج: همهٔ حامل‌ها را روی مسیر واقعی شما تست می‌کند، بهترین را انتخاب می‌کند، پشتیبان آماده نگه می‌دارد و خودش سوییچ می‌کند.**
 
-![version](https://img.shields.io/badge/version-0.3.24-blue)
+![version](https://img.shields.io/badge/version-0.3.25-blue)
 ![platform](https://img.shields.io/badge/platform-Linux%20amd64%20%7C%20arm64-lightgrey)
 ![python](https://img.shields.io/badge/python-3.10%2B-green)
 
@@ -96,17 +98,16 @@ Pronet Fleet برعکس کار می‌کند:
 </div>
 
 ```bash
-(
-pronet_bootstrap=$(mktemp) || exit
-trap 'rm -f "$pronet_bootstrap"' EXIT
-curl -fL --connect-timeout 10 --max-time 45 \
-  https://cdn.jsdelivr.net/gh/alirezaaabbasii/pronet-fleet@main/installers/0.3.24/install.sh \
-  -o "$pronet_bootstrap" &&
-sudo bash "$pronet_bootstrap"
-)
+bash -c 'p=$(curl -fsSL --connect-timeout 10 --max-time 45 https://cdn.jsdelivr.net/gh/alirezaaabbasii/pronet-fleet@main/installers/0.3.25/install.sh) && test -n "$p" && bash -n <<< "$p" && sudo bash -s -- "$@" <<< "$p"' --
 ```
 
-تمام فایل‌های Pronet و موتورهای همراه از `raw.githubusercontent.com` دریافت می‌شوند؛ دسترسی مستقیم به بخش Releases روی `github.com` برای نصب لازم نیست. صحت همهٔ فایل‌ها با SHA256 بررسی می‌شود. پیش‌نیازهای سیستم همچنان از مخزن بسته‌های سیستم‌عامل نصب می‌شوند.
+[فایل نصب روی GitHub](install.sh). اگر آدرس CDN روی سرورتان در دسترس نیست، آدرس مستقیم GitHub را اجرا کنید.
+
+```bash
+bash -c 'p=$(curl -fsSL --connect-timeout 10 --max-time 45 https://raw.githubusercontent.com/alirezaaabbasii/pronet-fleet/main/install.sh) && test -n "$p" && bash -n <<< "$p" && sudo bash -s -- "$@" <<< "$p"' --
+```
+
+نصب‌کننده برای دریافت بسته‌ها منابع جایگزین CDN، GitHub Raw و GitHub API را امتحان می‌کند. موتورهای مستقل منبع رسمی سازنده را هم دارند. بسته‌ها پیش از نصب با SHA256 بررسی می‌شوند.
 
 
 <div dir="rtl">
@@ -119,14 +120,7 @@ sudo bash "$pronet_bootstrap"
 </div>
 
 ```bash
-(
-pronet_bootstrap=$(mktemp) || exit
-trap 'rm -f "$pronet_bootstrap"' EXIT
-curl -fL --connect-timeout 10 --max-time 45 \
-  https://cdn.jsdelivr.net/gh/alirezaaabbasii/pronet-fleet@main/installers/0.3.24/install.sh \
-  -o "$pronet_bootstrap" &&
-sudo bash "$pronet_bootstrap" join PNF1-...
-)
+bash -c 'p=$(curl -fsSL --connect-timeout 10 --max-time 45 https://cdn.jsdelivr.net/gh/alirezaaabbasii/pronet-fleet@main/installers/0.3.25/install.sh) && test -n "$p" && bash -n <<< "$p" && sudo bash -s -- "$@" <<< "$p"' -- join PNF1-...
 ```
 
 <div dir="rtl">
@@ -239,13 +233,13 @@ sudo pronet uninstall
 
 ## نصب بدون دسترسی به گیت‌هاب
 
-نصب‌کنندهٔ آنلاین، ZIP پایهٔ 0.3.12 و ZIP کوچک به‌روزرسانی 0.3.24 را جداگانه با SHA256 بررسی و نسخهٔ جدید را می‌سازد. برای نصب آفلاین، ZIP کامل `pronet-fleet-0.3.24.zip` و `get.sh` را با scp روی سرور بریزید:
+نصب‌کنندهٔ آنلاین، ZIP پایهٔ 0.3.12 و ZIP کوچک به‌روزرسانی 0.3.25 را جداگانه با SHA256 بررسی و نسخهٔ جدید را می‌سازد. برای نصب آفلاین، ZIP کامل `pronet-fleet-0.3.25.zip` و `get.sh` را با scp روی سرور بریزید:
 
 </div>
 
 ```bash
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.24.zip bash get.sh                  # ایران
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.24.zip bash get.sh join PNF1-...    # خارج
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.25.zip bash get.sh                  # ایران
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.25.zip bash get.sh join PNF1-...    # خارج
 ```
 
 <div dir="rtl">
@@ -359,3 +353,10 @@ sudo pronet pair --full-test
 ## منابع جایگزین نصب در 0.3.24
 
 اسکریپت ورودی از HTTPS دریافت می‌شود و نصب‌کنندهٔ نسخه‌دار را قبل از اجرا با SHA256 بررسی می‌کند. بسته‌ها و ابزار Mirror از منابع جایگزین Raw، CDN و API گیت‌هاب دریافت می‌شوند؛ موتورهای مستقل منبع اصلی سازنده را هم دارند. بستهٔ بزرگ، آینهٔ قطعه‌های ۵۱۲ کیلوبایتی دارد؛ هش هر قطعه و فایل کامل بررسی می‌شود. دانلود گیرکرده پس از مهلت محدود به منبع بعدی می‌رود. تضمین دسترسی همهٔ شبکه‌ها ممکن نیست؛ نصب آفلاین همچنان پشتیبانی می‌شود. DNS و منابع اصلی APT عوض نمی‌شوند.
+
+
+## اسکن مسیر در منوی Spoof
+
+روی سرور ایران `sudo pronet` را اجرا کنید و به **۱۰) تونل اضطراری و اسکن Spoof → ۳) اسکن دسترسی به مقصدهای ایران** بروید. فرمان مستقیم هم `sudo pronet spoof-scan` است.
+
+فهرست همراه نسخه، ۸۴ جفت دامنه و IPv4 از ۵۰ دامنه دارد. هر مقصد در محدودهٔ عمومی منتسب به ایران در RIPEstat است. اسکن با IP ذخیره‌شده و نام دامنه روی HTTPS 443 اجرا می‌شود و به DNS یا هماهنگ‌کنندهٔ فعال نیاز ندارد. نتیجهٔ هر مقصد در `/var/lib/pronet-fleet/spoof-scan.json` ذخیره می‌شود. پاسخ HTTP وضعیت دسترسی به سرویس عمومی را نشان می‌دهد. خروجی Origin و امکان کارکرد Spoof در این تست اندازه‌گیری نمی‌شوند.
