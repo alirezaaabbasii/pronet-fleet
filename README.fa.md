@@ -1,4 +1,4 @@
-> **نسخهٔ 0.3.25:** اسکن مقصدهای ایران در منوی Spoof، منوی فارسی و فرمان کوتاه اتصال خارج. [شرح تغییرات](CHANGES-0.3.25.fa.md)
+> **نسخهٔ 0.3.26:** منوهای ترمینال و پیام‌های نصب به انگلیسی برگشتند. [شرح تغییرات](CHANGES-0.3.26.fa.md)
 
 > **0.3.24:** دانلود چندمنبعی با بررسی هش، آینهٔ قطعه‌ای بستهٔ بزرگ و قطع دانلودهای گیرکرده. [جزئیات](CHANGES-0.3.24.fa.md)
 
@@ -14,7 +14,7 @@
 
 **مدیریت تونل ایران ⇄ خارج: همهٔ حامل‌ها را روی مسیر واقعی شما تست می‌کند، بهترین را انتخاب می‌کند، پشتیبان آماده نگه می‌دارد و خودش سوییچ می‌کند.**
 
-![version](https://img.shields.io/badge/version-0.3.25-blue)
+![version](https://img.shields.io/badge/version-0.3.26-blue)
 ![platform](https://img.shields.io/badge/platform-Linux%20amd64%20%7C%20arm64-lightgrey)
 ![python](https://img.shields.io/badge/python-3.10%2B-green)
 
@@ -98,7 +98,7 @@ Pronet Fleet برعکس کار می‌کند:
 </div>
 
 ```bash
-bash -c 'p=$(curl -fsSL --connect-timeout 10 --max-time 45 https://cdn.jsdelivr.net/gh/alirezaaabbasii/pronet-fleet@main/installers/0.3.25/install.sh) && test -n "$p" && bash -n <<< "$p" && sudo bash -s -- "$@" <<< "$p"' --
+bash -c 'p=$(curl -fsSL --connect-timeout 10 --max-time 45 https://cdn.jsdelivr.net/gh/alirezaaabbasii/pronet-fleet@main/installers/0.3.26/install.sh) && test -n "$p" && bash -n <<< "$p" && sudo bash -s -- "$@" <<< "$p"' --
 ```
 
 [فایل نصب روی GitHub](install.sh). اگر آدرس CDN روی سرورتان در دسترس نیست، آدرس مستقیم GitHub را اجرا کنید.
@@ -120,7 +120,7 @@ bash -c 'p=$(curl -fsSL --connect-timeout 10 --max-time 45 https://raw.githubuse
 </div>
 
 ```bash
-bash -c 'p=$(curl -fsSL --connect-timeout 10 --max-time 45 https://cdn.jsdelivr.net/gh/alirezaaabbasii/pronet-fleet@main/installers/0.3.25/install.sh) && test -n "$p" && bash -n <<< "$p" && sudo bash -s -- "$@" <<< "$p"' -- join PNF1-...
+bash -c 'p=$(curl -fsSL --connect-timeout 10 --max-time 45 https://cdn.jsdelivr.net/gh/alirezaaabbasii/pronet-fleet@main/installers/0.3.26/install.sh) && test -n "$p" && bash -n <<< "$p" && sudo bash -s -- "$@" <<< "$p"' -- join PNF1-...
 ```
 
 <div dir="rtl">
@@ -233,13 +233,13 @@ sudo pronet uninstall
 
 ## نصب بدون دسترسی به گیت‌هاب
 
-نصب‌کنندهٔ آنلاین، ZIP پایهٔ 0.3.12 و ZIP کوچک به‌روزرسانی 0.3.25 را جداگانه با SHA256 بررسی و نسخهٔ جدید را می‌سازد. برای نصب آفلاین، ZIP کامل `pronet-fleet-0.3.25.zip` و `get.sh` را با scp روی سرور بریزید:
+نصب‌کنندهٔ آنلاین، ZIP پایهٔ 0.3.12 و ZIP کوچک به‌روزرسانی 0.3.26 را جداگانه با SHA256 بررسی و نسخهٔ جدید را می‌سازد. برای نصب آفلاین، ZIP کامل `pronet-fleet-0.3.26.zip` و `get.sh` را با scp روی سرور بریزید:
 
 </div>
 
 ```bash
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.25.zip bash get.sh                  # ایران
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.25.zip bash get.sh join PNF1-...    # خارج
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.26.zip bash get.sh                  # ایران
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.26.zip bash get.sh join PNF1-...    # خارج
 ```
 
 <div dir="rtl">

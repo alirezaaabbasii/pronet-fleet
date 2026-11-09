@@ -1,4 +1,4 @@
-> **0.3.25:** Iran HTTPS reachability in the Spoof menu, Persian setup prompts, and a shorter foreign join command. [Details](CHANGES-0.3.25.fa.md).
+> **0.3.26:** Restored the English terminal menus and installer prompts. [Release notes](CHANGES-0.3.26.fa.md).
 
 > **0.3.24:** verified multi-source downloads, small-part archive mirror, bounded stalled transfers and complete-download foreign join commands. [Details](CHANGES-0.3.24.fa.md).
 
@@ -14,7 +14,7 @@
 
 **Iran ⇄ foreign tunnel manager: it tests every carrier on your real route, picks the best one, keeps warm standbys and fails over by itself.**
 
-![version](https://img.shields.io/badge/version-0.3.25-blue)
+![version](https://img.shields.io/badge/version-0.3.26-blue)
 ![platform](https://img.shields.io/badge/platform-Linux%20amd64%20%7C%20arm64-lightgrey)
 ![python](https://img.shields.io/badge/python-3.10%2B-green)
 ![carriers](https://img.shields.io/badge/carriers-20%2B-orange)
@@ -91,7 +91,7 @@ Your clients always use the same `IRAN_IP:PORT`. Carrier changes happen behind t
 **1. Iran server (always start here)**
 
 ```bash
-bash -c 'p=$(curl -fsSL --connect-timeout 10 --max-time 45 https://cdn.jsdelivr.net/gh/alirezaaabbasii/pronet-fleet@main/installers/0.3.25/install.sh) && test -n "$p" && bash -n <<< "$p" && sudo bash -s -- "$@" <<< "$p"' --
+bash -c 'p=$(curl -fsSL --connect-timeout 10 --max-time 45 https://cdn.jsdelivr.net/gh/alirezaaabbasii/pronet-fleet@main/installers/0.3.26/install.sh) && test -n "$p" && bash -n <<< "$p" && sudo bash -s -- "$@" <<< "$p"' --
 ```
 
 [Installer on GitHub](install.sh). The direct GitHub entry point is also available.
@@ -109,7 +109,7 @@ Iran sets up the coordinator and prints **one command** for the foreign server. 
 **2. Foreign server**: paste the whole line printed on Iran, for example:
 
 ```bash
-bash -c 'p=$(curl -fsSL --connect-timeout 10 --max-time 45 https://cdn.jsdelivr.net/gh/alirezaaabbasii/pronet-fleet@main/installers/0.3.25/install.sh) && test -n "$p" && bash -n <<< "$p" && sudo bash -s -- "$@" <<< "$p"' -- join PNF1-...
+bash -c 'p=$(curl -fsSL --connect-timeout 10 --max-time 45 https://cdn.jsdelivr.net/gh/alirezaaabbasii/pronet-fleet@main/installers/0.3.26/install.sh) && test -n "$p" && bash -n <<< "$p" && sudo bash -s -- "$@" <<< "$p"' -- join PNF1-...
 ```
 
 > The join line contains a one-time secret. Don't post it anywhere.
@@ -235,14 +235,14 @@ This removes Pronet's services, tagged firewall rules, nftables tables, state, c
 
 ## Offline install (GitHub blocked on a server)
 
-The online installer verifies the 0.3.12 base ZIP and the small 0.3.23 update ZIP before assembling the new version. For offline installation, use the complete `pronet-fleet-0.3.25.zip` with `get.sh`, then:
+The online installer verifies the 0.3.12 base ZIP and the small 0.3.26 update ZIP before assembling the new version. For offline installation, use the complete `pronet-fleet-0.3.26.zip` with `get.sh`, then:
 
 ```bash
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.25.zip bash get.sh                  # Iran
-sudo PRONET_ZIP=/root/pronet-fleet-0.3.25.zip bash get.sh join PNF1-...    # foreign
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.26.zip bash get.sh                  # Iran
+sudo PRONET_ZIP=/root/pronet-fleet-0.3.26.zip bash get.sh join PNF1-...    # foreign
 ```
 
-`get.sh` checks the ZIP's SHA256 before installing. You can also use a mirror with `PRONET_URL=https://…/pronet-fleet-0.3.25.zip`.
+`get.sh` checks the ZIP's SHA256 before installing. You can also use a mirror with `PRONET_URL=https://…/pronet-fleet-0.3.26.zip`.
 
 ## FAQ
 

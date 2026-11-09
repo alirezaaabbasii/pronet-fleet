@@ -10,20 +10,20 @@
 # Existing tunnels, routes, firewall policy and panel configuration are untouched.
 #
 # Optional:
-#   PRONET_ZIP=/root/pronet-fleet-0.3.25.zip   use a file already copied to the server
+#   PRONET_ZIP=/root/pronet-fleet-0.3.26.zip   use a file already copied to the server
 #   PRONET_URL=https://mirror/...zip          use a mirror if GitHub is slow/blocked
 #   PRONET_NO_MENU=1                          install only
 #   bash get.sh --iran-mirrors               temporary Ubuntu mirror test for Iran installation
 set -euo pipefail
 umask 077
 
-VERSION="0.3.25"
+VERSION="0.3.26"
 OWNER_REPO="alirezaaabbasii/pronet-fleet"
 REPO_REF="main"
-SHA256="0ad9b6de291673c750638507adb4ed00b18aed8c4c6d4cf3a268c4478dfe8761"
+SHA256="563b8f1eeca91fe3ff3592733fbbc16f8579c5925cbd36792ecaffe22810db3e"
 BASE_VERSION="0.3.12"
 BASE_SHA256="3f1c4483c41c1f288281dabb789289888e043a9132e1d99f814929e55ba2fb37"
-UPDATE_SHA256="804aeb42b9729a8ab69a6e39d26421ec36d1a60f0d7e6246cc7d789fbbd409ff"
+UPDATE_SHA256="395942e480da8c8b5b30838625cef5f4f602e725b7a621067074f11aa1b07090"
 BASE_URL="https://raw.githubusercontent.com/${OWNER_REPO}/main/dist/pronet-fleet-${BASE_VERSION}.zip"
 UPDATE_URL="https://raw.githubusercontent.com/${OWNER_REPO}/main/dist/pronet-fleet-${VERSION}-update.zip"
 
@@ -170,18 +170,18 @@ if [ "$iran_mirrors" -eq 0 ] && [ "${1:-}" != "join" ] && [ "${PRONET_NO_MENU:-}
     fi
   fi
   if [ "$foreign_node" -eq 0 ] && (exec </dev/tty) 2>/dev/null; then
-    printf '\n  نصب روی ایران · مخزن بسته‌های Ubuntu\n'
-    printf '  مخزن‌های Ubuntu را برای دانلود پیش‌نیازها بررسی کنیم؟\n'
-    printf '   1) بله، آزمون موقت مخزن‌ها و پیشنهاد DNS\n'
-    printf '   2) خیر، استفاده از مخزن فعلی سرور\n'
-    printf '  مخزن اصلی و DNS حفظ می‌شوند و فایل‌های موقت پاک می‌شوند.\n'
+    printf '\n  IRAN INSTALLATION - UBUNTU MIRRORS\n'
+    printf '  On an Iran server, test mirrors to speed up prerequisite downloads?\n'
+    printf '   1) Yes - test mirrors temporarily and suggest DNS (no DNS change)\n'
+    printf '   2) No - use the current server mirror\n'
+    printf '  Original APT sources and DNS are kept; temporary mirror files are removed.\n'
     while true; do
-      printf 'انتخاب [2]: '
+      printf 'Select [2]: '
       IFS= read -r mirror_choice </dev/tty || mirror_choice=2
       case "${mirror_choice:-2}" in
         1) iran_mirrors=1; break ;;
         2) break ;;
-        *) printf '۱ یا ۲ را انتخاب کنید.\n' ;;
+        *) printf 'Choose 1 or 2.\n' ;;
       esac
     done
   fi
