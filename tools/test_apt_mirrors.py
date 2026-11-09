@@ -219,8 +219,8 @@ class MirrorTests(unittest.TestCase):
     def test_ordinary_install_prompts_and_yes_selects_temporary_mirrors(self):
         result,calls=self.prerequisite_run(answer='1')
         self.assertEqual(result.returncode,0,result.stderr)
-        self.assertIn('نصب روی ایران',result.stdout)
-        self.assertLess(result.stdout.index('نصب روی ایران'), result.stdout.index('DNS and mirror selection completed'))
+        self.assertIn('IRAN INSTALLATION - UBUNTU MIRRORS',result.stdout)
+        self.assertLess(result.stdout.index('IRAN INSTALLATION - UBUNTU MIRRORS'), result.stdout.index('DNS and mirror selection completed'))
         self.assertLess(result.stdout.index('DNS and mirror selection completed'), result.stdout.index('Installing prerequisites'))
         self.assertTrue(any(Path(x[0]).name=='python3' for x in calls))
 

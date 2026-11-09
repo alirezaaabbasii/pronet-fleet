@@ -5,8 +5,8 @@ set -euo pipefail
 umask 077
 OWNER_REPO="alirezaaabbasii/pronet-fleet"
 REPO_REF="main"
-VERSION="0.3.25"
-INSTALLER_SHA256="65dacf60b1934f65de1864102b0880f3246642e3915c722ba8b68aaefa9b102d"
+VERSION="0.3.26"
+INSTALLER_SHA256="a65508f823c2ea249a0276a8a7b4b508d7de45e5ae4163297aa80677fba69a84"
 say() { printf '[pronet] %s\n' "$*"; }
 fail() { printf '[pronet] error: %s\n' "$*" >&2; exit 1; }
 command -v curl >/dev/null 2>&1 || fail 'curl is required.'
